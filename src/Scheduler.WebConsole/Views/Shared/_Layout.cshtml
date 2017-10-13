@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Scheduler</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="/signalr/hubs"></script>
+
+    <script src="~/Scripts/handlebars-v4.0.10.js"></script>
+
+    <link href="~/Content/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <link href="~/Content/bootstrap/css/bootstrap-toggle.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-toggle.min.js"></script>
+
+    <link href="~/Content/Themes/Default/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="content">
+        @RenderBody()
+    </div>
+</body>
+</html>

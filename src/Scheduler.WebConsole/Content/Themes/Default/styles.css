@@ -1,0 +1,44 @@
+body {
+    min-width: 768px;
+}
+
+.text-center {
+    text-align:center;
+}
+
+#engine-content > * {
+    padding: 15px 40px;
+}
+
+
+#engine-header {
+    background-color: #2f2f2f;
+    padding: 5px 40px;
+}
+#engine-header h1 {
+    color:white;
+    margin: 0;
+}
+
+
+#engine-details {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #d1d1d1;
+}
+#engine-details button.btn {
+    text-align: left;
+    min-width: 93px;
+}
+
+
+#engine-jobs-details {
+    background-color: #ffffff;
+}
+#engine-jobs-details table.table > thead > tr > th {
+    /*text-align: center;*/
+}
+
+#engine-jobs-details table.table > tbody > tr > td {
+    vertical-align: middle;
+    /*text-align: center;*/
+}
