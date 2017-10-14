@@ -17,6 +17,13 @@ namespace Scheduler.Infrastructure.Configuration
             JobPaused = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been put on hold"); };
             JobResumed = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been resumed"); };
             JobTriggered = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been triggered manually"); };
+
+            JobExecutionSucceeded = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has finished with status: SUCCESS"); };
+            JobExecutionFailed = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has finished with status: FAILED"); };
+            JobExecutionSkipped = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) execution has been skipped"); };
+
+            BeforeJobExecution = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) is going to be executed"); };
+            AfterJobExecution = (sender, e) => { Console.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been executed"); };
         }
     }
 }

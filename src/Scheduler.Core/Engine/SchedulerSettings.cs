@@ -18,5 +18,11 @@
         public JobOperationEventHandler JobPaused;
         public JobOperationEventHandler JobResumed;
         public JobOperationEventHandler JobTriggered;
+
+        public JobOperationEventHandler BeforeJobExecution;
+        public JobOperationEventHandler AfterJobExecution;
+        public JobOperationEventHandler JobExecutionSucceeded;
+        public JobOperationEventHandler JobExecutionFailed;
+        public JobOperationEventHandler JobExecutionSkipped;
     }
 }

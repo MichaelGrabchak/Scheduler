@@ -20,10 +20,11 @@ namespace Scheduler.Infrastructure.Configuration
             JobUnscheduled = (sender, e) => { hubContext.Clients.All.jobUnscheduled(JobDetails.Transform(e.Job)); };
             JobPaused = (sender, e) => { hubContext.Clients.All.changeJobState(JobDetails.Transform(e.Job)); };
             JobResumed = (sender, e) => { hubContext.Clients.All.changeJobState(JobDetails.Transform(e.Job)); };
-            JobTriggered = (sender, e) =>
-            {
-                /*hubContext.Clients.All.changeJobState(e.JobName, e.JobGroup, JobState.Triggered.ToString());*/
-            };
+            JobTriggered = (sender, e) => { /*hubContext.Clients.All.changeJobState(e.JobName, e.JobGroup, JobState.Triggered.ToString());*/ };
+
+            JobExecutionSucceeded = (sender, e) => { hubContext.Clients.All.jobExecuted(JobDetails.Transform(e.Job), "SUCCESS"); };
+            JobExecutionFailed = (sender, e) => { hubContext.Clients.All.jobExecuted(JobDetails.Transform(e.Job), "FAILURE"); };
+            JobExecutionSkipped = (sender, e) => { hubContext.Clients.All.jobExecuted(JobDetails.Transform(e.Job), "SKIPPED"); };
         }
     }
 }

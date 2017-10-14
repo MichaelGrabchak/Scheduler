@@ -36,6 +36,10 @@
             addJob(jobDetails);
         }
 
+        schedulerHub.client.jobExecuted = function (jobDetails, state) {
+            console.log("The execution of " + jobDetails.Group + "." + jobDetails.Name + " has finished with status: " + state);
+        }
+
         function init() {
             $.connection.hub.start().done(function() {
                 schedulerHub.server.getJobsSummary().done(displayJobs);

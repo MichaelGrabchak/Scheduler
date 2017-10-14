@@ -16,7 +16,7 @@ namespace Scheduler.Domain.Entities
         {
             if (details != null)
             {
-                RunningSince = (details.StartDate != DateTime.MinValue) ? details.StartDate.ToString(CultureInfo.InvariantCulture) : null;
+                RunningSince = (details.StartDate != DateTimeOffset.MinValue) ? details.StartDate.ToString(CultureInfo.InvariantCulture) : null;
                 Version = details.Version;
                 Engine = details.Name;
                 State = details.State;

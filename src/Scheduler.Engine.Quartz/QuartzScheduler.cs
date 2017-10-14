@@ -13,15 +13,31 @@ namespace Scheduler.Engine.Quartz
 {
     public sealed class QuartzScheduler : BaseScheduler
     {
-        private static IScheduler _quartzScheduler = GetScheduler();
+        private static DependentTriggerListener _triggerListener = new DependentTriggerListener();
+        private static DependentJobListener _jobListener = new DependentJobListener();
 
-        public QuartzScheduler()
-        {
-        }
+        private static IScheduler _quartzScheduler = GetScheduler(_triggerListener, _jobListener);
 
         public QuartzScheduler(SchedulerSettings settings)
             : base(settings)
         {
+            if (settings != null)
+            {
+                if (settings.BeforeJobExecution != null)
+                    _jobListener.ToBeExecuted += settings.BeforeJobExecution;
+
+                if (settings.JobExecutionSkipped != null)
+                    _jobListener.ExecutionVetoed += settings.JobExecutionSkipped;
+
+                if (settings.JobExecutionSucceeded != null)
+                    _jobListener.ExecutionSucceeded += settings.JobExecutionSucceeded;
+
+                if (settings.JobExecutionFailed != null)
+                    _jobListener.ExecutionFailed += settings.JobExecutionFailed;
+
+                if (settings.AfterJobExecution != null)
+                    _jobListener.WasExecuted += settings.AfterJobExecution;
+            }
         }
 
         public override void Pause()
@@ -38,7 +54,7 @@ namespace Scheduler.Engine.Quartz
         {
             if (_quartzScheduler == null || _quartzScheduler?.IsShutdown == true)
             {
-                _quartzScheduler = GetScheduler();
+                _quartzScheduler = GetScheduler(_triggerListener, _jobListener);
             }
 
             if (_quartzScheduler?.IsStarted == false)
@@ -232,13 +248,13 @@ namespace Scheduler.Engine.Quartz
             return jobs;
         }
 
-        private static IScheduler GetScheduler()
+        private static IScheduler GetScheduler(ITriggerListener triggerListener, IJobListener jobListener)
         {
             var quartzScheduler = StdSchedulerFactory.GetDefaultScheduler();
 
             // registering listeners
-            quartzScheduler.ListenerManager.AddTriggerListener(new DependentTriggerListener(), GroupMatcher<TriggerKey>.AnyGroup());
-            quartzScheduler.ListenerManager.AddJobListener(new DependentJobListener(), GroupMatcher<JobKey>.AnyGroup());
+            quartzScheduler.ListenerManager.AddTriggerListener(triggerListener, GroupMatcher<TriggerKey>.AnyGroup());
+            quartzScheduler.ListenerManager.AddJobListener(jobListener, GroupMatcher<JobKey>.AnyGroup());
 
             return quartzScheduler;
         }

@@ -32,7 +32,7 @@ namespace Scheduler.Engine.Quartz.Listeners
 
             if(jobDetail != null)
             {
-                return (jobDetail.Name == "HelloWorld");
+                return (jobDetail.Name == "HelloWorldJob");
             }
 
             return false;

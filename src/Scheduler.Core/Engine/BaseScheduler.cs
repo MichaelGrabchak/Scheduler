@@ -14,7 +14,7 @@ namespace Scheduler.Core.Engine
     public abstract class BaseScheduler : ISchedulerEngine
     {
         protected static ILogger Logger = LogManager.GetLogger(Constants.System.DefaultSchedulerLoggerName);
-        protected static DateTime StartTime { get; private set; }
+        protected static DateTimeOffset StartTime { get; private set; }
         protected static EngineState State { get; set; }
 
         protected BaseScheduler()
@@ -30,7 +30,7 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnEngineStarted()
         {
-            StartTime = DateTime.Now;
+            StartTime = DateTimeOffset.Now;
             State = EngineState.Normal;
 
             EngineStarted?.Invoke(this, new EngineOperationEventArgs { State = State });
@@ -98,6 +98,46 @@ namespace Scheduler.Core.Engine
         protected virtual void OnJobTriggered(JobInfo jobInfo)
         {
             JobTriggered?.Invoke(this,
+                new JobOperationEventArgs { Job = jobInfo });
+        }
+
+        protected event JobOperationEventHandler BeforeJobExecution;
+
+        protected virtual void OnBeforeJobExecution(JobInfo jobInfo)
+        {
+            BeforeJobExecution?.Invoke(this,
+                new JobOperationEventArgs { Job = jobInfo });
+        }
+
+        protected event JobOperationEventHandler AfterJobExecution;
+
+        protected virtual void OnAfterJobExecution(JobInfo jobInfo)
+        {
+            AfterJobExecution?.Invoke(this,
+                new JobOperationEventArgs { Job = jobInfo });
+        }
+
+        protected event JobOperationEventHandler JobExecutionSucceeded;
+
+        protected virtual void OnJobSucceeded(JobInfo jobInfo)
+        {
+            JobExecutionSucceeded?.Invoke(this,
+                new JobOperationEventArgs { Job = jobInfo });
+        }
+
+        protected event JobOperationEventHandler JobExecutionFailed;
+
+        protected virtual void OnJobFailed(JobInfo jobInfo)
+        {
+            JobExecutionFailed?.Invoke(this,
+                new JobOperationEventArgs { Job = jobInfo });
+        }
+
+        protected event JobOperationEventHandler JobExecutionSkipped;
+
+        protected virtual void OnJobSkipped(JobInfo jobInfo)
+        {
+            JobExecutionSkipped?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
 
@@ -227,6 +267,21 @@ namespace Scheduler.Core.Engine
 
             if (settings.JobTriggered != null)
                 JobTriggered += settings.JobTriggered;
+
+            if (settings.BeforeJobExecution != null)
+                BeforeJobExecution += settings.BeforeJobExecution;
+
+            if (settings.AfterJobExecution != null)
+                AfterJobExecution += settings.AfterJobExecution;
+
+            if (settings.JobExecutionSucceeded != null)
+                JobExecutionSucceeded += settings.JobExecutionSucceeded;
+
+            if (settings.JobExecutionFailed != null)
+                JobExecutionFailed += settings.JobExecutionFailed;
+
+            if (settings.JobExecutionSkipped != null)
+                JobExecutionSkipped += settings.JobExecutionSkipped;
         }
 
         private void SetupJobsDirectory(SchedulerSettings settings)
