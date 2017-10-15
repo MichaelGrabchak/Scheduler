@@ -46,10 +46,6 @@
                             <th class="col-md-8">Paused</th>
                             <td id="jobs-total-paused" class="col-md-4">0</td>
                         </tr>
-                        <tr>
-                            <th class="col-md-8">Executed</th>
-                            <td id="jobs-total-executed" class="col-md-4">0</td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -81,16 +77,17 @@
 </div>
 
 <script id="jobGroup-template" type="text/x-handlebars-template">
-    <div class="panel panel-default">
+    <div id="group_{{Group}}" class="panel panel-default">
         <div class="panel-heading">{{Group}}</div>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th class="col-md-2">Job Name</th>
                     <th class="col-md-2">Description</th>
-                    <th class="col-md-2">Schedule</th>
+                    <th class="col-md-1">Schedule</th>
                     <th class="col-md-2">Previous Fire Time</th>
                     <th class="col-md-2">Next Fire Time</th>
+                    <th class="col-md-1">State</th>
                     <th class="col-md-1"></th>
                     <th class="col-md-1"></th>
                 </tr>
@@ -103,12 +100,13 @@
 </script>
 
 <script id="jobDetails-template" type="text/x-handlebars-template">
-    <tr>
-        <td>{{Name}}</td>
-        <td>{{Group}}</td>
-        <td>{{Schedule}}</td>
-        <td>{{PreviousFireTime}}</td>
-        <td>{{NextFireTime}}</td>
+    <tr id="job_{{Group}}_{{Name}}">
+        <td class="jobName">{{Name}}</td>
+        <td class="jobGroup">{{Group}}</td>
+        <td class="jobSchedule">{{Schedule}}</td>
+        <td class="jobPrevFireTime">{{PreviousFireTime}}</td>
+        <td class="jobNextFireTime">{{NextFireTime}}</td>
+        <td class="jobState">{{State}}</td>
         <td class="text-center">
             <button id="jobTrigger_{{Group}}_{{Name}}" class="btn btn-primary triggerJob">Execute Now</button>
         </td>

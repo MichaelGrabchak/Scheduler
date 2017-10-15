@@ -54,6 +54,7 @@
     <Compile Include="Helpers\ProxyDomainFactory.cs" />
     <Compile Include="Engine\ISchedulerEngine.cs" />
     <Compile Include="Jobs\JobInfo.cs" />
+    <Compile Include="Jobs\JobState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\AssemblyLoaderManager.cs" />
     <Compile Include="Engine\SchedulerEventHandlers.cs" />

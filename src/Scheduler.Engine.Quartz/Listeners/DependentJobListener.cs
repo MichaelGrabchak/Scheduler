@@ -1,4 +1,6 @@
-﻿using Scheduler.Core;
+﻿using Scheduler.Engine.Quartz.Extension;
+
+using Scheduler.Core;
 using Scheduler.Core.Jobs;
 using Scheduler.Core.Engine;
 
@@ -15,70 +17,61 @@ namespace Scheduler.Engine.Quartz.Listeners
         public event JobOperationEventHandler ExecutionVetoed;
         public event JobOperationEventHandler ExecutionSucceeded;
         public event JobOperationEventHandler ExecutionFailed;
-        public event JobOperationEventHandler WasExecuted;
 
         public string Name => "DependentJobListener";
 
         public void JobExecutionVetoed(IJobExecutionContext context)
         {
-            var jobDetail = context.JobDetail?.Key;
+            var jobInfo = context.GetJobInfo(JobState.Skipped);
 
-            if(jobDetail != null)
+            if (jobInfo != null)
             {
-                Logger.Debug($"The execution of job '{jobDetail.Group}.{jobDetail.Name}' has been skipped due to failed condition(s)");
+                Logger.Debug($"The execution of job '{jobInfo.Group}.{jobInfo.Name}' has been skipped due to failed condition(s)");
 
-                OnExecutionVetoed(new JobInfo { Name = jobDetail.Name, Group = jobDetail.Group });
+                OnExecutionVetoed(jobInfo);
             }
         }
 
         public void JobToBeExecuted(IJobExecutionContext context)
         {
-            var jobDetail = context.JobDetail?.Key;
+            var jobInfo = context.GetJobInfo(JobState.Executing);
 
-            if(jobDetail != null)
+            if (jobInfo != null)
             {
-                Logger.Debug($"Preparing to execute job '{jobDetail.Group}.{jobDetail.Name}'...");
+                Logger.Debug($"Preparing to execute job '{jobInfo.Group}.{jobInfo.Name}'...");
 
-                OnToBeExecuted(new JobInfo { Name = jobDetail.Name, Group = jobDetail.Group });
+                OnToBeExecuted(jobInfo);
             }
         }
 
         public void JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException)
         {
-            var jobDetail = context.JobDetail?.Key;
+            var jobInfo = context.GetJobInfo();
 
-            if(jobDetail != null)
+            if (jobInfo != null)
             {
-                var jobInfo = new JobInfo { Name = jobDetail.Name, Group = jobDetail.Group };
-
                 if (jobException != null)
                 {
-                    Logger.Warn(jobException, $"An error has occurred during execution of '{jobDetail.Group}.{jobDetail.Name}' job: ");
+                    jobInfo.State = JobState.Failed.ToString();
+
+                    Logger.Warn(jobException, $"An error has occurred during execution of '{jobInfo.Group}.{jobInfo.Name}' job: ");
 
                     OnExecutionFailed(jobInfo);
-
-                    return;
                 }
                 else
                 {
+                    jobInfo.State = JobState.Succeeded.ToString();
+
                     OnExecutionSucceeded(jobInfo);
 
-                    Logger.Debug($"The job '{jobDetail.Group}.{jobDetail.Name}' has been executed successfully");
+                    Logger.Debug($"The job '{jobInfo.Group}.{jobInfo.Name}' has been executed successfully");
                 }
-
-                OnWasExecuted(jobInfo);
             }
         }
 
         private void OnToBeExecuted(JobInfo jobInfo)
         {
             ToBeExecuted?.Invoke(this,
-                new JobOperationEventArgs { Job = jobInfo });
-        }
-
-        private void OnWasExecuted(JobInfo jobInfo)
-        {
-            WasExecuted?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
 

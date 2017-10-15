@@ -17,43 +17,38 @@
             removeJob(jobDetails.Group, jobDetails.Name);
         }
 
-        schedulerHub.client.changeJobState = function(jobDetails) {
-            var elementName = "[id='jobState_" + jobDetails.Group + "_" + jobDetails.Name + "']";
-            if (jobDetails.State === 0) {
-                $(elementName).bootstrapToggle("on");
-            } else {
-                $(elementName).bootstrapToggle("off");
-            }
-        }
-
         schedulerHub.client.changeState = function(state) {
             setEngineDetails({ state: state });
 
-            schedulerHub.server.getJobsSummary().done(displayJobs);
+            schedulerHub.server.getJobsSummary().done(function (result) { displayJobs(result, true); });
         }
 
         schedulerHub.client.jobScheduled = function(jobDetails) {
             addJob(jobDetails);
         }
 
-        schedulerHub.client.jobExecuted = function (jobDetails, state) {
-            console.log("The execution of " + jobDetails.Group + "." + jobDetails.Name + " has finished with status: " + state);
+        schedulerHub.client.jobUpdate = function (jobDetails) {
+            updateJob(jobDetails);
         }
 
         function init() {
-            $.connection.hub.start().done(function() {
-                schedulerHub.server.getJobsSummary().done(displayJobs);
+            $.connection.hub.start().done(function () {
+                schedulerHub.server.getJobsSummary().done(function (result) { displayJobs(result, true); });
                 schedulerHub.server.getEngineInfo().done(setEngineInfo);
             });
         };
 
-        function displayJobs(data) {
-            $("#engine-jobs-details").empty();
+        function displayJobs(data, rescheduleJobs) {
+            if (rescheduleJobs) {
+                $("#engine-jobs-details").empty();
+            }
 
             if (data) {
-                data.Jobs.forEach(function (item) {
-                    schedulerHub.client.jobScheduled(item);
-                });
+                if (rescheduleJobs) {
+                    data.Jobs.forEach(function (item) {
+                        schedulerHub.client.jobScheduled(item);
+                    });
+                }
 
                 setJobsSummary(data);
             }
@@ -61,21 +56,17 @@
 
         function setJobsSummary(jobsInfo) {
             if (jobsInfo) {
-                if (jobsInfo.TotalCount && !isNaN(jobsInfo.TotalCount)) {
+                if (!isNaN(jobsInfo.TotalCount)) {
                     $("#jobs-total-count").text(jobsInfo.TotalCount);
                 }
 
-                if (jobsInfo.TotalRunning && !isNaN(jobsInfo.TotalRunning)) {
+                if (!isNaN(jobsInfo.TotalRunning)) {
                     $("#jobs-total-running").text(jobsInfo.TotalRunning);
                 }
 
-                if (jobsInfo.TotalPaused && !isNaN(jobsInfo.TotalPaused)) {
+                if (!isNaN(jobsInfo.TotalPaused)) {
                     $("#jobs-total-paused").text(jobsInfo.TotalPaused);
-                }
-
-                if (jobsInfo.TotalExecuted && !isNaN(jobsInfo.TotalExecuted)) {
-                    $("#jobs-total-executed").text(jobsInfo.TotalExecuted);
-                }   
+                }  
             }
         }
 
@@ -122,9 +113,7 @@
 
         function getGroup(groupName) {
             if ($("#engine-jobs-details").find("div.panel").length > 0) {
-                return $("#engine-jobs-details").find("div.panel").filter(function(index, element) {
-                    return $(element).find("div.panel-heading:contains('" + groupName + "')").length > 0;
-                });
+                return $("[id='group_" + groupName + "']");
             }
         }
 
@@ -137,8 +126,35 @@
         function getJob(groupName, jobName) {
             if (jobGroupExists(groupName)) {
                 return getGroup(groupName).filter(function(index, element) {
-                    return $(element).find("table.table tbody tr td:contains('" + jobName + "')").length > 0;
+                    return $(element).find("[id='job_" + groupName + "_" + jobName + "']").length > 0;
                 });
+            }
+        }
+
+        function updateJob(job) {
+            var jobObj = getJob(job.Group, job.Name);
+
+            if (!jobObj) {
+                addJob(job);
+                return;
+            }
+
+            var jobIdentifier = "[id='job_" + job.Group + "_" + job.Name + "']";
+       
+            if (job.Schedule) {
+                $(jobIdentifier).find(".jobSchedule").text(job.Schedule);
+            }
+
+            if (job.State) {
+                setJobState(job.Group, job.Name, job.State);
+            }
+
+            if (job.PreviousFireTime) {
+                $(jobIdentifier).find(".jobPrevFireTime").text(job.PreviousFireTime);
+            }
+
+            if (job.NextFireTime) {
+                $(jobIdentifier).find(".jobNextFireTime").text(job.NextFireTime);
             }
         }
 
@@ -150,7 +166,7 @@
 
                 var group = getGroup(job.Group);
                 if (group) {
-                    $(group).find("table.table tbody").append(jobDetailsTemplate(job));
+                    $(group).find("table.table tbody").prepend(jobDetailsTemplate(job));
                     attachJobStateChangeEvent(job.Group, job.Name, job.State);
                     attachJobTriggerEvent(job.Group, job.Name);
                 }    
@@ -159,15 +175,16 @@
 
         function attachJobStateChangeEvent(groupName, jobName, state) {
             var elementName = "[id='jobState_" + groupName + "_" + jobName + "']";
-            var elementState = (state === 1) ? "off" : "on";
+            var elementState = (state === "Paused") ? "off" : "on";
             $(elementName).bootstrapToggle(elementState);
-            $(elementName).parent().click(function() {
+            $(elementName).parent().click(function () {
                 var isEnabled = $(elementName).prop("checked");
                 if (!isEnabled) {
                     schedulerHub.server.resumeJob(jobName, groupName);
                 } else {
                     schedulerHub.server.pauseJob(jobName, groupName);
                 }
+                schedulerHub.server.getJobsSummary().done(displayJobs);
             });
         }
 
@@ -197,6 +214,57 @@
 
             $("#scheduler-version").empty();
             $("#scheduler-startDate").empty();
+        }
+
+        function toggleState(jobGroup, jobName, jobState) {
+            var elementName = "[id='jobState_" + jobGroup + "_" + jobName + "']";
+            if (jobState === "Paused") {
+                $(elementName).bootstrapToggle("off");
+            } else {
+                $(elementName).bootstrapToggle("on");
+            }
+
+            var jobElementId = "[id='job_" + jobGroup + "_" + jobName + "']";
+            $(jobElementId).find(".jobState").text(jobState);
+        }
+
+        function getToggleState(jobGroup, jobName) {
+            var elementId = "[id='jobState_" + jobGroup + "_" + jobName + "']";
+            return ($(elementId).prop('checked') === true) ? "Normal" : "Paused";
+        }
+
+        function setJobState(jobGroup, jobName, jobState) {
+            var jobElementId = "[id='job_" + jobGroup + "_" + jobName + "']";
+
+            if (jobState === "Paused" || jobState === "Normal") {
+                toggleState(jobGroup, jobName, jobState);
+            } else if (jobState === "Succeeded" || jobState === "Failed" || jobState === "Skipped") {
+                highlightElement(jobElementId, jobState, 5000);
+                $(jobElementId).find(".jobState").text(jobState);
+                setTimeout(function () {
+                    var state = $(jobElementId).find(".jobState").text();
+                    if (jobState == state)
+                    {
+                        $(jobElementId).find(".jobState").text(getToggleState(jobGroup, jobName));
+                    }
+                }, 4000);
+            } else {
+                $(jobElementId).find(".jobState").text(jobState);
+            }
+        }
+
+        function highlightElement(elementName, level, speed) {
+            switch (level) {
+                case "Succeeded" :
+                    $(elementName).effect("highlight", { color: "#c9ffbf" }, speed);
+                    return;
+                case "Failed" :
+                    $(elementName).effect("highlight", { color: "#ffbfbf" }, speed);
+                    return;
+                default: 
+                    $(elementName).effect("highlight", { color: "#ffeebf" }, speed);
+                    return;
+            }            
         }
 
         function onStartEngineClick() {

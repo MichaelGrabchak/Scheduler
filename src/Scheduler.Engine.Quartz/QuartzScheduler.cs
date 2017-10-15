@@ -34,9 +34,6 @@ namespace Scheduler.Engine.Quartz
 
                 if (settings.JobExecutionFailed != null)
                     _jobListener.ExecutionFailed += settings.JobExecutionFailed;
-
-                if (settings.AfterJobExecution != null)
-                    _jobListener.WasExecuted += settings.AfterJobExecution;
             }
         }
 
@@ -109,7 +106,13 @@ namespace Scheduler.Engine.Quartz
 
             _quartzScheduler.ScheduleJob(job, trigger);
 
-            OnJobScheduled(new JobInfo { Name = jobData.Name, Group = jobData.Group, Schedule = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobData.Schedule), State = "Normal", NextFireTimeUtc = trigger.GetNextFireTimeUtc() });
+            OnJobScheduled(new JobInfo {
+                Name = jobData.Name,
+                Group = jobData.Group,
+                Schedule = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobData.Schedule),
+                State = JobState.Normal.ToString(),
+                NextFireTimeUtc = trigger.GetNextFireTimeUtc()
+            });
         }
 
         public override void UnscheduleJob(BaseJob scheduleJob)
@@ -124,7 +127,10 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.DeleteJob(details.Key);
 
-                    OnJobUnscheduled(new JobInfo { Name = jobData.Name, Group = jobData.Group });
+                    OnJobUnscheduled(new JobInfo {
+                        Name = jobData.Name,
+                        Group = jobData.Group
+                    });
                 }
             }
         }
@@ -139,7 +145,10 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.DeleteJob(details.Key);
 
-                    OnJobUnscheduled(new JobInfo { Name = jobName, Group = jobGroup });
+                    OnJobUnscheduled(new JobInfo {
+                        Name = jobName,
+                        Group = jobGroup
+                    });
                 }
             }
         }
@@ -153,8 +162,6 @@ namespace Scheduler.Engine.Quartz
                 if (details != null)
                 {
                     _quartzScheduler.TriggerJob(details.Key);
-
-                    OnJobTriggered(null);
                 }
             }
         }
@@ -169,13 +176,21 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.PauseJob(details.Key);
 
-                    OnJobPaused(new JobInfo { Name = jobName, Group = jobGroup, State = "Paused" });
+                    OnJobPaused(new JobInfo {
+                        Name = jobName,
+                        Group = jobGroup,
+                        State = JobState.Paused.ToString()
+                    });
 
                     return;
                 }
             }
 
-            OnJobResumed(new JobInfo { Name = jobName, Group = jobGroup, State = "Normal" });
+            OnJobResumed(new JobInfo {
+                Name = jobName,
+                Group = jobGroup,
+                State = JobState.Normal.ToString()
+            });
         }
 
         public override void ResumeJob(string jobName, string jobGroup)
@@ -188,13 +203,21 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.ResumeJob(details.Key);
 
-                    OnJobResumed(new JobInfo { Name = jobName, Group = jobGroup, State = "Normal" });
+                    OnJobResumed(new JobInfo {
+                        Name = jobName,
+                        Group = jobGroup,
+                        State = JobState.Normal.ToString()
+                    });
 
                     return;
                 }
             }
 
-            OnJobPaused(new JobInfo { Name = jobName, Group = jobGroup, State = "Paused" });
+            OnJobPaused(new JobInfo {
+                Name = jobName,
+                Group = jobGroup,
+                State = JobState.Paused.ToString()
+            });
         }
 
         public override IEnumerable<JobInfo> GetAllJobs()
@@ -235,7 +258,7 @@ namespace Scheduler.Engine.Quartz
                                 Description = detail.Description,
                                 Schedule = scheduleString,
 
-                                State = _quartzScheduler.GetTriggerState(trigger.Key).ToString(),
+                                State = _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString(),
 
                                 NextFireTimeUtc = trigger.GetNextFireTimeUtc(),
                                 PrevFireTimeUtc = trigger.GetPreviousFireTimeUtc()
