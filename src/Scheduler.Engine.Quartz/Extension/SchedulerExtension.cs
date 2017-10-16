@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using Scheduler.Core.Jobs;
 
@@ -76,6 +78,20 @@ namespace Scheduler.Engine.Quartz.Extension
                 default:
                     return JobState.None;
             }
+        }
+
+        public static bool ContainsJob(this IList<IJobExecutionContext> contextCollection, string jobName, string jobGroup = "DEFAULT")
+        {
+            if(contextCollection.Count == 0)
+            {
+                return false;
+            }
+
+            return contextCollection
+                .Select(context => context.GetJobInfo())
+                .Any(jobInfo 
+                    => jobInfo.Name.Equals(jobName, StringComparison.InvariantCultureIgnoreCase) 
+                    && jobInfo.Group.Equals(jobGroup, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

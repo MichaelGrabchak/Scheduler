@@ -1,6 +1,7 @@
 ﻿using System;
 
 using NLog;
+using System.ComponentModel;
 
 namespace Scheduler.Core.Jobs
 {
@@ -30,6 +31,18 @@ namespace Scheduler.Core.Jobs
         }
 
         public abstract void ExecuteJob();
+
+        public string GetDescription()
+        {
+            var descriptions = (DescriptionAttribute[])GetType().GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            if (descriptions.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            return descriptions[0].Description;
+        }
 
         protected void LogTrace(string message)
         {

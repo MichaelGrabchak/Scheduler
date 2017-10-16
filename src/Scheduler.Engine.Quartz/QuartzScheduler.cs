@@ -93,6 +93,7 @@ namespace Scheduler.Engine.Quartz
 
             var job = JobBuilder.Create<QuartzJob>()
                                 .WithIdentity(jobData.Name, jobData.Group)
+                                .WithDescription(jobData.Description)
                                 .UsingJobData("TypeFullName", jobData.Type.FullName)
                                 .Build();
 
@@ -238,9 +239,16 @@ namespace Scheduler.Engine.Quartz
                         var triggers = _quartzScheduler.GetTriggersOfJob(jobKey);
                         foreach (var trigger in triggers)
                         {
-                            // if group is DEFAULT means that it is temporary trigger group and we don't need to show it on UI
-                            if (trigger.Key.Group == "DEFAULT")
+                            var jobName = jobKey.Name;
+                            var jobGroup = trigger.Key.Group;
+
+                            // if group is DEFAULT means that it is temporary trigger group and we don't need to show it in the list of jobs (triggers)
+                            if (jobGroup == "DEFAULT")
+                            {
                                 continue;
+                            }
+
+                            var description = detail.Description;
 
                             var scheduleString = string.Empty;
                             if (trigger is ICronTrigger)
@@ -251,15 +259,17 @@ namespace Scheduler.Engine.Quartz
                                         (trigger as ICronTrigger).CronExpressionString);
                             }
 
+                            var triggerState = (!_quartzScheduler.GetCurrentlyExecutingJobs().ContainsJob(jobName, jobGroup))
+                                ? _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString()
+                                : JobState.Executing.ToString();
+
                             jobs.Add(new JobInfo
                             {
-                                Group = trigger.Key.Group,
-                                Name = jobKey.Name,
+                                Group = jobGroup,
+                                Name = jobName,
                                 Description = detail.Description,
                                 Schedule = scheduleString,
-
-                                State = _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString(),
-
+                                State = triggerState,
                                 NextFireTimeUtc = trigger.GetNextFireTimeUtc(),
                                 PrevFireTimeUtc = trigger.GetPreviousFireTimeUtc()
                             });

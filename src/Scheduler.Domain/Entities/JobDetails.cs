@@ -8,6 +8,7 @@ namespace Scheduler.Domain.Entities
     {
         public string Name { get; set; }
         public string Group { get; set; }
+        public string Description { get; set; }
         public string Schedule { get; set; }
         public string State { get; set; }
 
@@ -20,6 +21,7 @@ namespace Scheduler.Domain.Entities
             {
                 Name = jobInfo.Name,
                 Group = jobInfo.Group,
+                Description = jobInfo.Description,
                 Schedule = jobInfo.Schedule,
                 State = jobInfo.State,
                 PreviousFireTime = jobInfo.PrevFireTimeUtc?.LocalDateTime.ToString(CultureInfo.InvariantCulture),

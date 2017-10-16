@@ -3,7 +3,7 @@
 using Scheduler.Core;
 using Scheduler.Core.Jobs;
 using Scheduler.Core.Helpers;
-using Scheduler.Core.Estensions;
+using Scheduler.Core.Extensions;
 
 using NLog;
 
@@ -37,7 +37,7 @@ namespace Scheduler.Engine.Quartz
             }
             catch (Exception ex)
             {
-                Logger.Error($"An unexpected error has occurred during '{context.JobDetail.Key}' job execution: {ex}");
+                throw new JobExecutionException("An unexpected error has occurred during job execution", ex, false);
             }
         }
     }

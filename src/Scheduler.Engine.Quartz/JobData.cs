@@ -16,6 +16,8 @@ namespace Scheduler.Engine.Quartz
 
         public string Schedule { get; private set; }
 
+        public string Description { get; private set; }
+
         private JobData()
         {
 
@@ -35,7 +37,9 @@ namespace Scheduler.Engine.Quartz
                 Name = job.GetType().Name,
                 Group = job.GetType().Namespace,
 
-                Schedule = job.Schedule
+                Schedule = job.Schedule,
+
+                Description = job.GetDescription()
             };
         }
 

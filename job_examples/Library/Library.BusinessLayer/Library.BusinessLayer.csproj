@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</ProjectGuid>
+    <ProjectGuid>{74B6A9F3-AF64-4B9F-A9A2-03714323451C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scheduler.Core</RootNamespace>
-    <AssemblyName>Scheduler.Core</AssemblyName>
+    <RootNamespace>Library.BusinessLayer</RootNamespace>
+    <AssemblyName>Library.BusinessLayer</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,33 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\BaseScheduler.cs" />
-    <Compile Include="Engine\EngineDetails.cs" />
-    <Compile Include="Engine\EngineState.cs" />
-    <Compile Include="Jobs\BaseJob.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Helpers\AppDomainManager.cs" />
-    <Compile Include="Helpers\ProxyDomain.cs" />
-    <Compile Include="Helpers\ProxyDomainFactory.cs" />
-    <Compile Include="Engine\ISchedulerEngine.cs" />
-    <Compile Include="Jobs\JobInfo.cs" />
-    <Compile Include="Jobs\JobState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\AssemblyLoaderManager.cs" />
-    <Compile Include="Engine\SchedulerEventHandlers.cs" />
-    <Compile Include="Engine\SchedulerSettings.cs" />
+    <Compile Include="Services\SomeService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

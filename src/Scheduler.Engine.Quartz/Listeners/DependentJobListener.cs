@@ -54,7 +54,7 @@ namespace Scheduler.Engine.Quartz.Listeners
                 {
                     jobInfo.State = JobState.Failed.ToString();
 
-                    Logger.Warn(jobException, $"An error has occurred during execution of '{jobInfo.Group}.{jobInfo.Name}' job: ");
+                    Logger.Warn(jobException.GetBaseException());
 
                     OnExecutionFailed(jobInfo);
                 }

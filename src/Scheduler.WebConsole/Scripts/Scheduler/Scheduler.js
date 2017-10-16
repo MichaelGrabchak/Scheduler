@@ -166,6 +166,10 @@
 
                 var group = getGroup(job.Group);
                 if (group) {
+                    if (job.State === "Executing")
+                    {
+                        job.IsExecuting = true;
+                    }
                     $(group).find("table.table tbody").prepend(jobDetailsTemplate(job));
                     attachJobStateChangeEvent(job.Group, job.Name, job.State);
                     attachJobTriggerEvent(job.Group, job.Name);
@@ -178,20 +182,25 @@
             var elementState = (state === "Paused") ? "off" : "on";
             $(elementName).bootstrapToggle(elementState);
             $(elementName).parent().click(function () {
-                var isEnabled = $(elementName).prop("checked");
-                if (!isEnabled) {
-                    schedulerHub.server.resumeJob(jobName, groupName);
-                } else {
-                    schedulerHub.server.pauseJob(jobName, groupName);
+                if (!$(elementName).prop('disabled'))
+                {
+                    var isEnabled = $(elementName).prop("checked");
+                    if (!isEnabled) {
+                        schedulerHub.server.resumeJob(jobName, groupName);
+                    } else {
+                        schedulerHub.server.pauseJob(jobName, groupName);
+                    }
                 }
-                schedulerHub.server.getJobsSummary().done(displayJobs);
             });
         }
 
         function attachJobTriggerEvent(groupName, jobName) {
             var elementName = "[id='jobTrigger_" + groupName + "_" + jobName + "']";
-            $(elementName).click(function() {
-                schedulerHub.server.triggerJob(jobName, groupName);
+            $(elementName).click(function () {
+                if (!$(elementName).hasClass("disabled"))
+                {
+                    schedulerHub.server.triggerJob(jobName, groupName);
+                }
             });
         }
 
@@ -223,9 +232,6 @@
             } else {
                 $(elementName).bootstrapToggle("on");
             }
-
-            var jobElementId = "[id='job_" + jobGroup + "_" + jobName + "']";
-            $(jobElementId).find(".jobState").text(jobState);
         }
 
         function getToggleState(jobGroup, jobName) {
@@ -235,21 +241,28 @@
 
         function setJobState(jobGroup, jobName, jobState) {
             var jobElementId = "[id='job_" + jobGroup + "_" + jobName + "']";
+            var triggerButtonId = "[id='jobTrigger_" + jobGroup + "_" + jobName + "']";
 
             if (jobState === "Paused" || jobState === "Normal") {
                 toggleState(jobGroup, jobName, jobState);
+                $(jobElementId).find(".jobState").text(jobState);
             } else if (jobState === "Succeeded" || jobState === "Failed" || jobState === "Skipped") {
-                highlightElement(jobElementId, jobState, 5000);
+                highlightElement(jobElementId, jobState, 4500);
                 $(jobElementId).find(".jobState").text(jobState);
                 setTimeout(function () {
                     var state = $(jobElementId).find(".jobState").text();
                     if (jobState == state)
                     {
                         $(jobElementId).find(".jobState").text(getToggleState(jobGroup, jobName));
+                        $(triggerButtonId).removeClass("disabled");
                     }
-                }, 4000);
+                }, 3500);
+            } else if (jobState === "Executing") {
+                $(jobElementId).find(".jobState").text(jobState);
+                $(triggerButtonId).addClass("disabled");
             } else {
                 $(jobElementId).find(".jobState").text(jobState);
+                $(triggerButtonId).removeClass("disabled");
             }
         }
 

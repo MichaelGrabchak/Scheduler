@@ -3,7 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
-using Scheduler.Core.Estensions;
+
+using Scheduler.Core.Extensions;
 
 namespace Scheduler.Core.Helpers
 {
@@ -139,7 +140,7 @@ namespace Scheduler.Core.Helpers
                 return types;
             }
 
-            var files = directory.GetFiles($"{assemblyName}.{extension}");
+            var files = directory.GetFiles($"{assemblyName}.{extension}", SearchOption.AllDirectories);
             foreach (var file in files)
             {
                 try

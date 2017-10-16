@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using Scheduler.Core.Helpers;
 
-namespace Scheduler.Core.Estensions
+namespace Scheduler.Core.Extensions
 {
     public static class TypeExtensions
     {
