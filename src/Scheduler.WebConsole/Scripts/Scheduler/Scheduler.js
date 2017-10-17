@@ -19,8 +19,7 @@
 
         schedulerHub.client.changeState = function(state) {
             setEngineDetails({ state: state });
-
-            schedulerHub.server.getJobsSummary().done(function (result) { displayJobs(result, true); });
+            schedulerHub.server.getJobsSummary().done(displayJobs);
         }
 
         schedulerHub.client.jobScheduled = function(jobDetails) {
@@ -33,22 +32,18 @@
 
         function init() {
             $.connection.hub.start().done(function () {
-                schedulerHub.server.getJobsSummary().done(function (result) { displayJobs(result, true); });
+                schedulerHub.server.getJobsSummary().done(displayJobs);
                 schedulerHub.server.getEngineInfo().done(setEngineInfo);
             });
         };
 
         function displayJobs(data, rescheduleJobs) {
-            if (rescheduleJobs) {
-                $("#engine-jobs-details").empty();
-            }
+            $("#engine-jobs-details").empty();
 
             if (data) {
-                if (rescheduleJobs) {
-                    data.Jobs.forEach(function (item) {
-                        schedulerHub.client.jobScheduled(item);
-                    });
-                }
+                data.Jobs.forEach(function (item) {
+                    schedulerHub.client.jobScheduled(item);
+                });
 
                 setJobsSummary(data);
             }
@@ -146,7 +141,16 @@
             }
 
             if (job.State) {
-                setJobState(job.Group, job.Name, job.State);
+                toggleState(job.Group, job.Name, job.State);
+            }
+
+            if (job.ActionState) {
+                setJobActionState(job.Group, job.Name, job.ActionState);
+            }
+
+            if (job.State && !job.ActionState)
+            {
+                $(jobElementId).find(".jobState").text(job.State);
             }
 
             if (job.PreviousFireTime) {
@@ -166,7 +170,7 @@
 
                 var group = getGroup(job.Group);
                 if (group) {
-                    if (job.State === "Executing")
+                    if (job.ActionState === "Executing")
                     {
                         job.IsExecuting = true;
                     }
@@ -239,23 +243,16 @@
             return ($(elementId).prop('checked') === true) ? "Normal" : "Paused";
         }
 
-        function setJobState(jobGroup, jobName, jobState) {
+        function setJobActionState(jobGroup, jobName, jobState) {
             var jobElementId = "[id='job_" + jobGroup + "_" + jobName + "']";
             var triggerButtonId = "[id='jobTrigger_" + jobGroup + "_" + jobName + "']";
 
-            if (jobState === "Paused" || jobState === "Normal") {
-                toggleState(jobGroup, jobName, jobState);
-                $(jobElementId).find(".jobState").text(jobState);
-            } else if (jobState === "Succeeded" || jobState === "Failed" || jobState === "Skipped") {
+            if (jobState === "Succeeded" || jobState === "Failed" || jobState === "Skipped") {
                 highlightElement(jobElementId, jobState, 4500);
                 $(jobElementId).find(".jobState").text(jobState);
                 setTimeout(function () {
-                    var state = $(jobElementId).find(".jobState").text();
-                    if (jobState == state)
-                    {
-                        $(jobElementId).find(".jobState").text(getToggleState(jobGroup, jobName));
-                        $(triggerButtonId).removeClass("disabled");
-                    }
+                    $(jobElementId).find(".jobState").text(getToggleState(jobGroup, jobName));
+                    $(triggerButtonId).removeClass("disabled");
                 }, 3500);
             } else if (jobState === "Executing") {
                 $(jobElementId).find(".jobState").text(jobState);

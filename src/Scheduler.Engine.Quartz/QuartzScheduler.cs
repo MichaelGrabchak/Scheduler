@@ -111,7 +111,7 @@ namespace Scheduler.Engine.Quartz
                 Name = jobData.Name,
                 Group = jobData.Group,
                 Schedule = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobData.Schedule),
-                State = JobState.Normal.ToString(),
+                State = _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString(),
                 NextFireTimeUtc = trigger.GetNextFireTimeUtc()
             });
         }
@@ -259,9 +259,11 @@ namespace Scheduler.Engine.Quartz
                                         (trigger as ICronTrigger).CronExpressionString);
                             }
 
-                            var triggerState = (!_quartzScheduler.GetCurrentlyExecutingJobs().ContainsJob(jobName, jobGroup))
-                                ? _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString()
-                                : JobState.Executing.ToString();
+                            var triggerState = _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString();
+
+                            var actionState = (_quartzScheduler.GetCurrentlyExecutingJobs().ContainsJob(jobName, jobGroup))
+                                ? JobActionState.Executing.ToString()
+                                : string.Empty;
 
                             jobs.Add(new JobInfo
                             {
@@ -270,6 +272,7 @@ namespace Scheduler.Engine.Quartz
                                 Description = detail.Description,
                                 Schedule = scheduleString,
                                 State = triggerState,
+                                ActionState = actionState,
                                 NextFireTimeUtc = trigger.GetNextFireTimeUtc(),
                                 PrevFireTimeUtc = trigger.GetPreviousFireTimeUtc()
                             });

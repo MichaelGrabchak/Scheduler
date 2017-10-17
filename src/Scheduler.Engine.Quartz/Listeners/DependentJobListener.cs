@@ -22,7 +22,7 @@ namespace Scheduler.Engine.Quartz.Listeners
 
         public void JobExecutionVetoed(IJobExecutionContext context)
         {
-            var jobInfo = context.GetJobInfo(JobState.Skipped);
+            var jobInfo = context.GetJobInfo(JobActionState.Skipped);
 
             if (jobInfo != null)
             {
@@ -34,7 +34,7 @@ namespace Scheduler.Engine.Quartz.Listeners
 
         public void JobToBeExecuted(IJobExecutionContext context)
         {
-            var jobInfo = context.GetJobInfo(JobState.Executing);
+            var jobInfo = context.GetJobInfo(JobActionState.Executing);
 
             if (jobInfo != null)
             {
@@ -52,7 +52,7 @@ namespace Scheduler.Engine.Quartz.Listeners
             {
                 if (jobException != null)
                 {
-                    jobInfo.State = JobState.Failed.ToString();
+                    jobInfo.ActionState = JobActionState.Failed.ToString();
 
                     Logger.Warn(jobException.GetBaseException());
 
@@ -60,7 +60,7 @@ namespace Scheduler.Engine.Quartz.Listeners
                 }
                 else
                 {
-                    jobInfo.State = JobState.Succeeded.ToString();
+                    jobInfo.ActionState = JobActionState.Succeeded.ToString();
 
                     OnExecutionSucceeded(jobInfo);
 

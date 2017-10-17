@@ -9,6 +9,7 @@ namespace Scheduler.Core.Jobs
         public string Description { get; set; }
         public string Schedule { get; set; }
 
+        public string ActionState { get; set; }
         public string State { get; set; }
 
         public DateTimeOffset? NextFireTimeUtc { get; set; }

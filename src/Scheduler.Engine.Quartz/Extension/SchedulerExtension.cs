@@ -37,7 +37,7 @@ namespace Scheduler.Engine.Quartz.Extension
             return scheduler.GetJobDetail(jobKey);
         }
 
-        public static JobInfo GetJobInfo(this IJobExecutionContext context, JobState state = JobState.None)
+        public static JobInfo GetJobInfo(this IJobExecutionContext context, JobActionState state = JobActionState.None)
         {
             var jobDetail = context.JobDetail?.Key;
 
@@ -47,7 +47,7 @@ namespace Scheduler.Engine.Quartz.Extension
                 {
                     Name = jobDetail.Name,
                     Group = jobDetail.Group,
-                    State = (state != JobState.None) ? state.ToString() : string.Empty,
+                    ActionState = (state != JobActionState.None) ? state.ToString() : string.Empty,
                     PrevFireTimeUtc = context.ScheduledFireTimeUtc,
                     NextFireTimeUtc = context.NextFireTimeUtc
                 };
@@ -63,20 +63,8 @@ namespace Scheduler.Engine.Quartz.Extension
                 case TriggerState.Normal:
                     return JobState.Normal;
 
-                case TriggerState.Paused:
-                    return JobState.Paused;
-
-                case TriggerState.Complete:
-                    return JobState.Succeeded;
-
-                case TriggerState.Error:
-                    return JobState.Failed;
-
-                case TriggerState.Blocked:
-                    return JobState.Skipped;
-
                 default:
-                    return JobState.None;
+                    return JobState.Paused;
             }
         }
 

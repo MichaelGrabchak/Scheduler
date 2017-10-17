@@ -1,11 +1,8 @@
 ﻿namespace Scheduler.Core.Jobs
 {
-    public enum JobState
+    public enum JobActionState
     {
         None,
-
-        Normal,
-        Paused,
 
         Skipped,
         ToBeExecuted,
@@ -13,5 +10,11 @@
 
         Failed,
         Succeeded
+    }
+
+    public enum JobState
+    {
+        Normal,
+        Paused
     }
 }

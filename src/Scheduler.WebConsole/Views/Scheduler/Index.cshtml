@@ -106,7 +106,7 @@
         <td class="jobSchedule">{{Schedule}}</td>
         <td class="jobPrevFireTime">{{PreviousFireTime}}</td>
         <td class="jobNextFireTime">{{NextFireTime}}</td>
-        <td class="jobState">{{State}}</td>
+        <td class="jobState">{{#if ActionState}}{{ActionState}}{{else}}{{State}}{{/if}}</td>
         <td class="text-center">
             <button id="jobTrigger_{{Group}}_{{Name}}" class="btn btn-primary triggerJob {{#if IsExecuting}}disabled{{/if}}">Execute Now</button>
         </td>
