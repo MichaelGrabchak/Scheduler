@@ -248,6 +248,11 @@
             var triggerButtonId = "[id='jobTrigger_" + jobGroup + "_" + jobName + "']";
 
             if (jobState === "Succeeded" || jobState === "Failed" || jobState === "Skipped") {
+                if (jobState === "Skipped")
+                {
+                    $(triggerButtonId).addClass("disabled");
+                }
+
                 highlightElement(jobElementId, jobState, 4500);
                 $(jobElementId).find(".jobState").text(jobState);
                 setTimeout(function () {
@@ -341,4 +346,8 @@
             schedulerEngine.onTurnOffClick();
         });
     };
+
+    String.prototype.trimAll = function () {
+        return this.replace(/\s/g, '_');
+    }
 })();

@@ -1,31 +1,33 @@
-﻿using System.ComponentModel;
-
-using Library.BusinessLayer.Services;
+﻿using Library.BusinessLayer.Services;
 
 using Scheduler.Core.Jobs;
+using Scheduler.Core.Attributes;
+using Scheduler.Core.Logging;
 
 namespace Library
 {
-    [Description("The custom job which serialize complex object (Expected result: Success, Execution Time: 10seconds)")]
+    [JobMetadata(Description = "The custom job which serialize complex object (Expected result: Success, Execution Time: 10seconds)", Logger = "CustomJobLogger")]
     public class CustomJob : BaseJob
     {
+        private readonly ISchedulerLogger Logger = SchedulerLogManager.GetJobLogger("CustomJobLogger");
+
         private readonly SomeService _someService;
 
-        public CustomJob() 
-            : base(loggerName: "CustomJobLogger")
+        public CustomJob(SomeService someService) 
         {
-            _someService = new SomeService();
+            _someService = someService;
         }
+
         public override string Schedule => "0 0/1 * 1/1 * ? *";
 
         public override void ExecuteJob()
         {
-            LogInfo("Starting execution of Custom Job");
+            Logger.Info("Starting execution of Custom Job");
 
             var result = _someService.DoSomething();
-            LogDebug($"The result of execution: {result}");
+            Logger.Debug($"The result of execution: {result}");
 
-            LogInfo("The execution has been completed successfully");
+            Logger.Info("The execution has been completed successfully");
         }
     }
 }

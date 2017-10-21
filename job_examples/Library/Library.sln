@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{13229119-7B77-4C80-A4B1-0D62ABF9718F}"
 	ProjectSection(SolutionItems) = preProject
 		Binaries\Scheduler.Core.dll = Binaries\Scheduler.Core.dll
+		Binaries\Scheduler.Logging.NLog.dll = Binaries\Scheduler.Logging.NLog.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Console", "Library.Console\Library.Console.csproj", "{18865812-1FDC-4DCD-B327-87485DF88A00}"

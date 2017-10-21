@@ -6,14 +6,18 @@ using System.Reflection;
 
 using Scheduler.Core.Helpers;
 using Scheduler.Core.Jobs;
-
-using NLog;
+using Scheduler.Core.Extensions;
+using Scheduler.Core.Logging;
+using Scheduler.Core.Configurations;
 
 namespace Scheduler.Core.Engine
 {
     public abstract class BaseScheduler : ISchedulerEngine
     {
-        protected static ILogger Logger = LogManager.GetLogger(Constants.System.DefaultSchedulerLoggerName);
+        public static string FullyQualifiedName { get; private set; }
+        public static string Version { get; private set; }
+
+        protected static ISchedulerLogger Logger = SchedulerLogManager.GetSchedulerLogger();
         protected static DateTimeOffset StartTime { get; private set; }
         protected static EngineState State { get; set; }
 
@@ -30,8 +34,14 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnEngineStarted()
         {
+            FullyQualifiedName = GetType().FullName;
+            Version = AssemblyName.GetAssemblyName(Assembly.GetExecutingAssembly().Location).Version.ToString();
+
             StartTime = DateTimeOffset.Now;
             State = EngineState.Normal;
+
+            Logger.Info("The scheduler engine has started.");
+            Logger.Info($"  Scheduler Type: {FullyQualifiedName}, Version: {Version}");
 
             EngineStarted?.Invoke(this, new EngineOperationEventArgs { State = State });
         }
@@ -42,6 +52,8 @@ namespace Scheduler.Core.Engine
         {
             State = EngineState.Paused;
 
+            Logger.Info("The scheduler engine has put on hold.");
+
             EnginePaused?.Invoke(this, new EngineOperationEventArgs { State = State });
         }
 
@@ -50,6 +62,8 @@ namespace Scheduler.Core.Engine
         protected virtual void OnEngineTerminated()
         {
             State = EngineState.Terminated;
+
+            Logger.Warn("The scheduler engine has shut down.");
 
             EngineTerminated?.Invoke(this, new EngineOperationEventArgs { State = State });
         }
@@ -65,6 +79,10 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobScheduled(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been scheduled. Schedule: {jobInfo.Schedule}");
+
+            GlobalLoggingSettings.SetLoggerName(jobInfo.Group, jobInfo.Name, jobInfo.LoggerKey);
+
             JobScheduled?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -73,6 +91,8 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobUnscheduled(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been unscheduled");
+
             JobUnscheduled?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -81,6 +101,8 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobPaused(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been put on hold");
+
             JobPaused?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -89,6 +111,8 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobResumed(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been resumed. Next fire time: {jobInfo.NextFireTimeUtc}");
+
             JobResumed?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -97,6 +121,8 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobTriggered(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been triggered");
+
             JobTriggered?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -121,6 +147,8 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobSucceeded(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has finished with result: SUCCESS");
+
             JobExecutionSucceeded?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -129,6 +157,8 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobFailed(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has finished with result: FAILURE");
+
             JobExecutionFailed?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -137,6 +167,8 @@ namespace Scheduler.Core.Engine
 
         protected virtual void OnJobSkipped(JobInfo jobInfo)
         {
+            Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been SKIPPED");
+
             JobExecutionSkipped?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
@@ -147,15 +179,33 @@ namespace Scheduler.Core.Engine
 
         public virtual void Discover()
         {
+            Logger.Info("Loading the assemblies...");
+
             // Reload assemblies
             AssemblyLoaderManager.LoadAssemblies(Constants.Scheduler.DefaultJobsPath, cleanLoad: true);
+
+            Logger.Info("Discovering the jobs...");
 
             // discovering new jobs
             var discoveredJobs = AssemblyLoaderManager.GetImplementorsOf<BaseJob>();
 
-            // unschedule old jobs
+            Logger.Info($"Found {discoveredJobs.Count} job(s)");
+
+            if(discoveredJobs.Count > 0)
+            {
+                Logger.Debug($"Discovered jobs:{Environment.NewLine}{string.Join(Environment.NewLine, discoveredJobs.Select(job => $"- Group: {job.GetGroup()}, Name: {job.GetName()}, Schedule: {job.Schedule}"))}");
+            }
+
+            // Currently scheduled jobs
             var scheduledJobs = GetAllJobs().Where(_ => _.Group != "DEFAULT"); // exclude triggers which are running right now
 
+            if(scheduledJobs.Count() > 0)
+            {
+                Logger.Info("Revisiting scheduled jobs...");
+                Logger.Debug($"Currently scheduled jobs:{Environment.NewLine}{string.Join(Environment.NewLine, scheduledJobs)}");
+            }
+
+            // Un-scheduling old jobs
             foreach (var scheduledJob in scheduledJobs)
             {
                 if (!discoveredJobs.Any(_ => _.GetType().Name.Equals(scheduledJob.Name, StringComparison.InvariantCultureIgnoreCase)
@@ -193,7 +243,7 @@ namespace Scheduler.Core.Engine
                     }
                     catch (Exception ex)
                     {
-                        Logger.Warn(ex, $"Could not schedule the job with name '{job.GetType().Name}' due to an error: ");
+                        Logger.Warn(ex, $"Could not schedule the job with name '{job.GetName()}' due to an error: ");
                     }
                 }
             }
@@ -214,10 +264,10 @@ namespace Scheduler.Core.Engine
         {
             return new EngineDetails
             {
-                Name = GetType().FullName,
+                Name = FullyQualifiedName,
                 State = State.ToString(),
                 StartDate = StartTime,
-                Version = AssemblyName.GetAssemblyName(Assembly.GetExecutingAssembly().Location).Version.ToString()
+                Version = Version
             };
         }
 
@@ -303,6 +353,7 @@ namespace Scheduler.Core.Engine
                     JobsDirectoryWatcher.Created += OnJobsDirectoryChanged;
                     JobsDirectoryWatcher.Deleted += OnJobsDirectoryChanged;
 
+                    JobsDirectoryWatcher.IncludeSubdirectories = true;
                     JobsDirectoryWatcher.EnableRaisingEvents = true;
                 }
             }

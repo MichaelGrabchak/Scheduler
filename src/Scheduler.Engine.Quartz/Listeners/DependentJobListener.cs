@@ -1,18 +1,15 @@
 ﻿using Scheduler.Engine.Quartz.Extension;
 
-using Scheduler.Core;
 using Scheduler.Core.Jobs;
 using Scheduler.Core.Engine;
+using Scheduler.Core.Logging;
 
-using NLog;
 using Quartz;
 
 namespace Scheduler.Engine.Quartz.Listeners
 {
     public class DependentJobListener : IJobListener
     {
-        private static ILogger Logger = LogManager.GetLogger(Constants.System.DefaultSchedulerLoggerName);
-
         public event JobOperationEventHandler ToBeExecuted;
         public event JobOperationEventHandler ExecutionVetoed;
         public event JobOperationEventHandler ExecutionSucceeded;
@@ -26,7 +23,9 @@ namespace Scheduler.Engine.Quartz.Listeners
 
             if (jobInfo != null)
             {
-                Logger.Debug($"The execution of job '{jobInfo.Group}.{jobInfo.Name}' has been skipped due to failed condition(s)");
+                SchedulerLogManager
+                    .GetJobLogger(jobInfo.Group, jobInfo.Name)
+                    .Debug($"The execution of job '{jobInfo.Group}.{jobInfo.Name}' has been skipped due to failed condition(s)");
 
                 OnExecutionVetoed(jobInfo);
             }
@@ -38,7 +37,9 @@ namespace Scheduler.Engine.Quartz.Listeners
 
             if (jobInfo != null)
             {
-                Logger.Debug($"Preparing to execute job '{jobInfo.Group}.{jobInfo.Name}'...");
+                SchedulerLogManager
+                    .GetJobLogger(jobInfo.Group, jobInfo.Name)
+                    .Debug($"Preparing to execute job '{jobInfo.Group}.{jobInfo.Name}'...");
 
                 OnToBeExecuted(jobInfo);
             }
@@ -50,11 +51,14 @@ namespace Scheduler.Engine.Quartz.Listeners
 
             if (jobInfo != null)
             {
+                var logger = SchedulerLogManager.GetJobLogger(jobInfo.Group, jobInfo.Name);
+
                 if (jobException != null)
                 {
                     jobInfo.ActionState = JobActionState.Failed.ToString();
 
-                    Logger.Warn(jobException.GetBaseException());
+
+                    logger.Warn(jobException.GetBaseException());
 
                     OnExecutionFailed(jobInfo);
                 }
@@ -64,7 +68,7 @@ namespace Scheduler.Engine.Quartz.Listeners
 
                     OnExecutionSucceeded(jobInfo);
 
-                    Logger.Debug($"The job '{jobInfo.Group}.{jobInfo.Name}' has been executed successfully");
+                    logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been executed successfully");
                 }
             }
         }

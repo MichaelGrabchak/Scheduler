@@ -82,6 +82,10 @@
       <Project>{bb4a8717-fe3f-4989-98f7-c7bbf884503f}</Project>
       <Name>Scheduler.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Logging.NLog\Scheduler.Logging.NLog.csproj">
+      <Project>{e333f50a-de6b-4c3d-a686-feef7c7d627f}</Project>
+      <Name>Scheduler.Logging.NLog</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

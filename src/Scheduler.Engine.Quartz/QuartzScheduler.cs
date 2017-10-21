@@ -2,6 +2,7 @@
 
 using Scheduler.Core.Jobs;
 using Scheduler.Core.Engine;
+using Scheduler.Core.Extensions;
 using Scheduler.Engine.Quartz.Extension;
 using Scheduler.Engine.Quartz.Listeners;
 
@@ -59,15 +60,13 @@ namespace Scheduler.Engine.Quartz
                 Discover();
 
                 _quartzScheduler.Start();
-
-                OnEngineStarted();
             }
             else
             {
                 _quartzScheduler?.ResumeAll();
-
-                OnEngineStarted();
             }
+
+            OnEngineStarted();
         }
 
         public override void Stop()
@@ -82,9 +81,9 @@ namespace Scheduler.Engine.Quartz
 
         public override void ScheduleJob(BaseJob scheduleJob)
         {
-            var jobData = JobData.ExtractData(scheduleJob);
+            var metadata = JobMetadata.ExtractData(scheduleJob);
 
-            var jobKey = new JobKey(jobData.Name, jobData.Group);
+            var jobKey = new JobKey(metadata.Name, metadata.Group);
             if (_quartzScheduler.CheckExists(jobKey))
             {
                 // if the job already scheduled, we don't want to re-schedule it
@@ -92,45 +91,46 @@ namespace Scheduler.Engine.Quartz
             }
 
             var job = JobBuilder.Create<QuartzJob>()
-                                .WithIdentity(jobData.Name, jobData.Group)
-                                .WithDescription(jobData.Description)
-                                .UsingJobData("TypeFullName", jobData.Type.FullName)
+                                .WithIdentity(metadata.Name, metadata.Group)
+                                .WithDescription(metadata.Description)
+                                .UsingJobData("TypeFullName", metadata.Type.FullName)
                                 .Build();
 
             var trigger = TriggerBuilder.Create()
-                                        .WithIdentity($"{jobData.Name}Trigger", jobData.Group)
+                                        .WithIdentity($"{metadata.Name}Trigger", metadata.Group)
                                         .StartNow()
-                                        .WithCronSchedule(jobData.Schedule, trg => trg
+                                        .WithCronSchedule(metadata.Schedule, trg => trg
                                             .WithMisfireHandlingInstructionDoNothing())
-                                        .ForJob(jobData.Name, jobData.Group)
+                                        .ForJob(metadata.Name, metadata.Group)
                                         .Build();
 
             _quartzScheduler.ScheduleJob(job, trigger);
 
             OnJobScheduled(new JobInfo {
-                Name = jobData.Name,
-                Group = jobData.Group,
-                Schedule = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobData.Schedule),
+                Name = metadata.Name,
+                Group = metadata.Group,
+                Schedule = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(metadata.Schedule),
                 State = _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString(),
-                NextFireTimeUtc = trigger.GetNextFireTimeUtc()
+                NextFireTimeUtc = trigger.GetNextFireTimeUtc(),
+                LoggerKey = scheduleJob.GetLogger()
             });
         }
 
         public override void UnscheduleJob(BaseJob scheduleJob)
         {
-            var jobData = JobData.ExtractData(scheduleJob);
+            var metadata = JobMetadata.ExtractData(scheduleJob);
 
-            if (jobData != null)
+            if (metadata != null)
             {
-                var details = _quartzScheduler.GetJobDetail(jobData.Name, jobData.Group);
+                var details = _quartzScheduler.GetJobDetail(metadata.Name, metadata.Group);
 
                 if (details != null)
                 {
                     _quartzScheduler.DeleteJob(details.Key);
 
                     OnJobUnscheduled(new JobInfo {
-                        Name = jobData.Name,
-                        Group = jobData.Group
+                        Name = metadata.Name,
+                        Group = metadata.Group
                     });
                 }
             }

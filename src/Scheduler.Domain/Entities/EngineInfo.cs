@@ -1,7 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Text;
+using System.Globalization;
 
 using Scheduler.Core.Engine;
-using System;
 
 namespace Scheduler.Domain.Entities
 {
@@ -21,6 +22,33 @@ namespace Scheduler.Domain.Entities
                 Engine = details.Name;
                 State = details.State;
             }
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(Engine))
+            {
+                sb.Append($"Engine: {Engine}");
+            }
+
+            if (!string.IsNullOrEmpty(State))
+            {
+                sb.Append($" State: {State}");
+            }
+
+            if (!string.IsNullOrEmpty(RunningSince))
+            {
+                sb.Append($" Start Date: {RunningSince}");
+            }
+
+            if (!string.IsNullOrEmpty(Version))
+            {
+                sb.Append($" Version: {Version}");
+            }
+
+            return sb.ToString().Trim();
         }
     }
 }

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 
-using Scheduler.Core.Extensions;
+using Scheduler.Core.Logging;
+using Scheduler.Core.Configurations;
 
 namespace Scheduler.Core.Helpers
 {
     public class AssemblyLoaderManager
     {
+        private static ISchedulerLogger Logger = SchedulerLogManager.GetSchedulerLogger();
+
         private static string RootPath => Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
         private static List<Type> ExtractedTypes;
@@ -49,6 +52,7 @@ namespace Scheduler.Core.Helpers
             catch (Exception ex)
             {
                 // ignoring exception
+                Logger.Warn($"An unexpected error has occurred during getting the type '{typeName}'. Exception:{Environment.NewLine}{ex}");
             }
 
             return null;
@@ -63,11 +67,12 @@ namespace Scheduler.Core.Helpers
                 ExtractedTypes
                     .Where(type => type.IsSubclassOf(typeof(T)))
                     .ToList()
-                    .ForEach(type => types.Add(type.Resolve<T>()));
+                    .ForEach(type => types.Add(GlobalUnity.Resolve<T>(type)));
             }
             catch(Exception ex)
             {
                 // ignoring exception
+                Logger.Warn($"An unexpected error has occurred during getting the subclass of '{typeof(T)}'. Exception:{Environment.NewLine}{ex}");
             }
 
             return types;
@@ -87,6 +92,7 @@ namespace Scheduler.Core.Helpers
             catch (Exception ex)
             {
                 // ignoring exception
+                Logger.Warn($"An unexpected error has occurred during getting the subclass of '{baseType}'. Exception:{Environment.NewLine}{ex}");
             }
 
             return types;
@@ -101,11 +107,12 @@ namespace Scheduler.Core.Helpers
                 ExtractedTypes
                     .Where(type => type != typeof(T) && typeof(T).IsAssignableFrom(type) && !type.IsAbstract)
                     .ToList()
-                    .ForEach(type => implementors.Add(type.Resolve<T>()));
+                    .ForEach(type => implementors.Add(GlobalUnity.Resolve<T>(type)));
             }
             catch (Exception ex)
             {
                 // ignoring exception
+                Logger.Warn($"An unexpected error has occurred during getting the implementor of '{typeof(T)}'. Exception:{Environment.NewLine}{ex}");
             }
 
             return implementors;
@@ -125,6 +132,7 @@ namespace Scheduler.Core.Helpers
             catch (Exception ex)
             {
                 // ignoring exception
+                Logger.Warn($"An unexpected error has occurred during getting the implementor of '{interfaceType}'. Exception:{Environment.NewLine}{ex}");
             }
 
             return implementors;
@@ -165,6 +173,7 @@ namespace Scheduler.Core.Helpers
                 {
                     // skip error
                     // continue extracting types from the assemblies
+                    Logger.Warn($"An unexpected error has occurred during extracting of the types from assembly '{file.FullName}'. Exception:{Environment.NewLine}{ex}");
                 }
             }
 

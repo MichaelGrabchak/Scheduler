@@ -1,7 +1,9 @@
-﻿using Scheduler.Core.Jobs;
+﻿using Scheduler.Core.Attributes;
+using Scheduler.Core.Jobs;
 
 namespace MyAmazing.TaskLib
 {
+    [JobMetadata(Name = "GoodbyeWorldJobName", Description = "Expected Result: Failure")]
     public class GoodbyeWorldJob : BaseJob
     {
         public override string Schedule => "0 0/5 * 1/1 * ? *";

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 
 using Scheduler.Core.Jobs;
+using Scheduler.Core.Extensions;
 
 using Quartz;
 
 namespace Scheduler.Engine.Quartz
 {
-    public class JobData
+    public class JobMetadata
     {
         public Type Type { get; private set; }
 
@@ -18,24 +19,24 @@ namespace Scheduler.Engine.Quartz
 
         public string Description { get; private set; }
 
-        private JobData()
+        private JobMetadata()
         {
 
         }
 
-        public static JobData ExtractData(BaseJob job)
+        public static JobMetadata ExtractData(BaseJob job)
         {
-            if (!IsValidSchedule(job.Schedule))
+            if (!IsScheduleValid(job.Schedule))
             {
                 throw new ArgumentNullException(nameof(job.Schedule));
             }
 
-            return new JobData
+            return new JobMetadata
             {
                 Type = job.GetType(),
 
-                Name = job.GetType().Name,
-                Group = job.GetType().Namespace,
+                Name = job.GetName(),
+                Group = job.GetGroup(),
 
                 Schedule = job.Schedule,
 
@@ -43,9 +44,9 @@ namespace Scheduler.Engine.Quartz
             };
         }
 
-        public static IEnumerable<JobData> ExtractData(IEnumerable<BaseJob> jobs)
+        public static IEnumerable<JobMetadata> ExtractData(IEnumerable<BaseJob> jobs)
         {
-            var extractedData = new List<JobData>();
+            var extractedData = new List<JobMetadata>();
 
             foreach(var job in jobs)
             {
@@ -55,7 +56,7 @@ namespace Scheduler.Engine.Quartz
             return extractedData;
         }
 
-        private static bool IsValidSchedule(string schedule)
+        private static bool IsScheduleValid(string schedule)
         {
             return CronExpression.IsValidExpression(schedule);
         }

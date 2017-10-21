@@ -1,14 +1,9 @@
-﻿using Scheduler.Core;
-
-using NLog;
-using Quartz;
+﻿using Quartz;
 
 namespace Scheduler.Engine.Quartz.Listeners
 {
     public class DependentTriggerListener : ITriggerListener
     {
-        private static ILogger Logger = LogManager.GetLogger(Constants.System.DefaultSchedulerLoggerName);
-
         public string Name => "DependentTriggerListener";
 
         public void TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode)
@@ -30,7 +25,7 @@ namespace Scheduler.Engine.Quartz.Listeners
         {
             var jobDetail = context.JobDetail?.Key;
 
-            if(jobDetail != null)
+            if (jobDetail != null)
             {
                 return (jobDetail.Name == "HelloWorldJob");
             }

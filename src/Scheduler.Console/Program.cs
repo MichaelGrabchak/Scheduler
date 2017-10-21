@@ -2,11 +2,16 @@
 using System.Timers;
 using System.Threading;
 
+using Scheduler.Core;
 using Scheduler.Core.Engine;
+using Scheduler.Core.Logging;
+using Scheduler.Core.Configurations;
 using Scheduler.Engine.Quartz;
+using Scheduler.Infrastructure.Configuration;
+
+using Scheduler.Logging.NLog;
 
 using Microsoft.Practices.Unity;
-using Scheduler.Infrastructure.Configuration;
 
 namespace Scheduler.Console
 {
@@ -53,8 +58,11 @@ namespace Scheduler.Console
             container.RegisterType<ProgramStarter, ProgramStarter>();
 
             // Custom stuff
+            container.RegisterType<BaseLogger, NLogLogger>(new InjectionConstructor(Constants.System.DefaultSchedulerLoggerName));
             container.RegisterType<SchedulerSettings, SchedulerConsoleSettings>();
             container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));
+
+            GlobalUnity.Container = container;
 
             return container;
         }
