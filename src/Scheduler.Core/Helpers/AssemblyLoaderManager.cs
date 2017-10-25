@@ -20,8 +20,6 @@ namespace Scheduler.Core.Helpers
         static AssemblyLoaderManager()
         {
             ExtractedTypes = new List<Type>();
-
-            LoadAssemblies(Constants.Scheduler.DefaultJobsPath, cleanLoad: true);
         }
 
         public static void LoadAssemblies(string asmFolder, string asmName = "*", bool cleanLoad = false)
@@ -46,7 +44,7 @@ namespace Scheduler.Core.Helpers
                 if (!string.IsNullOrEmpty(typeName))
                 {
                     // Returns the assembly of the type by enumerating loaded assemblies
-                    return ExtractedTypes.FirstOrDefault(_ => _.FullName == typeName);
+                    return ExtractedTypes.FirstOrDefault(type => type.FullName == typeName);
                 }
             }
             catch (Exception ex)

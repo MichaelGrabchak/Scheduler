@@ -3,13 +3,155 @@
 (function() {
     var self = scheduler;
 
+    var templates = function () {
+        var $jobGroupTemplate = $("#jobGroup-template");
+        var $jobDetailsTemplate = $("#jobDetails-template");
+
+        function compileTemplate($template) {
+            return Handlebars.compile($template.html());
+        }
+
+        return {
+            jobGroup: function (params) { return compileTemplate($jobGroupTemplate)(params); },
+            jobDetails: function (params) { return compileTemplate($jobDetailsTemplate)(params); }
+        };
+    }();
+
+    var schedulerInfo = function () {
+        var $startDate = $("#scheduler-startDate");
+        var $version = $("#scheduler-version");
+
+        function setStartDate(date) {
+            $startDate.text(date);
+        }
+
+        function getStartDate() {
+            return ($startDate) ? $startDate.text() : null;
+        }
+
+        function setVersion(version) {
+            $version.text(version);
+        }
+
+        function getVersion() {
+            return ($version) ? $version.text() : null;
+        }
+
+        function cleanUp() {
+            setVersion('');
+            setStartDate('');
+        }
+
+        return {
+            version: getVersion(),
+            runningSince: getStartDate(),
+
+            setVersion: function (ver) { setVersion(ver) },
+            setStartDate: function (date) { setStartDate(date) },
+
+            reset: function () { cleanUp() }
+        };
+    }();
+
+    var engineInfo = function () {
+        var $type = $("#engine-type");
+        var $state = $("#engine-state");
+
+        function setEngineType(type) {
+            $type.text(type);
+        }
+
+        function getEngineType() {
+            return ($type) ? $type.text() : null;
+        }
+
+        function setEngineState(state) {
+            $state.text(state);
+        }
+
+        function getEngineState() {
+            return ($state) ? $state.text() : null;
+        }
+
+        function cleanUp() {
+            setVersion('');
+            setStartDate('');
+        }
+
+        return {
+            type: getEngineType(),
+            state: getEngineState(),
+
+            setType: function (type) { setEngineType(type) },
+            setState: function (state) { setEngineState(state) },
+
+            reset: function () { cleanUp() }
+        };
+    }();
+
+    var jobCounters = function () {
+        var $total = $("#jobs-total-count");
+        var $running = $("#jobs-total-running");
+        var $paused = $("#jobs-total-paused");
+
+        function setValue($element, value) {
+            if ($element)
+            {
+                $element.text(value);
+            }
+        }
+
+        function getValue($element) {
+            return ($element) ? $element.text() : 0;
+        }
+
+        function cleanUp() {
+            setValue($total, 0);
+            setValue($running, 0);
+            setValue($paused, 0);
+        }
+
+        return {
+            total: getValue($total),
+            running: getValue($running),
+            paused: getValue($paused),
+
+            setTotal: function (count) { setValue($total, count) },
+            setRunning: function (count) { setValue($running, count) },
+            setPaused: function (count) { setValue($paused, count) },
+
+            reset: function () { cleanUp() }
+        };
+    }();
+
+    var schedulerObjects = function () {
+        var jobObjectIdentifier = "div.panel";
+        var $jobsObjects = $("#engine-jobs-details");
+
+        function getAllGroups() {
+            return $jobsObjects.find(jobObjectIdentifier);
+        }
+
+        function cleanUp() {
+            $jobsObjects.empty();
+        }
+
+        return {
+            jobs: {
+
+            },
+            groups: {
+                count: function () { return getAllGroups().length },
+                getAll: function () { return getAllGroups() }
+            },
+            reset: function () { cleanUp() }
+        };
+    }();
+
     var schedulerEngine = function() {
         var $startEngine = $("#startEngine");
         var $pauseEngine = $("#pauseEngine");
         var $shutdownEngine = $("#shutdownEngine");
-
-        var jobGroupTemplate = Handlebars.compile($("#jobGroup-template").html());
-        var jobDetailsTemplate = Handlebars.compile($("#jobDetails-template").html());
 
         var schedulerHub = $.connection.schedulerHub;
 
@@ -38,7 +180,7 @@
         };
 
         function displayJobs(data, rescheduleJobs) {
-            $("#engine-jobs-details").empty();
+            schedulerObjects.reset();
 
             if (data) {
                 data.Jobs.forEach(function (item) {
@@ -52,53 +194,53 @@
         function setJobsSummary(jobsInfo) {
             if (jobsInfo) {
                 if (!isNaN(jobsInfo.TotalCount)) {
-                    $("#jobs-total-count").text(jobsInfo.TotalCount);
+                    jobCounters.setTotal(jobsInfo.TotalCount);
                 }
 
                 if (!isNaN(jobsInfo.TotalRunning)) {
-                    $("#jobs-total-running").text(jobsInfo.TotalRunning);
+                    jobCounters.setRunning(jobsInfo.TotalRunning);
                 }
 
                 if (!isNaN(jobsInfo.TotalPaused)) {
-                    $("#jobs-total-paused").text(jobsInfo.TotalPaused);
+                    jobCounters.setPaused(jobsInfo.TotalPaused);
                 }  
             }
         }
 
-        function setEngineInfo(engineInfo) {
-            if (engineInfo) {
-                if (engineInfo.Engine) {
-                    $("#engine-type").text(engineInfo.Engine);
+        function setEngineInfo(engineData) {
+            if (engineData) {
+                if (engineData.Engine) {
+                    engineInfo.setType(engineData.Engine);
                 }
 
-                if (engineInfo.State) {
-                    $("#engine-state").text(engineInfo.State);
+                if (engineData.State) {
+                    engineInfo.setState(engineData.State);
                 }
 
-                if (engineInfo.RunningSince) {
-                    $("#scheduler-startDate").text(engineInfo.RunningSince);
+                if (engineData.RunningSince) {
+                    schedulerInfo.setStartDate(engineData.RunningSince);
                 }
 
-                if (engineInfo.Version) {
-                    $("#scheduler-version").text(engineInfo.Version);
+                if (engineData.Version) {
+                    schedulerInfo.setVersion(engineData.Version);
                 }
             }
         }
 
-        function setEngineDetails(engineInfo) {
-            if (engineInfo.engineType) {
-                $("#engine-type").text(engineInfo.engineType);
+        function setEngineDetails(engineDetails) {
+            if (engineDetails.engineType) {
+                engineInfo.setType(engineDetails.engineType);
             }
 
-            if (engineInfo.state) {
-                $("#engine-state").text(engineInfo.state);    
+            if (engineDetails.state) {
+                engineInfo.setState(engineDetails.state);
             }
         }
 
         function jobGroupExists(groupName) {
 
-            if ($("#engine-jobs-details").find("div.panel").length > 0) {
-                return ($("#engine-jobs-details").find("div.panel")
+            if (schedulerObjects.groups.count() > 0) {
+                return (schedulerObjects.groups.getAll()
                     .find("div.panel-heading:contains('" + groupName + "')").length >
                     0);
             }
@@ -107,14 +249,14 @@
         }
 
         function getGroup(groupName) {
-            if ($("#engine-jobs-details").find("div.panel").length > 0) {
+            if (schedulerObjects.groups.count() > 0) {
                 return $("[id='group_" + groupName + "']");
             }
         }
 
         function createGroup(groupName) {
             if (jobGroupExists(groupName) === false) {
-                $("#engine-jobs-details").append(jobGroupTemplate({ Group: groupName }));
+                $("#engine-jobs-details").append(templates.jobGroup({ Group: groupName }));
             }
         }
 
@@ -150,7 +292,7 @@
 
             if (job.State && !job.ActionState)
             {
-                $(jobElementId).find(".jobState").text(job.State);
+                $(jobIdentifier).find(".jobState").text(job.State);
             }
 
             if (job.PreviousFireTime) {
@@ -174,7 +316,7 @@
                     {
                         job.IsExecuting = true;
                     }
-                    $(group).find("table.table tbody").prepend(jobDetailsTemplate(job));
+                    $(group).find("table.table tbody").prepend(templates.jobDetails(job));
                     attachJobStateChangeEvent(job.Group, job.Name, job.State);
                     attachJobTriggerEvent(job.Group, job.Name);
                 }    
@@ -220,13 +362,8 @@
         function cleanUpJobDetails() {
             $("#engine-jobs-details").empty();
 
-            $("#jobs-total-count").text(0);
-            $("#jobs-total-running").text(0);
-            $("#jobs-total-paused").text(0);
-            $("#jobs-total-executed").text(0);
-
-            $("#scheduler-version").empty();
-            $("#scheduler-startDate").empty();
+            jobCounters.reset();
+            schedulerInfo.reset();
         }
 
         function toggleState(jobGroup, jobName, jobState) {
@@ -285,7 +422,7 @@
         function onStartEngineClick() {
             schedulerHub.server.start();
 
-            if ($("#engine-state").text() != "Paused") {
+            if (engineInfo.state !== "Paused") {
                 schedulerHub.server.getEngineInfo().done(setEngineInfo);
             }
 

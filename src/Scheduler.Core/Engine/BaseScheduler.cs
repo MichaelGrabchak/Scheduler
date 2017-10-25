@@ -182,7 +182,7 @@ namespace Scheduler.Core.Engine
             Logger.Info("Loading the assemblies...");
 
             // Reload assemblies
-            AssemblyLoaderManager.LoadAssemblies(Constants.Scheduler.DefaultJobsPath, cleanLoad: true);
+            AssemblyLoaderManager.LoadAssemblies(JobsDirectory, cleanLoad: true);
 
             Logger.Info("Discovering the jobs...");
 
@@ -197,7 +197,7 @@ namespace Scheduler.Core.Engine
             }
 
             // Currently scheduled jobs
-            var scheduledJobs = GetAllJobs().Where(_ => _.Group != "DEFAULT"); // exclude triggers which are running right now
+            var scheduledJobs = GetAllJobs().Where(job => job.Group != "DEFAULT"); // exclude triggers which are running right now
 
             if(scheduledJobs.Count() > 0)
             {
@@ -208,8 +208,8 @@ namespace Scheduler.Core.Engine
             // Un-scheduling old jobs
             foreach (var scheduledJob in scheduledJobs)
             {
-                if (!discoveredJobs.Any(_ => _.GetType().Name.Equals(scheduledJob.Name, StringComparison.InvariantCultureIgnoreCase)
-                                             && _.GetType().Namespace.Equals(scheduledJob.Group, StringComparison.InvariantCultureIgnoreCase)))
+                if (!discoveredJobs.Any(job => job.GetType().Name.Equals(scheduledJob.Name, StringComparison.InvariantCultureIgnoreCase)
+                                             && job.GetType().Namespace.Equals(scheduledJob.Group, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     UnscheduleJob(scheduledJob.Name, scheduledJob.Group);
                 }
@@ -275,9 +275,10 @@ namespace Scheduler.Core.Engine
         {
             if (settings != null)
             {
-                InitBasicSettings(settings);
-                InitEvents(settings);
+                WireEventHandlers(settings);
                 SetupJobsDirectory(settings);
+
+                InitBasicSettings(settings);
             }
         }
 
@@ -289,7 +290,7 @@ namespace Scheduler.Core.Engine
             }
         }
 
-        private void InitEvents(SchedulerSettings settings)
+        private void WireEventHandlers(SchedulerSettings settings)
         {
             if (settings.EngineStarted != null)
                 EngineStarted += settings.EngineStarted;

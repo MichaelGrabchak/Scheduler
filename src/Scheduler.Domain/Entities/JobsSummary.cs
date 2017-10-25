@@ -8,8 +8,8 @@ namespace Scheduler.Domain.Entities
     public class JobsSummary
     {
         public int TotalCount => Jobs?.Count ?? 0;
-        public int TotalRunning => Jobs?.Count(_ => _.State == JobState.Normal.ToString()) ?? 0;
-        public int TotalPaused => Jobs?.Count(_ => _.State == JobState.Paused.ToString()) ?? 0;
+        public int TotalRunning => Jobs?.Count(job => job.State == JobState.Normal.ToString()) ?? 0;
+        public int TotalPaused => Jobs?.Count(job => job.State == JobState.Paused.ToString()) ?? 0;
 
         public IList<JobDetails> Jobs { get; set; }
 
