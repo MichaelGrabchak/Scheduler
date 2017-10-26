@@ -124,30 +124,6 @@
         };
     }();
 
-    var schedulerObjects = function () {
-        var jobObjectIdentifier = "div.panel";
-        var $jobsObjects = $("#engine-jobs-details");
-
-        function getAllGroups() {
-            return $jobsObjects.find(jobObjectIdentifier);
-        }
-
-        function cleanUp() {
-            $jobsObjects.empty();
-        }
-
-        return {
-            jobs: {
-
-            },
-            groups: {
-                count: function () { return getAllGroups().length },
-                getAll: function () { return getAllGroups() }
-            },
-            reset: function () { cleanUp() }
-        };
-    }();
-
     var schedulerEngine = function() {
         var $startEngine = $("#startEngine");
         var $pauseEngine = $("#pauseEngine");
@@ -156,7 +132,7 @@
         var schedulerHub = $.connection.schedulerHub;
 
         schedulerHub.client.jobUnscheduled = function(jobDetails) {
-            removeJob(jobDetails.Group, jobDetails.Name);
+            schedulerObjects.removeJob(jobDetails.Group, jobDetails.Name);
         }
 
         schedulerHub.client.changeState = function(state) {
@@ -165,12 +141,236 @@
         }
 
         schedulerHub.client.jobScheduled = function(jobDetails) {
-            addJob(jobDetails);
+            schedulerObjects.addJob(jobDetails);
         }
 
         schedulerHub.client.jobUpdate = function (jobDetails) {
-            updateJob(jobDetails);
+            schedulerObjects.updateJob(jobDetails);
         }
+
+        var schedulerObjects = function () {
+            var groupElementIdentifier = function (group) { return "[id='group_" + group + "']" };
+            var jobElementIdentifier = function (group, job) { return "[id='job_" + group + "_" + job + "']" };
+            var jobStateElementIdentifier = function (group, job) { return "[id='jobState_" + group + "_" + job + "']" };
+            var jobTriggerElementIdentifier = function (group, job) { return "[id='jobTrigger_" + group + "_" + job + "']" };
+
+            var $jobsObjects = $("#engine-jobs-details");
+
+            function getJobs(groupName) {
+                if (groupName) {
+                    var jobs = [];
+
+                    if (doesGroupExist(groupName)) {
+                        $(groupElementIdentifier(groupName)).find("tr").each(function () {
+                            jobs.push({
+                                group: groupName,
+                                name: $(this).find(".jobName").text(),
+                                description: $(this).find(".jobGroup").text(),
+                                schedule: $(this).find(".jobSchedule").text(),
+                                prevFireTime: $(this).find(".jobPrevFireTime").text(),
+                                nextFireTime: $(this).find(".jobNextFireTime").text(),
+                                state: $(this).find(".jobState").text()
+                            });
+                        });
+                    }
+
+                    return jobs;
+                }
+            }
+
+            function getJob(groupName, jobName) {
+                var job = $(jobElementIdentifier(groupName, jobName));
+
+                if (job) {
+                    return {
+                        group: groupName,
+                        name: jobName,
+                        description: job.find(".jobGroup").text(),
+                        schedule: job.find(".jobSchedule").text(),
+                        prevFireTime: job.find(".jobPrevFireTime").text(),
+                        nextFireTime: job.find(".jobNextFireTime").text(),
+                        state: job.find(".jobState").text()
+                    };
+                }
+            }
+
+            function getGroup(groupName) {
+                if (doesGroupExist(groupName)) {
+                    return {
+                        name: groupName,
+                        jobs: getJobs(groupName)
+                    };
+                }
+            }
+
+            function doesGroupExist(groupName) {
+                return ($(groupElementIdentifier(groupName)).length > 0);
+            }
+
+            function doesJobExist(groupName, jobName) {
+                return ($(jobElementIdentifier(groupName, jobName)).length > 0);
+            }
+
+            function createGroup(groupName) {
+                if (!getGroup(groupName)) {
+                    $jobsObjects.append(templates.jobGroup({ Group: groupName }));
+                }
+            }
+
+            function addJob(job) {
+                if (job) {
+                    if (doesGroupExist(job.Group) === false) {
+                        createGroup(job.Group);
+                    }
+
+                    if (job.ActionState === "Executing") {
+                        job.IsExecuting = true;
+                    }
+
+                    $(groupElementIdentifier(job.Group)).find("table.table tbody").prepend(templates.jobDetails(job));
+                    attachJobStateChangeEvent(job.Group, job.Name, job.State);
+                    attachJobTriggerEvent(job.Group, job.Name);
+                }
+            }
+
+            function updateJob(job) {
+                if (!doesJobExist(job.Group, job.Name)) {
+                    addJob(job);
+                    return;
+                }
+
+                var jobElement = $(jobElementIdentifier(job.Group, job.Name));
+
+                if (job.Schedule) {
+                    jobElement.find(".jobSchedule").text(job.Schedule);
+                }
+
+                if (job.State) {
+                    toggleState(job.Group, job.Name, job.State);
+                }
+
+                if (job.ActionState) {
+                    setJobActionState(job.Group, job.Name, job.ActionState);
+                }
+
+                if (job.State && !job.ActionState) {
+                    jobElement.find(".jobState").text(job.State);
+                }
+
+                if (job.PreviousFireTime) {
+                    jobElement.find(".jobPrevFireTime").text(job.PreviousFireTime);
+                }
+
+                if (job.NextFireTime) {
+                    jobElement.find(".jobNextFireTime").text(job.NextFireTime);
+                }
+            }
+
+            function removeJob(groupName, jobName) {
+                if (doesGroupExist(groupName) === true) {
+                    var job = $(jobElementIdentifier(groupName, jobName));
+                    if (job) {
+                        job.remove();
+                    }
+                }
+            }
+
+            function getGroupElement(groupName) {
+                return $jobsObjects.find(groupElementIdentifier(groupName))[0];
+            }
+
+            function getAllGroups() {
+                return $jobsObjects.find(jobObjectIdentifier);
+            }
+
+            function cleanUp() {
+                $jobsObjects.empty();
+            }
+
+            function toggleState(jobGroup, jobName, jobState) {
+                if (jobState === "Paused") {
+                    $(jobStateElementIdentifier(jobGroup, jobName)).bootstrapToggle("off");
+                } else {
+                    $(jobStateElementIdentifier(jobGroup, jobName)).bootstrapToggle("on");
+                }
+            }
+
+            function setJobActionState(jobGroup, jobName, jobState) {
+                if (jobState === "Succeeded" || jobState === "Failed" || jobState === "Skipped") {
+                    if (jobState === "Skipped") {
+                        $(jobTriggerElementIdentifier(jobGroup, jobName)).addClass("disabled");
+                    }
+
+                    highlightElement(jobElementIdentifier(jobGroup, jobName), jobState, 4500);
+                    $(jobElementIdentifier(jobGroup, jobName)).find(".jobState").text(jobState);
+                    setTimeout(function () {
+                        $(jobElementIdentifier(jobGroup, jobName)).find(".jobState").text(getToggleState(jobGroup, jobName));
+                        $(jobTriggerElementIdentifier(jobGroup, jobName)).removeClass("disabled");
+                    }, 3500);
+                } else if (jobState === "Executing") {
+                    $(jobElementIdentifier(jobGroup, jobName)).find(".jobState").text(jobState);
+                    $(jobTriggerElementIdentifier(jobGroup, jobName)).addClass("disabled");
+                } else {
+                    $(jobElementIdentifier(jobGroup, jobName)).find(".jobState").text(jobState);
+                    $(jobTriggerElementIdentifier(jobGroup, jobName)).removeClass("disabled");
+                }
+            }
+
+            function highlightElement(elementName, level, speed) {
+                switch (level) {
+                    case "Succeeded":
+                        $(elementName).effect("highlight", { color: "#c9ffbf" }, speed);
+                        return;
+                    case "Failed":
+                        $(elementName).effect("highlight", { color: "#ffbfbf" }, speed);
+                        return;
+                    default:
+                        $(elementName).effect("highlight", { color: "#ffeebf" }, speed);
+                        return;
+                }
+            }
+
+            function getToggleState(jobGroup, jobName) {
+                return ($(jobStateElementIdentifier(jobGroup, jobName)).prop('checked') === true) ? "Normal" : "Paused";
+            }
+
+            function attachJobStateChangeEvent(groupName, jobName, state) {
+                var elementName = jobStateElementIdentifier(groupName, jobName);
+                var elementState = (state === "Paused") ? "off" : "on";
+                $(elementName).bootstrapToggle(elementState);
+                $(elementName).parent().click(function () {
+                    if (!$(elementName).prop('disabled')) {
+                        var isEnabled = $(elementName).prop("checked");
+                        if (!isEnabled) {
+                            schedulerHub.server.resumeJob(jobName, groupName);
+                        } else {
+                            schedulerHub.server.pauseJob(jobName, groupName);
+                        }
+                    }
+                });
+            }
+
+            function attachJobTriggerEvent(groupName, jobName) {
+                var elementName = jobTriggerElementIdentifier(groupName, jobName);
+                $(elementName).click(function () {
+                    if (!$(elementName).hasClass("disabled")) {
+                        schedulerHub.server.triggerJob(jobName, groupName);
+                    }
+                });
+            }
+
+            return {
+                removeJob: function (group, job) { removeJob(group, job); },
+                addJob: function (data) { addJob(data) },
+                updateJob: function (data) { updateJob(data) },
+                groups: {
+                    contains: function (groupName) { return (!getGroupElement(groupName)) },
+                    count: function () { return getAllGroups().length },
+                    getAll: function () { return getAllGroups() }
+                },
+                reset: function () { cleanUp() }
+            };
+        }();
 
         function init() {
             $.connection.hub.start().done(function () {
@@ -237,186 +437,10 @@
             }
         }
 
-        function jobGroupExists(groupName) {
-
-            if (schedulerObjects.groups.count() > 0) {
-                return (schedulerObjects.groups.getAll()
-                    .find("div.panel-heading:contains('" + groupName + "')").length >
-                    0);
-            }
-
-            return false;
-        }
-
-        function getGroup(groupName) {
-            if (schedulerObjects.groups.count() > 0) {
-                return $("[id='group_" + groupName + "']");
-            }
-        }
-
-        function createGroup(groupName) {
-            if (jobGroupExists(groupName) === false) {
-                $("#engine-jobs-details").append(templates.jobGroup({ Group: groupName }));
-            }
-        }
-
-        function getJob(groupName, jobName) {
-            if (jobGroupExists(groupName)) {
-                return getGroup(groupName).filter(function(index, element) {
-                    return $(element).find("[id='job_" + groupName + "_" + jobName + "']").length > 0;
-                });
-            }
-        }
-
-        function updateJob(job) {
-            var jobObj = getJob(job.Group, job.Name);
-
-            if (!jobObj) {
-                addJob(job);
-                return;
-            }
-
-            var jobIdentifier = "[id='job_" + job.Group + "_" + job.Name + "']";
-       
-            if (job.Schedule) {
-                $(jobIdentifier).find(".jobSchedule").text(job.Schedule);
-            }
-
-            if (job.State) {
-                toggleState(job.Group, job.Name, job.State);
-            }
-
-            if (job.ActionState) {
-                setJobActionState(job.Group, job.Name, job.ActionState);
-            }
-
-            if (job.State && !job.ActionState)
-            {
-                $(jobIdentifier).find(".jobState").text(job.State);
-            }
-
-            if (job.PreviousFireTime) {
-                $(jobIdentifier).find(".jobPrevFireTime").text(job.PreviousFireTime);
-            }
-
-            if (job.NextFireTime) {
-                $(jobIdentifier).find(".jobNextFireTime").text(job.NextFireTime);
-            }
-        }
-
-        function addJob(job) {
-            if (job) {
-                if (jobGroupExists(job.Group) === false) {
-                    createGroup(job.Group);
-                }
-
-                var group = getGroup(job.Group);
-                if (group) {
-                    if (job.ActionState === "Executing")
-                    {
-                        job.IsExecuting = true;
-                    }
-                    $(group).find("table.table tbody").prepend(templates.jobDetails(job));
-                    attachJobStateChangeEvent(job.Group, job.Name, job.State);
-                    attachJobTriggerEvent(job.Group, job.Name);
-                }    
-            }
-        }
-
-        function attachJobStateChangeEvent(groupName, jobName, state) {
-            var elementName = "[id='jobState_" + groupName + "_" + jobName + "']";
-            var elementState = (state === "Paused") ? "off" : "on";
-            $(elementName).bootstrapToggle(elementState);
-            $(elementName).parent().click(function () {
-                if (!$(elementName).prop('disabled'))
-                {
-                    var isEnabled = $(elementName).prop("checked");
-                    if (!isEnabled) {
-                        schedulerHub.server.resumeJob(jobName, groupName);
-                    } else {
-                        schedulerHub.server.pauseJob(jobName, groupName);
-                    }
-                }
-            });
-        }
-
-        function attachJobTriggerEvent(groupName, jobName) {
-            var elementName = "[id='jobTrigger_" + groupName + "_" + jobName + "']";
-            $(elementName).click(function () {
-                if (!$(elementName).hasClass("disabled"))
-                {
-                    schedulerHub.server.triggerJob(jobName, groupName);
-                }
-            });
-        }
-
-        function removeJob(groupName, jobName) {
-            if (jobGroupExists(groupName) === true) {
-                var job = getJob(groupName, jobName);
-                if (job) {
-                    job.remove();
-                }
-            }
-        }
-
         function cleanUpJobDetails() {
-            $("#engine-jobs-details").empty();
-
+            schedulerObjects.reset();
             jobCounters.reset();
             schedulerInfo.reset();
-        }
-
-        function toggleState(jobGroup, jobName, jobState) {
-            var elementName = "[id='jobState_" + jobGroup + "_" + jobName + "']";
-            if (jobState === "Paused") {
-                $(elementName).bootstrapToggle("off");
-            } else {
-                $(elementName).bootstrapToggle("on");
-            }
-        }
-
-        function getToggleState(jobGroup, jobName) {
-            var elementId = "[id='jobState_" + jobGroup + "_" + jobName + "']";
-            return ($(elementId).prop('checked') === true) ? "Normal" : "Paused";
-        }
-
-        function setJobActionState(jobGroup, jobName, jobState) {
-            var jobElementId = "[id='job_" + jobGroup + "_" + jobName + "']";
-            var triggerButtonId = "[id='jobTrigger_" + jobGroup + "_" + jobName + "']";
-
-            if (jobState === "Succeeded" || jobState === "Failed" || jobState === "Skipped") {
-                if (jobState === "Skipped")
-                {
-                    $(triggerButtonId).addClass("disabled");
-                }
-
-                highlightElement(jobElementId, jobState, 4500);
-                $(jobElementId).find(".jobState").text(jobState);
-                setTimeout(function () {
-                    $(jobElementId).find(".jobState").text(getToggleState(jobGroup, jobName));
-                    $(triggerButtonId).removeClass("disabled");
-                }, 3500);
-            } else if (jobState === "Executing") {
-                $(jobElementId).find(".jobState").text(jobState);
-                $(triggerButtonId).addClass("disabled");
-            } else {
-                $(jobElementId).find(".jobState").text(jobState);
-                $(triggerButtonId).removeClass("disabled");
-            }
-        }
-
-        function highlightElement(elementName, level, speed) {
-            switch (level) {
-                case "Succeeded" :
-                    $(elementName).effect("highlight", { color: "#c9ffbf" }, speed);
-                    return;
-                case "Failed" :
-                    $(elementName).effect("highlight", { color: "#ffbfbf" }, speed);
-                    return;
-                default: 
-                    $(elementName).effect("highlight", { color: "#ffeebf" }, speed);
-                    return;
-            }            
         }
 
         function onStartEngineClick() {
