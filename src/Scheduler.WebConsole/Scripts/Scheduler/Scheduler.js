@@ -111,6 +111,16 @@
             setValue($paused, 0);
         }
 
+        function refresh() {
+            var jobs = schedulerEngine.data.jobs.getAll();
+            var enabled = jobs.filter(function (element) { return element.toggleState === true }).length;
+            var disabled = jobs.filter(function (element) { return element.toggleState === false }).length;
+
+            setValue($paused, disabled);
+            setValue($running, enabled);
+            setValue($total, jobs.length);
+        }
+
         return {
             total: getValue($total),
             running: getValue($running),
@@ -119,6 +129,8 @@
             setTotal: function (count) { setValue($total, count) },
             setRunning: function (count) { setValue($running, count) },
             setPaused: function (count) { setValue($paused, count) },
+
+            refresh: function () { refresh() },
 
             reset: function () { cleanUp() }
         };
@@ -132,37 +144,41 @@
         var schedulerHub = $.connection.schedulerHub;
 
         schedulerHub.client.jobUnscheduled = function(jobDetails) {
-            schedulerObjects.removeJob(jobDetails.Group, jobDetails.Name);
+            data.jobs.remove(jobDetails.Group, jobDetails.Name);
+            jobCounters.refresh();
         }
 
         schedulerHub.client.changeState = function(state) {
             setEngineDetails({ state: state });
             schedulerHub.server.getJobsSummary().done(displayJobs);
+            jobCounters.refresh();
         }
 
         schedulerHub.client.jobScheduled = function(jobDetails) {
-            schedulerObjects.addJob(jobDetails);
+            data.jobs.add(jobDetails);
+            jobCounters.refresh();
         }
 
         schedulerHub.client.jobUpdate = function (jobDetails) {
-            schedulerObjects.updateJob(jobDetails);
+            data.jobs.update(jobDetails);
+            jobCounters.refresh();
         }
 
-        var schedulerObjects = function () {
-            var groupElementIdentifier = function (group) { return "[id='group_" + group + "']" };
-            var jobElementIdentifier = function (group, job) { return "[id='job_" + group + "_" + job + "']" };
-            var jobStateElementIdentifier = function (group, job) { return "[id='jobState_" + group + "_" + job + "']" };
-            var jobTriggerElementIdentifier = function (group, job) { return "[id='jobTrigger_" + group + "_" + job + "']" };
+        var data = function () {
+            var groupElementIdentifier = function (group) { return ("[id='group_" + group + "']").trimAll() };
+            var jobElementIdentifier = function (group, job) { return ("[id='job_" + group + "_" + job + "']").trimAll() };
+            var jobStateElementIdentifier = function (group, job) { return ("[id='jobState_" + group + "_" + job + "']").trimAll() };
+            var jobTriggerElementIdentifier = function (group, job) { return ("[id='jobTrigger_" + group + "_" + job + "']").trimAll() };
 
             var $jobsObjects = $("#engine-jobs-details");
 
             function getJobs(groupName) {
                 if (groupName) {
-                    var jobs = [];
+                    var items = [];
 
-                    if (doesGroupExist(groupName)) {
+                    if (groupExists(groupName)) {
                         $(groupElementIdentifier(groupName)).find("tr").each(function () {
-                            jobs.push({
+                            items.push({
                                 group: groupName,
                                 name: $(this).find(".jobName").text(),
                                 description: $(this).find(".jobGroup").text(),
@@ -174,7 +190,7 @@
                         });
                     }
 
-                    return jobs;
+                    return items;
                 }
             }
 
@@ -185,7 +201,7 @@
                     return {
                         group: groupName,
                         name: jobName,
-                        description: job.find(".jobGroup").text(),
+                        description: job.find(".jobDescription").text(),
                         schedule: job.find(".jobSchedule").text(),
                         prevFireTime: job.find(".jobPrevFireTime").text(),
                         nextFireTime: job.find(".jobNextFireTime").text(),
@@ -194,8 +210,30 @@
                 }
             }
 
+            function getAllJobs() {
+                var jobsElements = $jobsObjects.find("tbody > tr");
+
+                var items = [];
+
+                if (jobsElements) {
+                    jobsElements.each(function () {
+                        items.push({
+                            job: $(this).find(".jobName").text(),
+                            description: $(this).find(".jobDescription").text(),
+                            schedule: $(this).find(".jobSchedule").text(),
+                            prevFireTime: $(this).find(".jobPrevFireTime").text(),
+                            nextFireTime: $(this).find(".jobNextFireTime").text(),
+                            state: $(this).find(".jobState").text(),
+                            toggleState: ($(this).find(".toggle.btn-success").length > 0)
+                        });
+                    });
+                }
+
+                return items;
+            }
+
             function getGroup(groupName) {
-                if (doesGroupExist(groupName)) {
+                if (groupExists(groupName)) {
                     return {
                         name: groupName,
                         jobs: getJobs(groupName)
@@ -203,38 +241,45 @@
                 }
             }
 
-            function doesGroupExist(groupName) {
+            function groupExists(groupName) {
                 return ($(groupElementIdentifier(groupName)).length > 0);
             }
 
-            function doesJobExist(groupName, jobName) {
+            function jobExists(groupName, jobName) {
                 return ($(jobElementIdentifier(groupName, jobName)).length > 0);
             }
 
             function createGroup(groupName) {
                 if (!getGroup(groupName)) {
-                    $jobsObjects.append(templates.jobGroup({ Group: groupName }));
+                    $jobsObjects.append(templates.jobGroup({ id: groupName.trimAll(), group: groupName }));
                 }
             }
 
             function addJob(job) {
                 if (job) {
-                    if (doesGroupExist(job.Group) === false) {
+                    if (groupExists(job.Group) === false) {
                         createGroup(job.Group);
                     }
 
-                    if (job.ActionState === "Executing") {
-                        job.IsExecuting = true;
-                    }
+                    $(groupElementIdentifier(job.Group)).find("table.table tbody").prepend(templates.jobDetails({
+                        id: (job.Group + "_" + job.Name).trimAll(),
+                        name: job.Name,
+                        description: job.Description,
+                        schedule: job.Schedule,
+                        prevFireTime: job.PreviousFireTime,
+                        nextFireTime: job.NextFireTime,
+                        state: job.State,
+                        actionState: job.ActionState,
+                        isExecuting: (job.ActionState === "Executing")
+                    }));
 
-                    $(groupElementIdentifier(job.Group)).find("table.table tbody").prepend(templates.jobDetails(job));
                     attachJobStateChangeEvent(job.Group, job.Name, job.State);
                     attachJobTriggerEvent(job.Group, job.Name);
                 }
             }
 
             function updateJob(job) {
-                if (!doesJobExist(job.Group, job.Name)) {
+                if (!jobExists(job.Group, job.Name)) {
                     addJob(job);
                     return;
                 }
@@ -267,7 +312,7 @@
             }
 
             function removeJob(groupName, jobName) {
-                if (doesGroupExist(groupName) === true) {
+                if (groupExists(groupName) === true) {
                     var job = $(jobElementIdentifier(groupName, jobName));
                     if (job) {
                         job.remove();
@@ -360,11 +405,14 @@
             }
 
             return {
-                removeJob: function (group, job) { removeJob(group, job); },
-                addJob: function (data) { addJob(data) },
-                updateJob: function (data) { updateJob(data) },
+                jobs: {
+                    remove: function (group, job) { removeJob(group, job); },
+                    add: function (data) { addJob(data) },
+                    update: function (data) { updateJob(data) },
+                    getAll: function () { return getAllJobs() },
+                    count: function () { return getAllJobs().length }
+                },
                 groups: {
-                    contains: function (groupName) { return (!getGroupElement(groupName)) },
                     count: function () { return getAllGroups().length },
                     getAll: function () { return getAllGroups() }
                 },
@@ -379,15 +427,15 @@
             });
         };
 
-        function displayJobs(data, rescheduleJobs) {
-            schedulerObjects.reset();
+        function displayJobs(jobsData, rescheduleJobs) {
+            data.reset();
 
-            if (data) {
-                data.Jobs.forEach(function (item) {
+            if (jobsData) {
+                jobsData.Jobs.forEach(function (item) {
                     schedulerHub.client.jobScheduled(item);
                 });
 
-                setJobsSummary(data);
+                setJobsSummary(jobsData);
             }
         }
 
@@ -438,7 +486,7 @@
         }
 
         function cleanUpJobDetails() {
-            schedulerObjects.reset();
+            data.reset();
             jobCounters.reset();
             schedulerInfo.reset();
         }
@@ -480,6 +528,8 @@
             shutdownEngine: $shutdownEngine,
             hub: schedulerHub,
 
+            data: data,
+
             // methods
             init: function() { init() },
 
@@ -509,6 +559,6 @@
     };
 
     String.prototype.trimAll = function () {
-        return this.replace(/\s/g, '_');
+        return this.replace(/\s/g, "");
     }
 })();

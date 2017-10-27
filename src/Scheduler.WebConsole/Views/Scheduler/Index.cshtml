@@ -77,8 +77,8 @@
 </div>
 
 <script id="jobGroup-template" type="text/x-handlebars-template">
-    <div id="group_{{Group}}" class="panel panel-default">
-        <div class="panel-heading">{{Group}}</div>
+    <div id="group_{{id}}" class="panel panel-default">
+        <div class="panel-heading">{{group}}</div>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -100,18 +100,18 @@
 </script>
 
 <script id="jobDetails-template" type="text/x-handlebars-template">
-    <tr id="job_{{Group}}_{{Name}}">
-        <td class="jobName">{{Name}}</td>
-        <td class="jobGroup">{{Description}}</td>
-        <td class="jobSchedule">{{Schedule}}</td>
-        <td class="jobPrevFireTime">{{PreviousFireTime}}</td>
-        <td class="jobNextFireTime">{{NextFireTime}}</td>
-        <td class="jobState">{{#if ActionState}}{{ActionState}}{{else}}{{State}}{{/if}}</td>
+    <tr id="job_{{id}}">
+        <td class="jobName">{{name}}</td>
+        <td class="jobDescription">{{description}}</td>
+        <td class="jobSchedule">{{schedule}}</td>
+        <td class="jobPrevFireTime">{{prevFireTime}}</td>
+        <td class="jobNextFireTime">{{nextFireTime}}</td>
+        <td class="jobState">{{#if actionState}}{{actionState}}{{else}}{{state}}{{/if}}</td>
         <td class="text-center">
-            <button id="jobTrigger_{{Group}}_{{Name}}" class="btn btn-primary triggerJob {{#if IsExecuting}}disabled{{/if}}">Execute Now</button>
+            <button id="jobTrigger_{{id}}" class="btn btn-primary triggerJob {{#if isExecuting}}disabled{{/if}}">Execute Now</button>
         </td>
         <td class="text-center">
-            <input id="jobState_{{Group}}_{{Name}}" type="checkbox" checked data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">
+            <input id="jobState_{{id}}" type="checkbox" checked data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-onstyle="success" data-offstyle="danger">
         </td>
     </tr>
 </script>
