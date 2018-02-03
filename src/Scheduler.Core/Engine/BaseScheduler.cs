@@ -16,6 +16,7 @@ namespace Scheduler.Core.Engine
     {
         public static string FullyQualifiedName { get; private set; }
         public static string Version { get; private set; }
+        public static string InstanceId { get; private set; }
 
         protected static ISchedulerLogger Logger = SchedulerLogManager.GetSchedulerLogger();
         protected static DateTimeOffset StartTime { get; private set; }
@@ -267,7 +268,8 @@ namespace Scheduler.Core.Engine
                 Name = FullyQualifiedName,
                 State = State.ToString(),
                 StartDate = StartTime,
-                Version = Version
+                Version = Version,
+                InstanceId = InstanceId
             };
         }
 
@@ -288,6 +290,8 @@ namespace Scheduler.Core.Engine
             {
                 Start();
             }
+
+            InstanceId = settings.InstanceId;
         }
 
         private void WireEventHandlers(SchedulerSettings settings)

@@ -12,6 +12,7 @@ namespace Scheduler.Domain.Entities
         public string Version { get; set; }
         public string Engine { get; set; }
         public string State { get; set; }
+        public string InstanceId { get; set; }
 
         public EngineInfo(EngineDetails details)
         {
@@ -21,6 +22,7 @@ namespace Scheduler.Domain.Entities
                 Version = details.Version;
                 Engine = details.Name;
                 State = details.State;
+                InstanceId = details.InstanceId;
             }
         }
 
@@ -46,6 +48,11 @@ namespace Scheduler.Domain.Entities
             if (!string.IsNullOrEmpty(Version))
             {
                 sb.Append($" Version: {Version}");
+            }
+
+            if(!string.IsNullOrEmpty(InstanceId))
+            {
+                sb.Append($" Instance ID: {InstanceId}");
             }
 
             return sb.ToString().Trim();

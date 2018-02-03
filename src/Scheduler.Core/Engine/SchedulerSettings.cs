@@ -1,7 +1,10 @@
-﻿namespace Scheduler.Core.Engine
+﻿using System.Configuration;
+
+namespace Scheduler.Core.Engine
 {
     public abstract class SchedulerSettings
     {
+        public string InstanceId { get; set; } = ConfigurationManager.AppSettings.Get("SchedulerInstanceId");
         public string JobsDirectory { get; set; } = Constants.Scheduler.DefaultJobsPath;
 
         public bool StartEngineImmediately { get; set; } = true;

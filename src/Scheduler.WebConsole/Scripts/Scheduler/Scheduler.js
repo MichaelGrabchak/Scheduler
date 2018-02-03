@@ -20,6 +20,7 @@
     var schedulerInfo = function () {
         var $startDate = $("#scheduler-startDate");
         var $version = $("#scheduler-version");
+        var $instanceId = $("#scheduler-instanceId");
 
         function setStartDate(date) {
             $startDate.text(date);
@@ -37,17 +38,28 @@
             return ($version) ? $version.text() : null;
         }
 
+        function setInstance(instanceId) {
+            $instanceId.text(instanceId);
+        }
+
+        function getInstance() {
+            return ($instanceId) ? $instanceId.text() : null;
+        }
+
         function cleanUp() {
             setVersion('');
             setStartDate('');
+            setInstance('');
         }
 
         return {
             version: getVersion(),
             runningSince: getStartDate(),
+            instanceId: getInstance(),
 
             setVersion: function (ver) { setVersion(ver) },
             setStartDate: function (date) { setStartDate(date) },
+            setInstance: function (instance) { setInstance(instance) },
 
             reset: function () { cleanUp() }
         };
@@ -471,6 +483,10 @@
 
                 if (engineData.Version) {
                     schedulerInfo.setVersion(engineData.Version);
+                }
+
+                if (engineData.InstanceId) {
+                    schedulerInfo.setInstance(engineData.InstanceId);
                 }
             }
         }
