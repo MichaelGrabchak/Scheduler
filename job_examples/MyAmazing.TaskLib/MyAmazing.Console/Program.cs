@@ -42,7 +42,7 @@ namespace MyAmazing.Console
             // Custom stuff
             container.RegisterType<HelloWorldJob, HelloWorldJob>();
             container.RegisterType<GoodbyeWorldJob, GoodbyeWorldJob>();
-            container.RegisterType<BaseLogger, NLogLogger>();
+            container.RegisterType<ISchedulerLogger, NLogLogger>();
 
             GlobalUnity.Container = container;
 

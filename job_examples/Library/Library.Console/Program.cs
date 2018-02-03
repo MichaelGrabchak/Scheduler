@@ -38,7 +38,7 @@ namespace Library.Console
 
             // Custom stuff
             container.RegisterType<BaseJob, CustomJob>();
-            container.RegisterType<BaseLogger, NLogLogger>();
+            container.RegisterType<ISchedulerLogger, NLogLogger>();
 
             GlobalUnity.Container = container;
 

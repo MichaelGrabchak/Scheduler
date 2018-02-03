@@ -6,11 +6,11 @@ namespace Scheduler.Core.Logging
 {
     public static class SchedulerLogManager
     {
-        private static IDictionary<string, BaseLogger> Loggers;
+        private static IDictionary<string, ISchedulerLogger> Loggers;
 
         static SchedulerLogManager()
         {
-            Loggers = new Dictionary<string, BaseLogger>();
+            Loggers = new Dictionary<string, ISchedulerLogger>();
         }
 
         public static ISchedulerLogger GetSchedulerLogger()
@@ -33,7 +33,7 @@ namespace Scheduler.Core.Logging
             if (!Loggers.ContainsKey(loggerName))
             {
                 Loggers.Add(loggerName, 
-                    GlobalUnity.Resolve<BaseLogger>(
+                    GlobalUnity.Resolve<ISchedulerLogger>(
                         new KeyValuePair<string, object>("loggerName", loggerName)));
             }
 
