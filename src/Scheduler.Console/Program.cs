@@ -7,11 +7,11 @@ using Scheduler.Core.Engine;
 using Scheduler.Core.Logging;
 using Scheduler.Core.Configurations;
 using Scheduler.Engine.Quartz;
-using Scheduler.Infrastructure.Configuration;
 
 using Scheduler.Logging.NLog;
 
 using Microsoft.Practices.Unity;
+using Scheduler.Console.Configurations;
 
 namespace Scheduler.Console
 {

@@ -9,9 +9,14 @@ using Scheduler.Engine.Quartz;
 using Scheduler.Domain.Services;
 using Scheduler.Infrastructure.Services;
 using Scheduler.Logging.NLog;
+using Scheduler.Domain.Data;
+using Scheduler.Infrastructure.Data;
+using Scheduler.Core.Context;
 
 using Microsoft.Practices.Unity;
 using Unity.Mvc5;
+using Scheduler.Domain.Data.Services;
+using Scheduler.Infrastructure.Data.Services;
 
 namespace Scheduler.WebConsole
 {
@@ -38,13 +43,30 @@ namespace Scheduler.WebConsole
 
         private static void RegisterComponents(IUnityContainer container)
         {
-            container.RegisterType<ISchedulerLogger, NLogLogger>(new InjectionConstructor(Constants.System.DefaultSchedulerLoggerName));
-            container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));
-            container.RegisterType<ISchedulerManagerService, SchedulerManagerService>();
+            RegisterBasic(container);
+            RegisterServices(container);
+            RegisterDataServices(container);
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
-
             GlobalUnity.Container = container;
+        }
+
+        private static void RegisterBasic(IUnityContainer container)
+        {
+            container.RegisterType<IDbContext, SchedulerDbContext>();
+            container.RegisterType<ISchedulerContext, SchedulerContext>();
+            container.RegisterType<ISchedulerLogger, NLogLogger>(new InjectionConstructor(Constants.System.DefaultSchedulerLoggerName));
+            container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));
+        }
+
+        private static void RegisterServices(IUnityContainer container)
+        {
+            container.RegisterType<ISchedulerManagerService, SchedulerManagerService>();
+        }
+
+        private static void RegisterDataServices(IUnityContainer container)
+        {
+            container.RegisterType<ISchedulerInstanceService, SchedulerInstanceService>();
         }
     }
 }

@@ -1,14 +1,15 @@
-﻿using System.Configuration;
+﻿using Scheduler.Core.Context;
 
 namespace Scheduler.Core.Engine
 {
     public abstract class SchedulerSettings
     {
-        public string InstanceId { get; set; } = ConfigurationManager.AppSettings.Get("SchedulerInstanceId");
-        public string JobsDirectory { get; set; } = Constants.Scheduler.DefaultJobsPath;
+        public string InstanceId { get; set; }
 
-        public bool StartEngineImmediately { get; set; } = true;
-        public bool EnableJobsDirectoryTracking { get; set; } = true;
+        public string JobsDirectory { get; set; }
+
+        public bool StartEngineImmediately { get; set; }
+        public bool EnableJobsDirectoryTracking { get; set; }
 
         public EngineOperationEventHandler EngineStarted;
         public EngineOperationEventHandler EnginePaused;
@@ -27,5 +28,15 @@ namespace Scheduler.Core.Engine
         public JobOperationEventHandler JobExecutionSucceeded;
         public JobOperationEventHandler JobExecutionFailed;
         public JobOperationEventHandler JobExecutionSkipped;
+
+        public SchedulerSettings(ISchedulerContext schedulerContext)
+        {
+            InstanceId = schedulerContext.InstanceId;
+
+            JobsDirectory = Constants.Scheduler.DefaultJobsPath;
+
+            StartEngineImmediately = true;
+            EnableJobsDirectoryTracking = true;
+        }
     }
 }

@@ -1,15 +1,23 @@
-﻿using Microsoft.AspNet.SignalR;
-
+﻿using Scheduler.Core.Context;
 using Scheduler.Core.Engine;
+using Scheduler.Domain.Data.Services;
 using Scheduler.Domain.Entities;
 using Scheduler.Infrastructure.Hubs;
 
-namespace Scheduler.Infrastructure.Configuration
+using Microsoft.AspNet.SignalR;
+
+namespace Scheduler.WebConsole.Configurations
 {
     public class SchedulerHubSettings : SchedulerSettings
     {
-        public SchedulerHubSettings()
+        public SchedulerHubSettings(ISchedulerContext schedulerContext, ISchedulerInstanceService schedulerInstanceService)
+            : base(schedulerContext)
         {
+            var instanceSettings = schedulerInstanceService.GetSettings();
+
+            StartEngineImmediately = instanceSettings.IsImmediateEngineStartEnabled;
+            EnableJobsDirectoryTracking = instanceSettings.IsJobsDirectoryTrackingEnabled;
+
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<SchedulerHub>();
 
             EngineStarted = (sender, e) => { hubContext.Clients.All.changeState(e.State.ToString()); };

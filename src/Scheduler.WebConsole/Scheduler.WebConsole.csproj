@@ -165,6 +165,7 @@
     <Compile Include="App_Start\HubsConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Configurations\SchedulerHubSettings.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -197,6 +198,10 @@
       <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
       <Name>Scheduler.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
+      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Name>Scheduler.Domain.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj">
       <Project>{bfaab2fe-7208-4c3a-80d1-9b1dcce41f3b}</Project>
       <Name>Scheduler.Domain</Name>
@@ -204,6 +209,10 @@
     <ProjectReference Include="..\Scheduler.Engine.Quartz\Scheduler.Engine.Quartz.csproj">
       <Project>{cd895ce0-d65a-4e96-897b-2c45821112bb}</Project>
       <Name>Scheduler.Engine.Quartz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Infrastructure.Data\Scheduler.Infrastructure.Data.csproj">
+      <Project>{ACC43FC4-582C-471B-92F4-0F9AF44AB7AC}</Project>
+      <Name>Scheduler.Infrastructure.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Infrastructure\Scheduler.Infrastructure.csproj">
       <Project>{bb4a8717-fe3f-4989-98f7-c7bbf884503f}</Project>

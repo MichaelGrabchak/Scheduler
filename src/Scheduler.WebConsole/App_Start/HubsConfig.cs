@@ -1,11 +1,11 @@
 ﻿using Scheduler.Infrastructure.Hubs;
 using Scheduler.Infrastructure.Utils;
+using Scheduler.Core.Engine;
+using Scheduler.WebConsole.Configurations;
 
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.Practices.Unity;
-using Scheduler.Core.Engine;
-using Scheduler.Infrastructure.Configuration;
 
 namespace Scheduler.WebConsole
 {
