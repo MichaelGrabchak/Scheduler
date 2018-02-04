@@ -4,34 +4,33 @@ using System.Data.SqlClient;
 
 using Scheduler.Core.Context;
 using Scheduler.Domain.Data;
-using Scheduler.Domain.Data.BusinessEntities;
 using Scheduler.Domain.Data.Repositories;
 using Scheduler.Infrastructure.Data.Repositories;
 
 namespace Scheduler.Infrastructure.Data
 {
-    public class SchedulerDbContext : IDbContext
+    public class DbContext : IDbContext
     {
         private IDbConnection _connection;
         private IDbTransaction _transaction;
         private bool _disposed;
 
-        private IRepository<JobDetail> _jobDetailRepository;
-        private IRepository<SchedulerInstance> _schedulerInstanceRepository;
-        private IRepository<SchedulerInstanceSetting> _schedulerInstanceSettingRepository;
+        private IJobDetailRepository _jobDetailRepository;
+        private ISchedulerInstanceRepository _schedulerInstanceRepository;
+        private ISchedulerInstanceSettingRepository _schedulerInstanceSettingRepository;
 
-        public SchedulerDbContext(ISchedulerContext context)
+        public DbContext(ISchedulerContext context)
         {
             _connection = new SqlConnection(context.ConnectionString);
             _connection.Open();
             _transaction = _connection.BeginTransaction();
         }
 
-        public IRepository<JobDetail> JobDetails => _jobDetailRepository ?? (_jobDetailRepository = new Repository<JobDetail>(_transaction));
+        public IJobDetailRepository JobDetails => _jobDetailRepository ?? (_jobDetailRepository = new JobDetailRepository(_transaction));
 
-        public IRepository<SchedulerInstance> SchedulerInstances => _schedulerInstanceRepository ?? (_schedulerInstanceRepository = new Repository<SchedulerInstance>(_transaction));
+        public ISchedulerInstanceRepository SchedulerInstances => _schedulerInstanceRepository ?? (_schedulerInstanceRepository = new SchedulerInstanceRepository(_transaction));
 
-        public IRepository<SchedulerInstanceSetting> SchedulerInstanceSettings => _schedulerInstanceSettingRepository ?? (_schedulerInstanceSettingRepository = new Repository<SchedulerInstanceSetting>(_transaction));
+        public ISchedulerInstanceSettingRepository SchedulerInstanceSettings => _schedulerInstanceSettingRepository ?? (_schedulerInstanceSettingRepository = new SchedulerInstanceSettingRepository(_transaction));
 
         public void Commit()
         {
@@ -58,7 +57,7 @@ namespace Scheduler.Infrastructure.Data
             GC.SuppressFinalize(this);
         }
 
-        ~SchedulerDbContext()
+        ~DbContext()
         {
             Dispose(false);
         }

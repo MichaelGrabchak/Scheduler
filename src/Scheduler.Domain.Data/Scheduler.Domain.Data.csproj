@@ -47,12 +47,16 @@
     <Compile Include="Attributes\TableAttribute.cs" />
     <Compile Include="BusinessEntities\JobDetail.cs" />
     <Compile Include="BusinessEntities\SchedulerInstance.cs" />
+    <Compile Include="BusinessEntities\SchedulerInstanceWithSettings.cs" />
     <Compile Include="BusinessEntities\SchedulerInstanceSetting.cs" />
     <Compile Include="Dto\InstanceSettings.cs" />
     <Compile Include="Enums\DatabaseGeneratedOption.cs" />
     <Compile Include="IDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IJobDetailRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\ISchedulerInstanceRepository.cs" />
+    <Compile Include="Repositories\ISchedulerInstanceSettingRepository.cs" />
     <Compile Include="Services\ISchedulerInstanceSettingsService.cs" />
   </ItemGroup>
   <ItemGroup />

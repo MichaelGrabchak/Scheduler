@@ -1,10 +1,9 @@
-﻿using Scheduler.Core.Context;
-
-namespace Scheduler.Core.Engine
+﻿namespace Scheduler.Core.Engine
 {
     public abstract class SchedulerSettings
     {
         public string InstanceId { get; set; }
+        public string InstanceName { get; set; }
 
         public string JobsDirectory { get; set; }
 
@@ -29,10 +28,8 @@ namespace Scheduler.Core.Engine
         public JobOperationEventHandler JobExecutionFailed;
         public JobOperationEventHandler JobExecutionSkipped;
 
-        public SchedulerSettings(ISchedulerContext schedulerContext)
+        public SchedulerSettings()
         {
-            InstanceId = schedulerContext.InstanceId;
-
             JobsDirectory = Constants.Scheduler.DefaultJobsPath;
 
             StartEngineImmediately = true;

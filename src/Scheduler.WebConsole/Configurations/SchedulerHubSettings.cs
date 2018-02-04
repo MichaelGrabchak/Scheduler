@@ -1,5 +1,4 @@
-﻿using Scheduler.Core.Context;
-using Scheduler.Core.Engine;
+﻿using Scheduler.Core.Engine;
 using Scheduler.Domain.Data.Services;
 using Scheduler.Domain.Entities;
 using Scheduler.Infrastructure.Hubs;
@@ -10,11 +9,13 @@ namespace Scheduler.WebConsole.Configurations
 {
     public class SchedulerHubSettings : SchedulerSettings
     {
-        public SchedulerHubSettings(ISchedulerContext schedulerContext, ISchedulerInstanceService schedulerInstanceService)
-            : base(schedulerContext)
+        public SchedulerHubSettings(ISchedulerInstanceService schedulerInstanceService)
+            : base()
         {
             var instanceSettings = schedulerInstanceService.GetSettings();
 
+            InstanceId = instanceSettings.InstanceId;
+            InstanceName = instanceSettings.InstanceName;
             StartEngineImmediately = instanceSettings.IsImmediateEngineStartEnabled;
             EnableJobsDirectoryTracking = instanceSettings.IsJobsDirectoryTrackingEnabled;
 

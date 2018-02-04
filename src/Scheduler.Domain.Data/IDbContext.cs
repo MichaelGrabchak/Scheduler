@@ -1,14 +1,14 @@
-﻿using Scheduler.Domain.Data.BusinessEntities;
+﻿using System;
+
 using Scheduler.Domain.Data.Repositories;
-using System;
 
 namespace Scheduler.Domain.Data
 {
     public interface IDbContext : IDisposable
     {
-        IRepository<JobDetail> JobDetails { get; }
-        IRepository<SchedulerInstance> SchedulerInstances { get; }
-        IRepository<SchedulerInstanceSetting> SchedulerInstanceSettings { get; }
+        IJobDetailRepository JobDetails { get; }
+        ISchedulerInstanceRepository SchedulerInstances { get; }
+        ISchedulerInstanceSettingRepository SchedulerInstanceSettings { get; }
 
         void Commit();
     }

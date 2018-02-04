@@ -21,6 +21,7 @@
         var $startDate = $("#scheduler-startDate");
         var $version = $("#scheduler-version");
         var $instanceId = $("#scheduler-instanceId");
+        var $instanceName = $("#scheduler-instanceName");
 
         function setStartDate(date) {
             $startDate.text(date);
@@ -38,28 +39,39 @@
             return ($version) ? $version.text() : null;
         }
 
-        function setInstance(instanceId) {
+        function setInstanceId(instanceId) {
             $instanceId.text(instanceId);
         }
 
-        function getInstance() {
+        function getInstanceId() {
             return ($instanceId) ? $instanceId.text() : null;
+        }
+
+        function setInstanceName(instanceName) {
+            $instanceName.text(instanceName);
+        }
+
+        function getInstanceName() {
+            return ($instanceName) ? $instanceName.text() : null;
         }
 
         function cleanUp() {
             setVersion('');
             setStartDate('');
-            setInstance('');
+            setInstanceId('');
+            setInstanceName('');
         }
 
         return {
             version: getVersion(),
             runningSince: getStartDate(),
-            instanceId: getInstance(),
+            instanceId: getInstanceId(),
+            instanceName: getInstanceName(),
 
             setVersion: function (ver) { setVersion(ver) },
             setStartDate: function (date) { setStartDate(date) },
-            setInstance: function (instance) { setInstance(instance) },
+            setInstanceId: function (instance) { setInstanceId(instance) },
+            setInstanceName: function (instance) { setInstanceName(instance) },
 
             reset: function () { cleanUp() }
         };
@@ -164,6 +176,7 @@
             setEngineDetails({ state: state });
             schedulerHub.server.getJobsSummary().done(displayJobs);
             jobCounters.refresh();
+            resetEngineControlState(state);
         }
 
         schedulerHub.client.jobScheduled = function(jobDetails) {
@@ -486,7 +499,11 @@
                 }
 
                 if (engineData.InstanceId) {
-                    schedulerInfo.setInstance(engineData.InstanceId);
+                    schedulerInfo.setInstanceId(engineData.InstanceId);
+                }
+
+                if (engineData.InstanceName) {
+                    schedulerInfo.setInstanceName(engineData.InstanceName);
                 }
             }
         }
@@ -507,34 +524,26 @@
             schedulerInfo.reset();
         }
 
+        function resetEngineControlState(state) {
+            $startEngine.prop("disabled", state === "Normal");
+            $pauseEngine.prop("disabled", state === "Paused" || state === "Terminated");
+            $shutdownEngine.prop("disabled", state === "Terminated");
+        }
+
         function onStartEngineClick() {
             schedulerHub.server.start();
-
             if (engineInfo.state !== "Paused") {
                 schedulerHub.server.getEngineInfo().done(setEngineInfo);
             }
-
-            $startEngine.prop("disabled", true);
-            $pauseEngine.prop("disabled", false);
-            $shutdownEngine.prop("disabled", false);
         }
 
         function onPauseEngineClick() {
             schedulerHub.server.pause();
-
-            $startEngine.prop("disabled", false);
-            $pauseEngine.prop("disabled", true);
-            $shutdownEngine.prop("disabled", false);
         }
 
         function onTurnOffEngineClick() {
             schedulerHub.server.shutdown();
-
             cleanUpJobDetails();
-
-            $startEngine.prop("disabled", false);
-            $pauseEngine.prop("disabled", true);
-            $shutdownEngine.prop("disabled", true);
         }
 
         return {
@@ -547,7 +556,7 @@
             data: data,
 
             // methods
-            init: function() { init() },
+            init: function () { init() },
 
             // event handlers
             onStartClick: function() { onStartEngineClick() },

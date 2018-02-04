@@ -20,18 +20,23 @@ namespace Scheduler.Infrastructure.Data.Services
 
         public InstanceSettings GetSettings()
         {
-            var instanceSettings = _dbContext.SchedulerInstanceSettings.GetById(new { InstanceId = _schedulerContext.InstanceId });
+            var schedulerInstance = _dbContext.SchedulerInstances.GetInstanceDetails(_schedulerContext.InstanceId);
 
-            if(instanceSettings == null)
+            if(schedulerInstance != null)
             {
-                throw new ArgumentException("Couldn't find instance settings");
+                return new InstanceSettings
+                {
+                    InstanceId = schedulerInstance.Id.ToString(),
+                    InstanceName = schedulerInstance.InstanceName,
+                    IsImmediateEngineStartEnabled = schedulerInstance.IsImmediateEngineStartEnabled,
+                    IsJobsDirectoryTrackingEnabled = schedulerInstance.IsJobsDirectoryTrackingEnabled
+                };
             }
 
-            return new InstanceSettings {
+            return new InstanceSettings
+            {
                 InstanceId = _schedulerContext.InstanceId,
-
-                IsImmediateEngineStartEnabled = instanceSettings.IsImmediateEngineStartEnabled,
-                IsJobsDirectoryTrackingEnabled = instanceSettings.IsJobsDirectoryTrackingEnabled
+                InstanceName = "<unregistered>"
             };
         }
     }

@@ -75,6 +75,10 @@
       <Project>{9a991b42-89da-4b3c-8675-0c4e1c7fbacf}</Project>
       <Name>Scheduler.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
+      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Name>Scheduler.Domain.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Engine.Quartz\Scheduler.Engine.Quartz.csproj">
       <Project>{cd895ce0-d65a-4e96-897b-2c45821112bb}</Project>
       <Name>Scheduler.Engine.Quartz</Name>

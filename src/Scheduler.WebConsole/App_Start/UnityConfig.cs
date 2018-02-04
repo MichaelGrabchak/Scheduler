@@ -53,7 +53,7 @@ namespace Scheduler.WebConsole
 
         private static void RegisterBasic(IUnityContainer container)
         {
-            container.RegisterType<IDbContext, SchedulerDbContext>();
+            container.RegisterType<IDbContext, DbContext>();
             container.RegisterType<ISchedulerContext, SchedulerContext>();
             container.RegisterType<ISchedulerLogger, NLogLogger>(new InjectionConstructor(Constants.System.DefaultSchedulerLoggerName));
             container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));

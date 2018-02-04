@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using Scheduler.Domain.Data;
+using System.Web.Mvc;
 
 namespace Scheduler.WebConsole.Controllers
 {

@@ -10,6 +10,7 @@ namespace Scheduler.Core.Engine
         public DateTimeOffset StartDate { get; set; }
         public string Version { get; set; }
         public string InstanceId { get; set; }
+        public string InstanceName { get; set; }
 
         public override string ToString()
         {
@@ -38,6 +39,11 @@ namespace Scheduler.Core.Engine
             if(!string.IsNullOrEmpty(InstanceId))
             {
                 sb.Append($" Instance ID: {InstanceId}");
+            }
+
+            if(!string.IsNullOrEmpty(InstanceName))
+            {
+                sb.Append($" Instance Name: {InstanceName}");
             }
 
             return sb.ToString().Trim();

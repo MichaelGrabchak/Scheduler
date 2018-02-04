@@ -44,12 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repositories\JobDetailRepository.cs" />
+    <Compile Include="Repositories\SchedulerInstanceRepository.cs" />
+    <Compile Include="Repositories\SchedulerInstanceSettingRepository.cs" />
     <Compile Include="Services\SchedulerInstanceService.cs" />
     <Compile Include="Utils\PropertyMap.cs" />
     <Compile Include="Utils\TableMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repository.cs" />
-    <Compile Include="SchedulerDbContext.cs" />
+    <Compile Include="DbContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
