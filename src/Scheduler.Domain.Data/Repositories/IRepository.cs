@@ -2,12 +2,13 @@
 
 namespace Scheduler.Domain.Data.Repositories
 {
-    public interface IRepository<T>
+    public interface IRepository<TEntity, TIdentity> where TEntity : class
     {
-        IEnumerable<T> GetAll();
-        T GetByKey(object key);
-        void Add(T obj);
-        void Update(T obj);
-        void Delete(object key);
+        IEnumerable<TEntity> GetAll();
+        TEntity GetById(TIdentity id);
+        void Update(TEntity entity);
+        void Add(TEntity entity);
+        void Delete(TEntity entity);
+        void AddOrUpdate(TEntity entity);
     }
 }

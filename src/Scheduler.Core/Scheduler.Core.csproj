@@ -70,6 +70,7 @@
     <Compile Include="Engine\ISchedulerEngine.cs" />
     <Compile Include="Jobs\JobInfo.cs" />
     <Compile Include="Jobs\JobState.cs" />
+    <Compile Include="Jobs\Metadata\JobMetadata.cs" />
     <Compile Include="Logging\BaseLogger.cs" />
     <Compile Include="Logging\ISchedulerLogger.cs" />
     <Compile Include="Logging\SchedulerLogManager.cs" />
@@ -83,6 +84,11 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
+      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Name>Scheduler.Domain.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

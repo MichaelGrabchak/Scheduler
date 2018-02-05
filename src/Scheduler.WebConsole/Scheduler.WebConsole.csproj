@@ -50,6 +50,12 @@
     <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
@@ -198,6 +204,10 @@
       <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
       <Name>Scheduler.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain.Data.EntityFramework\Scheduler.Domain.Data.EntityFramework.csproj">
+      <Project>{29F066C0-222E-4252-85E6-A166813FBAC9}</Project>
+      <Name>Scheduler.Domain.Data.EntityFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
       <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
       <Name>Scheduler.Domain.Data</Name>
@@ -209,6 +219,10 @@
     <ProjectReference Include="..\Scheduler.Engine.Quartz\Scheduler.Engine.Quartz.csproj">
       <Project>{cd895ce0-d65a-4e96-897b-2c45821112bb}</Project>
       <Name>Scheduler.Engine.Quartz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Infrastructure.Data.EntityFramework\Scheduler.Infrastructure.Data.EntityFramework.csproj">
+      <Project>{C34361C7-286C-4D8E-8DD6-1D995A2B0BC9}</Project>
+      <Name>Scheduler.Infrastructure.Data.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Infrastructure.Data\Scheduler.Infrastructure.Data.csproj">
       <Project>{ACC43FC4-582C-471B-92F4-0F9AF44AB7AC}</Project>

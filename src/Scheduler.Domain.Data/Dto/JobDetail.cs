@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Scheduler.Domain.Data.BusinessEntities
+namespace Scheduler.Domain.Data.Dto
 {
     public class JobDetail
     {
@@ -13,8 +13,5 @@ namespace Scheduler.Domain.Data.BusinessEntities
         public DateTime? JobNextRunTime { get; set; }
         public byte StatusId { get; set; }
         public Guid InstanceId { get; set; }
-
-        public virtual JobStatus Status { get; set; }
-        public virtual SchedulerInstance Instance { get; set; }
     }
 }

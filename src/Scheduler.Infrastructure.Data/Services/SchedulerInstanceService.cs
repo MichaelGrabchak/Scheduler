@@ -1,33 +1,28 @@
-﻿using System;
-
-using Scheduler.Core.Context;
-using Scheduler.Domain.Data;
-using Scheduler.Domain.Data.Dto;
+﻿using Scheduler.Domain.Data.Dto;
+using Scheduler.Domain.Data.Repositories;
 using Scheduler.Domain.Data.Services;
 
 namespace Scheduler.Infrastructure.Data.Services
 {
     public class SchedulerInstanceService : ISchedulerInstanceService
     {
-        private readonly IDbContext _dbContext;
-        private readonly ISchedulerContext _schedulerContext;
+        private readonly ISchedulerInstanceSettingRepository _schedulerInstanceSettingRepository;
 
-        public SchedulerInstanceService(IDbContext dbContext, ISchedulerContext schedulerContext)
+        public SchedulerInstanceService(ISchedulerInstanceSettingRepository schedulerInstanceSettingRepository)
         {
-            _dbContext = dbContext;
-            _schedulerContext = schedulerContext;
+            _schedulerInstanceSettingRepository = schedulerInstanceSettingRepository;
         }
 
         public InstanceSettings GetSettings()
         {
-            var schedulerInstance = _dbContext.SchedulerInstances.GetInstanceDetails(_schedulerContext.InstanceId);
+            var schedulerInstance = _schedulerInstanceSettingRepository.GetInstanceSettings();
 
             if(schedulerInstance != null)
             {
                 return new InstanceSettings
                 {
-                    InstanceId = schedulerInstance.Id.ToString(),
-                    InstanceName = schedulerInstance.InstanceName,
+                    InstanceId = schedulerInstance.Instance.Id.ToString(),
+                    InstanceName = schedulerInstance.Instance.InstanceName,
                     IsImmediateEngineStartEnabled = schedulerInstance.IsImmediateEngineStartEnabled,
                     IsJobsDirectoryTrackingEnabled = schedulerInstance.IsJobsDirectoryTrackingEnabled
                 };
@@ -35,7 +30,6 @@ namespace Scheduler.Infrastructure.Data.Services
 
             return new InstanceSettings
             {
-                InstanceId = _schedulerContext.InstanceId,
                 InstanceName = "<unregistered>"
             };
         }

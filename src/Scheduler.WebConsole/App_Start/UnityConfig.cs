@@ -2,21 +2,23 @@ using System;
 using System.Web.Mvc;
 
 using Scheduler.Core;
+using Scheduler.Core.Context;
 using Scheduler.Core.Engine;
 using Scheduler.Core.Logging;
 using Scheduler.Core.Configurations;
 using Scheduler.Engine.Quartz;
 using Scheduler.Domain.Services;
+using Scheduler.Domain.Data.Services;
+using Scheduler.Domain.Data.Repositories;
+using Scheduler.Domain.Data.EntityFramework.ContextProviders;
 using Scheduler.Infrastructure.Services;
+using Scheduler.Infrastructure.Data.Services;
+using Scheduler.Infrastructure.Data.EntityFramework.Repositories;
+using Scheduler.Infrastructure.Data.EntityFramework.Configuration.Context.Providers;
 using Scheduler.Logging.NLog;
-using Scheduler.Domain.Data;
-using Scheduler.Infrastructure.Data;
-using Scheduler.Core.Context;
 
 using Microsoft.Practices.Unity;
 using Unity.Mvc5;
-using Scheduler.Domain.Data.Services;
-using Scheduler.Infrastructure.Data.Services;
 
 namespace Scheduler.WebConsole
 {
@@ -44,6 +46,7 @@ namespace Scheduler.WebConsole
         private static void RegisterComponents(IUnityContainer container)
         {
             RegisterBasic(container);
+            RegisterRepositories(container);
             RegisterServices(container);
             RegisterDataServices(container);
 
@@ -53,10 +56,10 @@ namespace Scheduler.WebConsole
 
         private static void RegisterBasic(IUnityContainer container)
         {
-            container.RegisterType<IDbContext, DbContext>();
+            container.RegisterType<IDbContextProvider, SchedulerDbContextProvider>();
             container.RegisterType<ISchedulerContext, SchedulerContext>();
             container.RegisterType<ISchedulerLogger, NLogLogger>(new InjectionConstructor(Constants.System.DefaultSchedulerLoggerName));
-            container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));
+            container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings), typeof(IJobDetailService)));
         }
 
         private static void RegisterServices(IUnityContainer container)
@@ -67,6 +70,14 @@ namespace Scheduler.WebConsole
         private static void RegisterDataServices(IUnityContainer container)
         {
             container.RegisterType<ISchedulerInstanceService, SchedulerInstanceService>();
+            container.RegisterType<IJobDetailService, JobDetailService>();
+        }
+
+        private static void RegisterRepositories(IUnityContainer container)
+        {
+            container.RegisterType<IJobDetailRepository, JobDetailRepository>();
+            container.RegisterType<ISchedulerInstanceRepository, SchedulerInstanceRepository>();
+            container.RegisterType<ISchedulerInstanceSettingRepository, SchedulerInstanceSettingRepository>();
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿using Scheduler.Domain.Data.Attributes;
-using System;
+﻿using System;
 
 namespace Scheduler.Domain.Data.BusinessEntities
 {
     public class SchedulerInstanceSetting
     {
-        [Key]
-        [Column("INSTANCE_ID")]
+        public int Id { get; set; }
         public Guid InstanceId { get; set; }
         public bool IsImmediateEngineStartEnabled { get; set; }
         public bool IsJobsDirectoryTrackingEnabled { get; set; }
+
+        public virtual SchedulerInstance Instance { get; set; }
     }
 }

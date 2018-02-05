@@ -1,11 +1,18 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace Scheduler.Core.Context
 {
     public class SchedulerContext : ISchedulerContext
     {
-        public string InstanceId => ConfigurationManager.AppSettings.Get("SchedulerInstanceId");
+        private string RawInstanceId = ConfigurationManager.AppSettings.Get("SchedulerInstanceId");
+        public Guid InstanceId { get; }
 
         public string ConnectionString => ConfigurationManager.ConnectionStrings["SchedulerDWH"].ConnectionString;
+
+        public SchedulerContext()
+        {
+            InstanceId = new Guid(RawInstanceId);
+        }
     }
 }

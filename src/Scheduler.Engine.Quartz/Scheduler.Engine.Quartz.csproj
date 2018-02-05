@@ -112,7 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extension\SchedulerExtension.cs" />
-    <Compile Include="JobMetadata.cs" />
+    <Compile Include="QuartzJobMetadata.cs" />
     <Compile Include="Listeners\DependentJobListener.cs" />
     <Compile Include="Listeners\DependentTriggerListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,6 +130,10 @@
     <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
       <Project>{9a991b42-89da-4b3c-8675-0c4e1c7fbacf}</Project>
       <Name>Scheduler.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
+      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Name>Scheduler.Domain.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
