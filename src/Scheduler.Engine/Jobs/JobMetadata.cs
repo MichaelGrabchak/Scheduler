@@ -1,19 +1,27 @@
-﻿using Scheduler.Core.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Scheduler.Core.Jobs.Metadata
+using Scheduler.Domain.Data.Services;
+using Scheduler.Jobs;
+using Scheduler.Jobs.Extensions;
+
+namespace Scheduler.Engine.Jobs
 {
     public abstract class JobMetadata
     {
-        public Type Type { get; set; }
+        protected readonly IJobDetailService _jobDetailService;
 
+        public Type Type { get; set; }
         public string Name { get; set; }
         public string Group { get; set; }
 
         public string Schedule { get; set; }
-
         public string Description { get; set; }
+
+        public JobMetadata(IJobDetailService jobDetailService)
+        {
+            _jobDetailService = jobDetailService;
+        }
 
         public JobMetadata ExtractData(BaseJob job)
         {
@@ -25,8 +33,11 @@ namespace Scheduler.Core.Jobs.Metadata
             Type = job.GetType();
             Name = job.GetName();
             Group = job.GetGroup();
-            Schedule = job.Schedule;
-            Description = job.GetDescription();
+
+            var jobDetail = _jobDetailService.GetJobDetail(Name, Group);
+            
+            Schedule = jobDetail?.JobSchedule ?? job.Schedule;
+            Description = jobDetail?.JobDescription ?? job.GetDescription();
 
             return this;
         }

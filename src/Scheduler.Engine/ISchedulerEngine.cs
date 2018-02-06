@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Scheduler.Core.Jobs;
+using Scheduler.Engine.Jobs;
+using Scheduler.Jobs;
 
-namespace Scheduler.Core.Engine
+namespace Scheduler.Engine
 {
     public interface ISchedulerEngine : IDisposable
     {

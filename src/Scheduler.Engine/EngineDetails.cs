@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Scheduler.Core.Engine
+namespace Scheduler.Engine
 {
     public class EngineDetails
     {

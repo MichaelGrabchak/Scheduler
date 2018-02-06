@@ -1,8 +1,7 @@
-﻿using Scheduler.Core.Extensions;
+﻿using Scheduler.Core.Logging;
+using Scheduler.Jobs.Extensions;
 
-using Scheduler.Core.Logging;
-
-namespace Scheduler.Core.Jobs
+namespace Scheduler.Jobs
 {
     public abstract class BaseJob
     {

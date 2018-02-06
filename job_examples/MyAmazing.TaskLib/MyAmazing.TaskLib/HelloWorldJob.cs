@@ -1,12 +1,13 @@
 ﻿using System;
 
 using Scheduler.Core;
-using Scheduler.Core.Jobs;
 using Scheduler.Core.Logging;
-using Scheduler.Core.Attributes;
+using Scheduler.Jobs.Attributes;
+using Scheduler.Jobs;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 
 namespace MyAmazing.TaskLib
 {

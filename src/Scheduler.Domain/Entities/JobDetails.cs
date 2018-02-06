@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
-
-using Scheduler.Core.Jobs;
+using Scheduler.Engine.Enums;
+using Scheduler.Engine.Jobs;
 
 namespace Scheduler.Domain.Entities
 {

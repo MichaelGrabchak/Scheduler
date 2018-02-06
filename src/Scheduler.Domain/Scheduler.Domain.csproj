@@ -52,6 +52,10 @@
       <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
       <Name>Scheduler.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
+      <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
+      <Name>Scheduler.Engine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

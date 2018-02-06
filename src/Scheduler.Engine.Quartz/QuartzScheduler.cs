@@ -1,29 +1,28 @@
 ﻿using System.Collections.Generic;
 
-using Scheduler.Core.Jobs;
-using Scheduler.Core.Engine;
-using Scheduler.Core.Extensions;
+using Scheduler.Domain.Data.Services;
+using Scheduler.Engine.Enums;
+using Scheduler.Engine.Jobs;
 using Scheduler.Engine.Quartz.Extension;
 using Scheduler.Engine.Quartz.Listeners;
+using Scheduler.Jobs;
+using Scheduler.Jobs.Extensions;
 
 using Quartz;
 using Quartz.Impl;
 using Quartz.Impl.Matchers;
-using Scheduler.Domain.Data.Services;
 
 namespace Scheduler.Engine.Quartz
 {
     public sealed class QuartzScheduler : BaseScheduler
     {
-        private static QuartzJobMetadata _jobMetadata = new QuartzJobMetadata();
-
         private static DependentTriggerListener _triggerListener = new DependentTriggerListener();
         private static DependentJobListener _jobListener = new DependentJobListener();
 
         private static IScheduler _quartzScheduler = GetScheduler(_triggerListener, _jobListener);
 
-        public QuartzScheduler(SchedulerSettings settings, IJobDetailService jobDetailService)
-            : base(settings, jobDetailService)
+        public QuartzScheduler(SchedulerSettings settings, JobMetadata metadataManager, IJobDetailService jobDetailService)
+            : base(settings, metadataManager, jobDetailService)
         {
             if (settings != null)
             {
@@ -84,14 +83,7 @@ namespace Scheduler.Engine.Quartz
 
         public override void ScheduleJob(BaseJob scheduleJob)
         {
-            var metadata = _jobMetadata.ExtractData(scheduleJob);
-            var jobDetails = _jobDetailService.GetJobDetail(metadata.Name, metadata.Group);
-
-            if(jobDetails != null)
-            {
-                metadata.Schedule = jobDetails.JobSchedule;
-                metadata.Description = jobDetails.JobDescription;
-            }
+            var metadata = _metadata.ExtractData(scheduleJob);
 
             var jobKey = new JobKey(metadata.Name, metadata.Group);
             if (_quartzScheduler.CheckExists(jobKey))
@@ -117,13 +109,11 @@ namespace Scheduler.Engine.Quartz
             _quartzScheduler.ScheduleJob(job, trigger);
 
             OnJobScheduled(new JobInfo {
-                Id = jobDetails?.Id ?? 0,
                 Name = metadata.Name,
                 Group = metadata.Group,
-                Description = metadata.Description,
-                ScheduleExpression = metadata.Schedule,
+
                 Schedule = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(metadata.Schedule),
-                State = _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString(),
+
                 NextFireTimeUtc = trigger.GetNextFireTimeUtc(),
                 LoggerKey = scheduleJob.GetLogger()
             });
@@ -131,7 +121,7 @@ namespace Scheduler.Engine.Quartz
 
         public override void UnscheduleJob(BaseJob scheduleJob)
         {
-            var metadata = _jobMetadata.ExtractData(scheduleJob);
+            var metadata = _metadata.ExtractData(scheduleJob);
 
             if (metadata != null)
             {

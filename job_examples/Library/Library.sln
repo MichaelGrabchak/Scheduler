@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{4BB1B955-FF2F-43C9-A81B-B8DE0456433B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{13229119-7B77-4C80-A4B1-0D62ABF9718F}"
 	ProjectSection(SolutionItems) = preProject
 		Binaries\Scheduler.Core.dll = Binaries\Scheduler.Core.dll
+		Binaries\Scheduler.Jobs.dll = Binaries\Scheduler.Jobs.dll
 		Binaries\Scheduler.Logging.NLog.dll = Binaries\Scheduler.Logging.NLog.dll
 	EndProjectSection
 EndProject

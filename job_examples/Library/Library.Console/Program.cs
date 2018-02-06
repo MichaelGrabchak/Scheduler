@@ -1,8 +1,7 @@
-﻿using Scheduler.Core.Jobs;
-using Scheduler.Core.Logging;
+﻿using Scheduler.Core.Logging;
 using Scheduler.Core.Configurations;
-
 using Scheduler.Logging.NLog;
+using Scheduler.Jobs;
 
 using Microsoft.Practices.Unity;
 

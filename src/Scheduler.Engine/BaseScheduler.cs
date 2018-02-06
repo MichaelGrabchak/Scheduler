@@ -4,14 +4,16 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
-using Scheduler.Core.Helpers;
-using Scheduler.Core.Jobs;
-using Scheduler.Core.Extensions;
-using Scheduler.Core.Logging;
 using Scheduler.Core.Configurations;
+using Scheduler.Core.Helpers;
+using Scheduler.Core.Logging;
 using Scheduler.Domain.Data.Services;
+using Scheduler.Engine.Enums;
+using Scheduler.Engine.Jobs;
+using Scheduler.Jobs;
+using Scheduler.Jobs.Extensions;
 
-namespace Scheduler.Core.Engine
+namespace Scheduler.Engine
 {
     public abstract class BaseScheduler : ISchedulerEngine
     {
@@ -24,11 +26,13 @@ namespace Scheduler.Core.Engine
         protected static DateTimeOffset StartTime { get; private set; }
         protected static EngineState State { get; set; }
 
+        protected readonly JobMetadata _metadata;
         protected readonly IJobDetailService _jobDetailService;
 
-        protected BaseScheduler(SchedulerSettings settings, IJobDetailService jobDetailService)
+        protected BaseScheduler(SchedulerSettings settings, JobMetadata metadataManager, IJobDetailService jobDetailService)
         {
             _jobDetailService = jobDetailService;
+            _metadata = metadataManager;
 
             Init(settings);
         }
@@ -89,17 +93,9 @@ namespace Scheduler.Core.Engine
             JobScheduled?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
 
-            _jobDetailService.UpdateJobDetail(new Domain.Data.Dto.JobDetail
-            {
-                Id = jobInfo.Id,
-                JobName = jobInfo.Name,
-                JobGroup = jobInfo.Group,
-                JobDescription = jobInfo.Description,
-                JobSchedule = jobInfo.ScheduleExpression,
-                JobLastRunTime = jobInfo.PrevFireTimeUtc.HasValue ? jobInfo.PrevFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                JobNextRunTime = jobInfo.NextFireTimeUtc.HasValue ? jobInfo.NextFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                StatusId = 1
-            });
+            var jobDetail = jobInfo.ToJobDetail();
+            jobDetail.StatusId = 1;
+            _jobDetailService.UpdateJobDetail(jobDetail);
         }
 
         protected event JobOperationEventHandler JobUnscheduled;

@@ -1,7 +1,7 @@
 ﻿using ConsoleApi = System.Console;
 
-using Scheduler.Core.Engine;
 using Scheduler.Domain.Data.Services;
+using Scheduler.Engine;
 
 namespace Scheduler.Console.Configurations
 {

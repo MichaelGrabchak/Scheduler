@@ -1,4 +1,6 @@
-﻿namespace Scheduler.Core.Engine
+﻿using Scheduler.Core;
+
+namespace Scheduler.Engine
 {
     public abstract class SchedulerSettings
     {

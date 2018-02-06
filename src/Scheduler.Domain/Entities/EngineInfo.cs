@@ -2,7 +2,7 @@
 using System.Text;
 using System.Globalization;
 
-using Scheduler.Core.Engine;
+using Scheduler.Engine;
 
 namespace Scheduler.Domain.Entities
 {

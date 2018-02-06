@@ -1,6 +1,6 @@
 ﻿using Scheduler.Infrastructure.Hubs;
 using Scheduler.Infrastructure.Utils;
-using Scheduler.Core.Engine;
+using Scheduler.Engine;
 using Scheduler.WebConsole.Configurations;
 
 using Microsoft.AspNet.SignalR;

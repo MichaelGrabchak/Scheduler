@@ -1,9 +1,9 @@
 ﻿using System;
 
-using Scheduler.Core.Jobs;
-using Scheduler.Core.Attributes;
+using Scheduler.Core;
+using Scheduler.Jobs.Attributes;
 
-namespace Scheduler.Core.Extensions  
+namespace Scheduler.Jobs.Extensions
 {
     public static class BaseJobExtensions
     {

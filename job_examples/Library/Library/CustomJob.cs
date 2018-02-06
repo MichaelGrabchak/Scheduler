@@ -1,8 +1,8 @@
 ﻿using Library.BusinessLayer.Services;
 
-using Scheduler.Core.Jobs;
-using Scheduler.Core.Attributes;
 using Scheduler.Core.Logging;
+using Scheduler.Jobs;
+using Scheduler.Jobs.Attributes;
 
 namespace Library
 {

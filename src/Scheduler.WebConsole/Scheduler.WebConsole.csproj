@@ -220,6 +220,10 @@
       <Project>{cd895ce0-d65a-4e96-897b-2c45821112bb}</Project>
       <Name>Scheduler.Engine.Quartz</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
+      <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
+      <Name>Scheduler.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Infrastructure.Data.EntityFramework\Scheduler.Infrastructure.Data.EntityFramework.csproj">
       <Project>{C34361C7-286C-4D8E-8DD6-1D995A2B0BC9}</Project>
       <Name>Scheduler.Infrastructure.Data.EntityFramework</Name>

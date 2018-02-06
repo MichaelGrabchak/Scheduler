@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 
-using Scheduler.Core.Jobs;
+using Scheduler.Engine.Enums;
 
 namespace Scheduler.Domain.Entities
 {

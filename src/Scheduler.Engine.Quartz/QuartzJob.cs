@@ -1,8 +1,8 @@
 ﻿using System;
 
-using Scheduler.Core.Jobs;
 using Scheduler.Core.Helpers;
 using Scheduler.Core.Configurations;
+using Scheduler.Jobs;
 
 using Quartz;
 

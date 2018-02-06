@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Infrastructure.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Domain.Data.EntityFramework", "Scheduler.Domain.Data.EntityFramework\Scheduler.Domain.Data.EntityFramework.csproj", "{29F066C0-222E-4252-85E6-A166813FBAC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Engine", "Scheduler.Engine\Scheduler.Engine.csproj", "{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Jobs", "Scheduler.Jobs\Scheduler.Jobs.csproj", "{FC3B22A9-D34F-466F-8094-0444A9E67B4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{29F066C0-222E-4252-85E6-A166813FBAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29F066C0-222E-4252-85E6-A166813FBAC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29F066C0-222E-4252-85E6-A166813FBAC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC3B22A9-D34F-466F-8094-0444A9E67B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC3B22A9-D34F-466F-8094-0444A9E67B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC3B22A9-D34F-466F-8094-0444A9E67B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC3B22A9-D34F-466F-8094-0444A9E67B4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

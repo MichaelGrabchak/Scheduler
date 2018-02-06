@@ -83,6 +83,10 @@
       <Project>{cd895ce0-d65a-4e96-897b-2c45821112bb}</Project>
       <Name>Scheduler.Engine.Quartz</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
+      <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
+      <Name>Scheduler.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Infrastructure\Scheduler.Infrastructure.csproj">
       <Project>{bb4a8717-fe3f-4989-98f7-c7bbf884503f}</Project>
       <Name>Scheduler.Infrastructure</Name>

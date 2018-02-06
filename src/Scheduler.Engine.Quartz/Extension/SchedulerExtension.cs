@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 
-using Scheduler.Core.Jobs;
+using Scheduler.Engine.Enums;
+using Scheduler.Engine.Jobs;
 
 using Quartz;
 

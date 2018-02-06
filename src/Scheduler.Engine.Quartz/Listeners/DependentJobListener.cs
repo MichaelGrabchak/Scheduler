@@ -1,8 +1,7 @@
-﻿using Scheduler.Engine.Quartz.Extension;
-
-using Scheduler.Core.Jobs;
-using Scheduler.Core.Engine;
-using Scheduler.Core.Logging;
+﻿using Scheduler.Core.Logging;
+using Scheduler.Engine.Enums;
+using Scheduler.Engine.Jobs;
+using Scheduler.Engine.Quartz.Extension;
 
 using Quartz;
 

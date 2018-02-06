@@ -1,5 +1,5 @@
-﻿using Scheduler.Core.Attributes;
-using Scheduler.Core.Jobs;
+﻿using Scheduler.Jobs;
+using Scheduler.Jobs.Attributes;
 
 namespace MyAmazing.TaskLib
 {

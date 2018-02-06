@@ -1,9 +1,9 @@
-﻿using Scheduler.Core.Engine;
-using Scheduler.Domain.Data.Services;
+﻿using Scheduler.Domain.Data.Services;
 using Scheduler.Domain.Entities;
 using Scheduler.Infrastructure.Hubs;
 
 using Microsoft.AspNet.SignalR;
+using Scheduler.Engine;
 
 namespace Scheduler.WebConsole.Configurations
 {

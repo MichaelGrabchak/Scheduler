@@ -50,6 +50,9 @@
     <Reference Include="Scheduler.Core">
       <HintPath>..\Binaries\Scheduler.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Scheduler.Jobs">
+      <HintPath>..\Binaries\Scheduler.Jobs.dll</HintPath>
+    </Reference>
     <Reference Include="Scheduler.Logging.NLog">
       <HintPath>..\Binaries\Scheduler.Logging.NLog.dll</HintPath>
     </Reference>

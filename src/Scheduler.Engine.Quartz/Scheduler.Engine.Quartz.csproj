@@ -135,6 +135,14 @@
       <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
       <Name>Scheduler.Domain.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
+      <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
+      <Name>Scheduler.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Jobs\Scheduler.Jobs.csproj">
+      <Project>{FC3B22A9-D34F-466F-8094-0444A9E67B4D}</Project>
+      <Name>Scheduler.Jobs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

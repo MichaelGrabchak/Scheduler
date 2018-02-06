@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Scheduler.Core.Attributes
+namespace Scheduler.Jobs.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class JobMetadataAttribute : Attribute

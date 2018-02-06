@@ -3,15 +3,14 @@ using System.Timers;
 using System.Threading;
 
 using Scheduler.Core;
-using Scheduler.Core.Engine;
 using Scheduler.Core.Logging;
 using Scheduler.Core.Configurations;
+using Scheduler.Engine;
 using Scheduler.Engine.Quartz;
-
 using Scheduler.Logging.NLog;
+using Scheduler.Console.Configurations;
 
 using Microsoft.Practices.Unity;
-using Scheduler.Console.Configurations;
 
 namespace Scheduler.Console
 {

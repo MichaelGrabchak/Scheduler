@@ -3,9 +3,10 @@ using System.Web.Mvc;
 
 using Scheduler.Core;
 using Scheduler.Core.Context;
-using Scheduler.Core.Engine;
 using Scheduler.Core.Logging;
 using Scheduler.Core.Configurations;
+using Scheduler.Engine;
+using Scheduler.Engine.Jobs;
 using Scheduler.Engine.Quartz;
 using Scheduler.Domain.Services;
 using Scheduler.Domain.Data.Services;
@@ -56,10 +57,11 @@ namespace Scheduler.WebConsole
 
         private static void RegisterBasic(IUnityContainer container)
         {
+            container.RegisterType<JobMetadata, QuartzJobMetadata>();
             container.RegisterType<IDbContextProvider, SchedulerDbContextProvider>();
             container.RegisterType<ISchedulerContext, SchedulerContext>();
             container.RegisterType<ISchedulerLogger, NLogLogger>(new InjectionConstructor(Constants.System.DefaultSchedulerLoggerName));
-            container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings), typeof(IJobDetailService)));
+            container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings), typeof(JobMetadata), typeof(IJobDetailService)));
         }
 
         private static void RegisterServices(IUnityContainer container)

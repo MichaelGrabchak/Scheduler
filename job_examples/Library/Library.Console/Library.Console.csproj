@@ -47,8 +47,12 @@
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Scheduler.Core">
+    <Reference Include="Scheduler.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Scheduler.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Scheduler.Jobs">
+      <HintPath>..\Binaries\Scheduler.Jobs.dll</HintPath>
     </Reference>
     <Reference Include="Scheduler.Logging.NLog">
       <HintPath>..\Binaries\Scheduler.Logging.NLog.dll</HintPath>

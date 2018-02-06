@@ -1,8 +1,9 @@
 ﻿using System;
 
-using Scheduler.Core.Jobs;
+using Scheduler.Engine.Enums;
+using Scheduler.Engine.Jobs;
 
-namespace Scheduler.Core.Engine
+namespace Scheduler.Engine
 {
     public class SchedulerEventArgs : EventArgs
     { }

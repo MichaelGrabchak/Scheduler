@@ -1,4 +1,4 @@
-﻿namespace Scheduler.Core.Jobs
+﻿namespace Scheduler.Engine.Enums
 {
     public enum JobActionState
     {
@@ -10,11 +10,5 @@
 
         Failed,
         Succeeded
-    }
-
-    public enum JobState
-    {
-        Normal,
-        Paused
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Scheduler.Core.Engine
+﻿namespace Scheduler.Engine.Enums
 {
     public enum EngineState
     {
