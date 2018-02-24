@@ -24,20 +24,11 @@ namespace Scheduler.Engine.Quartz
         public QuartzScheduler(SchedulerSettings settings, JobMetadata metadataManager, IJobDetailService jobDetailService)
             : base(settings, metadataManager, jobDetailService)
         {
-            if (settings != null)
-            {
-                if (settings.BeforeJobExecution != null)
-                    _jobListener.ToBeExecuted += settings.BeforeJobExecution;
-
-                if (settings.JobExecutionSkipped != null)
-                    _jobListener.ExecutionVetoed += settings.JobExecutionSkipped;
-
-                if (settings.JobExecutionSucceeded != null)
-                    _jobListener.ExecutionSucceeded += settings.JobExecutionSucceeded;
-
-                if (settings.JobExecutionFailed != null)
-                    _jobListener.ExecutionFailed += settings.JobExecutionFailed;
-            }
+            _jobListener.ToBeExecuted += (s, e) => OnBeforeJobExecution(e.Job);
+            _jobListener.Executed += (s, e) => OnJobTriggered(e.Job);
+            _jobListener.ExecutionVetoed += (s, e) => OnJobSkipped(e.Job);
+            _jobListener.ExecutionSucceeded += (s, e) => OnJobSucceeded(e.Job);
+            _jobListener.ExecutionFailed += (s, e) => OnJobFailed(e.Job);
         }
 
         public override void Pause()
@@ -45,6 +36,11 @@ namespace Scheduler.Engine.Quartz
             if (_quartzScheduler?.IsStarted == true)
             {
                 _quartzScheduler.PauseAll();
+
+                foreach(var job in GetAllJobs())
+                {
+                    PauseJob(job.Name, job.Group);
+                }
 
                 OnEnginePaused();
             }
@@ -66,6 +62,11 @@ namespace Scheduler.Engine.Quartz
             else
             {
                 _quartzScheduler?.ResumeAll();
+
+                foreach(var job in GetAllJobs())
+                {
+                    ResumeJob(job.Name, job.Group);
+                }
             }
 
             OnEngineStarted();
@@ -108,15 +109,18 @@ namespace Scheduler.Engine.Quartz
 
             _quartzScheduler.ScheduleJob(job, trigger);
 
-            OnJobScheduled(new JobInfo {
-                Name = metadata.Name,
-                Group = metadata.Group,
+            OnJobScheduled(JobInfo.Create(metadata.Group, metadata.Name, 
+                logger: scheduleJob.GetLogger(),
+                scheduleExp: metadata.Schedule,
+                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(metadata.Schedule),
+                nextFire: trigger.GetNextFireTimeUtc()
+            ));
 
-                Schedule = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(metadata.Schedule),
-
-                NextFireTimeUtc = trigger.GetNextFireTimeUtc(),
-                LoggerKey = scheduleJob.GetLogger()
-            });
+            // TODO: Find better way to schedule paused job
+            if(metadata.State == (byte)JobState.Paused)
+            {
+                PauseJob(metadata.Name, metadata.Group);
+            }
         }
 
         public override void UnscheduleJob(BaseJob scheduleJob)
@@ -131,10 +135,7 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.DeleteJob(details.Key);
 
-                    OnJobUnscheduled(new JobInfo {
-                        Name = metadata.Name,
-                        Group = metadata.Group
-                    });
+                    OnJobUnscheduled(JobInfo.Create(metadata.Group, metadata.Name));
                 }
             }
         }
@@ -149,10 +150,7 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.DeleteJob(details.Key);
 
-                    OnJobUnscheduled(new JobInfo {
-                        Name = jobName,
-                        Group = jobGroup
-                    });
+                    OnJobUnscheduled(JobInfo.Create(jobGroup, jobName));
                 }
             }
         }
@@ -180,21 +178,17 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.PauseJob(details.Key);
 
-                    OnJobPaused(new JobInfo {
-                        Name = jobName,
-                        Group = jobGroup,
-                        State = JobState.Paused.ToString()
-                    });
+                    OnJobPaused(JobInfo.Create(jobGroup, jobName,
+                        state: JobState.Paused.ToString()
+                    ));
 
                     return;
                 }
             }
 
-            OnJobResumed(new JobInfo {
-                Name = jobName,
-                Group = jobGroup,
-                State = JobState.Normal.ToString()
-            });
+            OnJobResumed(JobInfo.Create(jobGroup, jobName,
+                state: JobState.Normal.ToString()
+            ));
         }
 
         public override void ResumeJob(string jobName, string jobGroup)
@@ -207,21 +201,17 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.ResumeJob(details.Key);
 
-                    OnJobResumed(new JobInfo {
-                        Name = jobName,
-                        Group = jobGroup,
-                        State = JobState.Normal.ToString()
-                    });
+                    OnJobResumed(JobInfo.Create(jobGroup, jobName,
+                        state: JobState.Normal.ToString()
+                    ));
 
                     return;
                 }
             }
 
-            OnJobPaused(new JobInfo {
-                Name = jobName,
-                Group = jobGroup,
-                State = JobState.Paused.ToString()
-            });
+            OnJobPaused(JobInfo.Create(jobGroup, jobName,
+                state: JobState.Paused.ToString()
+            ));
         }
 
         public override IEnumerable<JobInfo> GetAllJobs()
@@ -268,17 +258,14 @@ namespace Scheduler.Engine.Quartz
                                 ? JobActionState.Executing.ToString()
                                 : string.Empty;
 
-                            jobs.Add(new JobInfo
-                            {
-                                Group = jobGroup,
-                                Name = jobName,
-                                Description = detail.Description,
-                                Schedule = scheduleString,
-                                State = triggerState,
-                                ActionState = actionState,
-                                NextFireTimeUtc = trigger.GetNextFireTimeUtc(),
-                                PrevFireTimeUtc = trigger.GetPreviousFireTimeUtc()
-                            });
+                            jobs.Add(JobInfo.Create(jobGroup, jobName,
+                                desc: detail.Description,
+                                schedule: scheduleString,
+                                state: triggerState,
+                                actionState: actionState,
+                                nextFire: trigger.GetNextFireTimeUtc(),
+                                prevFire: trigger.GetPreviousFireTimeUtc()
+                            ));
                         }
                     }
                 }
@@ -286,6 +273,8 @@ namespace Scheduler.Engine.Quartz
 
             return jobs;
         }
+
+        #region Helpers
 
         private static IScheduler GetScheduler(ITriggerListener triggerListener, IJobListener jobListener)
         {
@@ -297,5 +286,7 @@ namespace Scheduler.Engine.Quartz
 
             return quartzScheduler;
         }
+
+        #endregion
     }
 }

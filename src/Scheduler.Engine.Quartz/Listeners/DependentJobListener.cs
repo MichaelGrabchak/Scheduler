@@ -10,6 +10,7 @@ namespace Scheduler.Engine.Quartz.Listeners
     public class DependentJobListener : IJobListener
     {
         public event JobOperationEventHandler ToBeExecuted;
+        public event JobOperationEventHandler Executed;
         public event JobOperationEventHandler ExecutionVetoed;
         public event JobOperationEventHandler ExecutionSucceeded;
         public event JobOperationEventHandler ExecutionFailed;
@@ -69,7 +70,17 @@ namespace Scheduler.Engine.Quartz.Listeners
 
                     logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been executed successfully");
                 }
+
+                OnExecuted(jobInfo);
             }
+        }
+
+        #region Event handlers
+
+        private void OnExecuted(JobInfo jobInfo)
+        {
+            Executed?.Invoke(this,
+                new JobOperationEventArgs { Job = jobInfo });
         }
 
         private void OnToBeExecuted(JobInfo jobInfo)
@@ -95,5 +106,7 @@ namespace Scheduler.Engine.Quartz.Listeners
             ExecutionFailed?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
         }
+
+        #endregion
     }
 }

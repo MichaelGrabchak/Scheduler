@@ -17,6 +17,7 @@ namespace Scheduler.Engine.Jobs
 
         public string Schedule { get; set; }
         public string Description { get; set; }
+        public byte State { get; set; }
 
         public JobMetadata(IJobDetailService jobDetailService)
         {
@@ -38,6 +39,8 @@ namespace Scheduler.Engine.Jobs
             
             Schedule = jobDetail?.JobSchedule ?? job.Schedule;
             Description = jobDetail?.JobDescription ?? job.GetDescription();
+
+            State = jobDetail?.StatusId ?? 1;
 
             return this;
         }

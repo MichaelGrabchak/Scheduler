@@ -32,7 +32,7 @@ namespace Scheduler.Infrastructure.Data.Services
                 : null;
         }
 
-        public void UpdateJobDetail(JobDetail jobDetail)
+        public void UpdateJobDetail(JobDetail jobDetail, bool updateChangedOnly = false)
         {
             if(jobDetail != null)
             {
@@ -40,11 +40,45 @@ namespace Scheduler.Infrastructure.Data.Services
 
                 if(entity != null)
                 {
-                    entity.JobDescription = jobDetail.JobDescription;
-                    entity.JobSchedule = jobDetail.JobSchedule;
-                    entity.JobLastRunTime = jobDetail.JobLastRunTime;
-                    entity.JobNextRunTime = jobDetail.JobNextRunTime;
-                    entity.StatusId = jobDetail.StatusId;
+                    if (updateChangedOnly)
+                    {
+                        if (jobDetail.JobDescriptionSpecified)
+                        {
+                            entity.JobDescription = jobDetail.JobDescription;
+                        }
+
+                        if (jobDetail.JobScheduleSpecified)
+                        {
+                            entity.JobSchedule = jobDetail.JobSchedule;
+                        }
+
+                        if (jobDetail.JobNextRunTimeSpecified)
+                        {
+                            entity.JobNextRunTime = jobDetail.JobNextRunTime;
+                        }
+
+                        if (jobDetail.JobLastRunTimeSpecified)
+                        {
+                            entity.JobLastRunTime = jobDetail.JobLastRunTime;
+                        }
+
+                        if (jobDetail.StatusId > 0)
+                        {
+                            entity.StatusId = jobDetail.StatusId;
+                        }
+                    }
+                    else
+                    {
+                        entity.JobDescription = jobDetail.JobDescription;
+                        entity.JobSchedule = jobDetail.JobSchedule;
+                        entity.JobNextRunTime = jobDetail.JobNextRunTime;
+                        entity.StatusId = jobDetail.StatusId;
+
+                        if(jobDetail.JobLastRunTime.HasValue)
+                        {
+                            entity.JobLastRunTime = jobDetail.JobLastRunTime;
+                        }
+                    }
 
                     _jobDetailRepository.Update(entity);
 

@@ -176,5 +176,34 @@ namespace Scheduler.Engine.Jobs
                 JobLastRunTime = jobInfo.PrevFireTimeUtc.HasValue ? jobInfo.PrevFireTimeUtc.Value.UtcDateTime : (DateTime?)null
             };
         }
+
+        public static JobInfo Create(string group, string name, 
+            int? id = null,
+            string desc = null, 
+            string schedule = null, 
+            string scheduleExp = null, 
+            string actionState = null, 
+            string state = null,
+            DateTimeOffset? nextFire = null,
+            DateTimeOffset? prevFire = null,
+            string logger = null)
+        {
+            var jobInfo = new JobInfo
+            {
+                Id = id ?? 0,
+                Group = group,
+                Name = name,
+                Description = desc,
+                Schedule = schedule,
+                ScheduleExpression = scheduleExp,
+                ActionState = actionState,
+                State = state,
+                NextFireTimeUtc = nextFire,
+                PrevFireTimeUtc = prevFire,
+                LoggerKey = logger
+            };
+
+            return jobInfo;
+        }
     }
 }

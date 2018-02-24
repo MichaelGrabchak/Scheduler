@@ -94,7 +94,8 @@ namespace Scheduler.Engine
                 new JobOperationEventArgs { Job = jobInfo });
 
             var jobDetail = jobInfo.ToJobDetail();
-            jobDetail.StatusId = 1;
+            jobDetail.StatusId = (byte)JobState.Normal;
+
             _jobDetailService.UpdateJobDetail(jobDetail);
         }
 
@@ -107,17 +108,12 @@ namespace Scheduler.Engine
             JobUnscheduled?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
 
-            _jobDetailService.UpdateJobDetail(new Domain.Data.Dto.JobDetail
-            {
-                Id = jobInfo.Id,
-                JobName = jobInfo.Name,
-                JobGroup = jobInfo.Group,
-                JobDescription = jobInfo.Description,
-                JobSchedule = jobInfo.ScheduleExpression,
-                JobLastRunTime = jobInfo.PrevFireTimeUtc.HasValue ? jobInfo.PrevFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                JobNextRunTime = jobInfo.NextFireTimeUtc.HasValue ? jobInfo.NextFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                StatusId = 2
-            });
+            var jobDetail = jobInfo.ToJobDetail();
+            jobDetail.StatusId = (byte)JobState.Paused;
+            jobDetail.JobNextRunTime = null;
+            jobDetail.JobNextRunTimeSpecified = true;
+
+            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler JobPaused;
@@ -129,17 +125,12 @@ namespace Scheduler.Engine
             JobPaused?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
 
-            _jobDetailService.UpdateJobDetail(new Domain.Data.Dto.JobDetail
-            {
-                Id = jobInfo.Id,
-                JobName = jobInfo.Name,
-                JobGroup = jobInfo.Group,
-                JobDescription = jobInfo.Description,
-                JobSchedule = jobInfo.ScheduleExpression,
-                JobLastRunTime = jobInfo.PrevFireTimeUtc.HasValue ? jobInfo.PrevFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                JobNextRunTime = jobInfo.NextFireTimeUtc.HasValue ? jobInfo.NextFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                StatusId = 2
-            });
+            var jobDetail = jobInfo.ToJobDetail();
+            jobDetail.StatusId = (byte)JobState.Paused;
+            jobDetail.JobNextRunTime = null;
+            jobDetail.JobNextRunTimeSpecified = true;
+
+            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler JobResumed;
@@ -151,17 +142,10 @@ namespace Scheduler.Engine
             JobResumed?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
 
-            _jobDetailService.UpdateJobDetail(new Domain.Data.Dto.JobDetail
-            {
-                Id = jobInfo.Id,
-                JobName = jobInfo.Name,
-                JobGroup = jobInfo.Group,
-                JobDescription = jobInfo.Description,
-                JobSchedule = jobInfo.ScheduleExpression,
-                JobLastRunTime = jobInfo.PrevFireTimeUtc.HasValue ? jobInfo.PrevFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                JobNextRunTime = jobInfo.NextFireTimeUtc.HasValue ? jobInfo.NextFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                StatusId = 1
-            });
+            var jobDetail = jobInfo.ToJobDetail();
+            jobDetail.StatusId = (byte)JobState.Normal;
+
+            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler JobTriggered;
@@ -172,6 +156,9 @@ namespace Scheduler.Engine
 
             JobTriggered?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
+
+            var jobDetail = jobInfo.ToJobDetail();
+            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler BeforeJobExecution;
@@ -218,6 +205,9 @@ namespace Scheduler.Engine
 
             JobExecutionSkipped?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
+
+            var jobDetail = jobInfo.ToJobDetail();
+            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected string JobsDirectory { get; private set; }
