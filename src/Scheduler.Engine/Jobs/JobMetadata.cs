@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Scheduler.Domain.Data.Services;
+using Scheduler.Engine.Enums;
 using Scheduler.Jobs;
 using Scheduler.Jobs.Extensions;
 
@@ -40,7 +41,7 @@ namespace Scheduler.Engine.Jobs
             Schedule = jobDetail?.JobSchedule ?? job.Schedule;
             Description = jobDetail?.JobDescription ?? job.GetDescription();
 
-            State = jobDetail?.StatusId ?? 1;
+            State = jobDetail?.StatusId ?? (byte)JobState.Normal;
 
             return this;
         }

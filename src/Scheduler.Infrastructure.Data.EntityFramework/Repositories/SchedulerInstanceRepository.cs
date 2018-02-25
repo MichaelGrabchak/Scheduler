@@ -14,15 +14,5 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
         {
 
         }
-
-        //public SchedulerInstanceDetails GetInstanceDetails(string instanceId)
-        //{
-        //    //return Connection.Query<SchedulerInstanceDetails>(
-        //    //    "usp_GETSCHEDULERINSTANCEDETAILS", 
-        //    //    param: new { Id = instanceId },
-        //    //    commandType: CommandType.StoredProcedure,
-        //    //    transaction: Transaction
-        //    //).SingleOrDefault();
-        //}
     }
 }

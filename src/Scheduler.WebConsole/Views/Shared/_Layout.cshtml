@@ -21,6 +21,11 @@
     <script src="~/Scripts/bootstrap-toggle.min.js"></script>
 
     <link href="~/Content/Themes/Default/styles.css" rel="stylesheet" />
+
+    <script src="~/Scripts/loadingoverlay.min.js"></script>
+
+    <script src="~/Scripts/Scheduler/Scheduler.common.js"></script>
+    <script src="~/Scripts/Scheduler/Scheduler.common.plugins.js"></script>
 </head>
 <body>
     <div class="content">
@@ -28,3 +33,7 @@
     </div>
 </body>
 </html>
+
+<script>
+    scheduler.common.plugins.showLoadingOverlay();
+</script>

@@ -17,11 +17,12 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         public JobDetail GetJobDetail(string name, string group)
         {
-            return _dbSet.FirstOrDefault(
-                entity => 
-                    entity.InstanceId == _schedulerContext.InstanceId && 
-                    entity.JobName == name && 
-                    entity.JobGroup == group);
+            return _dbSet
+                .FirstOrDefault(
+                    entity => 
+                        entity.InstanceId == _schedulerContext.InstanceId && 
+                        entity.JobName == name && 
+                        entity.JobGroup == group);
         }
 
         protected override void AddEntity(JobDetail entity)
@@ -29,14 +30,5 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
             entity.InstanceId = _schedulerContext.InstanceId;
             base.AddEntity(entity);
         }
-
-        //public JobDetail GetJobDetail(string name, string group, string instanceId)
-        //{
-        //    //return Connection.Query<JobDetail>(
-        //    //    sql: $"SELECT * FROM dbo.JOBDETAIL WHERE INSTANCEID = @InstanceId AND JobName = @JobName AND JobGroup = @JobGroup",
-        //    //    param: new { InstanceId = instanceId, JobName = name, JobGroup = group },
-        //    //    transaction: Transaction
-        //    //).FirstOrDefault();
-        //}
     }
 }

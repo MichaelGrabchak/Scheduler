@@ -1,7 +1,8 @@
-﻿scheduler = window.scheduler || {};
+﻿var scheduler = window.scheduler || {};
+scheduler.management = scheduler.management || {};
 
 (function() {
-    var self = scheduler;
+    var self = scheduler.management;
 
     var templates = function () {
         var $jobGroupTemplate = $("#jobGroup-template");
@@ -159,6 +160,10 @@
             reset: function () { cleanUp() }
         };
     }();
+
+    function hideLoadingScreen() {
+        $.LoadingOverlay("hide");
+    }
 
     var schedulerEngine = function() {
         var $startEngine = $("#startEngine");
@@ -446,10 +451,10 @@
         }();
 
         function init() {
-            $.connection.hub.start().done(function () {
+            schedulerHub.connection.start({ waitForPageLoad: false }).done(function () {
                 schedulerHub.server.getJobsSummary().done(displayJobs);
                 schedulerHub.server.getEngineInfo().done(setEngineInfo);
-            });
+            }).done(scheduler.common.plugins.hideLoadingOverlay);
         };
 
         function displayJobs(jobsData, rescheduleJobs) {
@@ -562,10 +567,10 @@
             onStartClick: function() { onStartEngineClick() },
             onPauseClick: function () { onPauseEngineClick() },
             onTurnOffClick: function () { onTurnOffEngineClick() }
-    };
+        };
     }();
 
-    self.init = function() {
+    self.init = function () {
         schedulerEngine.init();
     };
 
@@ -582,8 +587,4 @@
             schedulerEngine.onTurnOffClick();
         });
     };
-
-    String.prototype.trimAll = function () {
-        return this.replace(/\s/g, "");
-    }
 })();
