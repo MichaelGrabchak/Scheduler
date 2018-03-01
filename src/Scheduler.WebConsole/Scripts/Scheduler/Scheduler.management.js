@@ -161,10 +161,6 @@ scheduler.management = scheduler.management || {};
         };
     }();
 
-    function hideLoadingScreen() {
-        $.LoadingOverlay("hide");
-    }
-
     var schedulerEngine = function() {
         var $startEngine = $("#startEngine");
         var $pauseEngine = $("#pauseEngine");

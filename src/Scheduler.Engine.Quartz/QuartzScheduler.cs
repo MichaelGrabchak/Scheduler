@@ -241,31 +241,7 @@ namespace Scheduler.Engine.Quartz
                                 continue;
                             }
 
-                            var description = detail.Description;
-
-                            var scheduleString = string.Empty;
-                            if (trigger is ICronTrigger)
-                            {
-                                scheduleString = CronExpressionDescriptor
-                                    .ExpressionDescriptor
-                                    .GetDescription(
-                                        (trigger as ICronTrigger).CronExpressionString);
-                            }
-
-                            var triggerState = _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString();
-
-                            var actionState = (_quartzScheduler.GetCurrentlyExecutingJobs().ContainsJob(jobName, jobGroup))
-                                ? JobActionState.Executing.ToString()
-                                : string.Empty;
-
-                            jobs.Add(JobInfo.Create(jobGroup, jobName,
-                                desc: detail.Description,
-                                schedule: scheduleString,
-                                state: triggerState,
-                                actionState: actionState,
-                                nextFire: trigger.GetNextFireTimeUtc(),
-                                prevFire: trigger.GetPreviousFireTimeUtc()
-                            ));
+                            jobs.Add(ExtractJobInfo(jobName, jobGroup, detail, trigger));
                         }
                     }
                 }
@@ -275,6 +251,37 @@ namespace Scheduler.Engine.Quartz
         }
 
         #region Helpers
+
+        private JobInfo ExtractJobInfo(string name, string group, IJobDetail jobDetail, ITrigger trigger)
+        {
+            var jobInfo = _jobDetailService.GetJobDetail(name, group);
+
+            var scheduleExpr = string.Empty;
+            if (trigger is ICronTrigger)
+            {
+                scheduleExpr = (trigger as ICronTrigger).CronExpressionString;
+            }
+
+            var originJobInfo = JobInfo.Create(
+                group, name,
+                desc: jobDetail.Description,
+                schedule: scheduleExpr,
+                state: _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString(),
+                actionState: (_quartzScheduler.GetCurrentlyExecutingJobs().ContainsJob(name, group)) ? JobActionState.Executing.ToString() : string.Empty,
+                nextFire: trigger.GetNextFireTimeUtc(),
+                prevFire: trigger.GetPreviousFireTimeUtc()
+            );
+
+            return JobInfo.Create(
+                group, name,
+                desc: jobInfo?.JobDescription ?? originJobInfo.Description,
+                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobInfo?.JobSchedule ?? originJobInfo.Schedule),
+                state: originJobInfo.State,
+                actionState: originJobInfo.ActionState,
+                nextFire: jobInfo?.JobNextRunTime ?? originJobInfo.NextFireTimeUtc,
+                prevFire: jobInfo?.JobLastRunTime ?? originJobInfo.PrevFireTimeUtc
+            );
+        }
 
         private static IScheduler GetScheduler(ITriggerListener triggerListener, IJobListener jobListener)
         {
