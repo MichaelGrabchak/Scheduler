@@ -68,6 +68,10 @@ namespace Scheduler.Engine
 
         protected virtual void OnEngineTerminated()
         {
+            FullyQualifiedName = null;
+            Version = null;
+
+            StartTime = DateTimeOffset.MinValue;
             State = EngineState.Terminated;
 
             Logger.Warn("The scheduler engine has shut down.");

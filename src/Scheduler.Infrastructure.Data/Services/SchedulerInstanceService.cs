@@ -24,7 +24,8 @@ namespace Scheduler.Infrastructure.Data.Services
                     InstanceId = schedulerInstance.Instance.Id.ToString(),
                     InstanceName = schedulerInstance.Instance.InstanceName,
                     IsImmediateEngineStartEnabled = schedulerInstance.IsImmediateEngineStartEnabled,
-                    IsJobsDirectoryTrackingEnabled = schedulerInstance.IsJobsDirectoryTrackingEnabled
+                    IsJobsDirectoryTrackingEnabled = schedulerInstance.IsJobsDirectoryTrackingEnabled,
+                    JobsDirectory = schedulerInstance.JobsDirectory
                 };
             }
 

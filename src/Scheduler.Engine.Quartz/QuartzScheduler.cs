@@ -77,7 +77,8 @@ namespace Scheduler.Engine.Quartz
         {
             if (_quartzScheduler?.IsShutdown == false)
             {
-                _quartzScheduler.Shutdown();
+                _quartzScheduler.Shutdown(false);
+                _quartzScheduler = null;
 
                 OnEngineTerminated();
             }

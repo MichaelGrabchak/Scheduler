@@ -7,5 +7,7 @@
 
         public bool IsImmediateEngineStartEnabled { get; set; }
         public bool IsJobsDirectoryTrackingEnabled { get; set; }
+
+        public string JobsDirectory { get; set; }
     }
 }

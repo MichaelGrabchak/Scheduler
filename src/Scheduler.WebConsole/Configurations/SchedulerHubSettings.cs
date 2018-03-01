@@ -18,6 +18,7 @@ namespace Scheduler.WebConsole.Configurations
             InstanceName = instanceSettings.InstanceName;
             StartEngineImmediately = instanceSettings.IsImmediateEngineStartEnabled;
             EnableJobsDirectoryTracking = instanceSettings.IsJobsDirectoryTrackingEnabled;
+            JobsDirectory = instanceSettings.JobsDirectory;
 
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<SchedulerHub>();
 

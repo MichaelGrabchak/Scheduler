@@ -1,4 +1,6 @@
-﻿using Scheduler.Core;
+﻿using System;
+using System.IO;
+using System.Reflection;
 
 namespace Scheduler.Engine
 {
@@ -32,7 +34,7 @@ namespace Scheduler.Engine
 
         public SchedulerSettings()
         {
-            JobsDirectory = Constants.Scheduler.DefaultJobsPath;
+            JobsDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             StartEngineImmediately = true;
             EnableJobsDirectoryTracking = true;

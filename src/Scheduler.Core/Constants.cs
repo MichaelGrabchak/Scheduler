@@ -9,8 +9,6 @@
 
         public class Scheduler
         {
-            public const string DefaultJobsPath = @"E:\Development\Sources\Scheduler\src\Jobs";
-
             public class Frequency
             {
                 public class Cron

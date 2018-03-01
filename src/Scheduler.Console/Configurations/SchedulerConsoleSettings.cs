@@ -16,6 +16,7 @@ namespace Scheduler.Console.Configurations
             InstanceName = instanceSettings.InstanceName;
             StartEngineImmediately = instanceSettings.IsImmediateEngineStartEnabled;
             EnableJobsDirectoryTracking = instanceSettings.IsJobsDirectoryTrackingEnabled;
+            JobsDirectory = instanceSettings.JobsDirectory;
 
             EngineStarted = (sender, e) => { ConsoleApi.WriteLine("The engine has been started..."); };
             EnginePaused = (sender, e) => { ConsoleApi.WriteLine("The engine has been paused..."); };

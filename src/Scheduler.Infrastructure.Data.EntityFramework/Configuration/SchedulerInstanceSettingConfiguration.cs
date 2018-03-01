@@ -11,11 +11,11 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Configuration
         {
             HasKey(x => x.Id);
 
-
             Property(x => x.Id).HasColumnName("ID").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).IsRequired();
             Property(x => x.InstanceId).HasColumnName("INSTANCEID").IsRequired();
             Property(x => x.IsImmediateEngineStartEnabled).HasColumnName("ISIMMEDIATEENGINESTARTENABLED").IsRequired();
             Property(x => x.IsJobsDirectoryTrackingEnabled).HasColumnName("ISJOBSDIRECTORYTRACKINGENABLED").IsRequired();
+            Property(x => x.JobsDirectory).HasColumnName("JOBSDIRECTORYPATH").IsOptional();
 
             HasRequired(x => x.Instance).WithMany().HasForeignKey(x => x.InstanceId);
 
