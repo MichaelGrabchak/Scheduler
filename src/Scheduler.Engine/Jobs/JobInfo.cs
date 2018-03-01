@@ -24,6 +24,75 @@ namespace Scheduler.Engine.Jobs
 
         public string LoggerKey { get; set; }
 
+        #region Property Specified
+
+        private bool _isDescSpecified;
+        public bool DescriptionSpecified
+        {
+            get
+            {
+                return (_isDescSpecified || !string.IsNullOrEmpty(Description));
+            }
+            set
+            {
+                _isDescSpecified = value;
+            }
+        }
+
+        private bool _isScheduleSpecified;
+        public bool ScheduleSpecified
+        {
+            get
+            {
+                return (_isScheduleSpecified || !string.IsNullOrEmpty(Schedule));
+            }
+            set
+            {
+                _isScheduleSpecified = value;
+            }
+        }
+
+        private bool _isStateSpecified;
+        public bool StateSpecified
+        {
+            get
+            {
+                return (_isStateSpecified || !string.IsNullOrEmpty(State));
+            }
+            set
+            {
+                _isStateSpecified = value;
+            }
+        }
+
+        private bool _isNextRunSpecified;
+        public bool NextFireTimeSpecified
+        {
+            get
+            {
+                return (_isNextRunSpecified || NextFireTimeUtc.HasValue);
+            }
+            set
+            {
+                _isNextRunSpecified = value;
+            }
+        }
+
+        private bool _isLastRunSpecified;
+        public bool PrevFireTimeSpecified
+        {
+            get
+            {
+                return (_isLastRunSpecified || PrevFireTimeUtc.HasValue);
+            }
+            set
+            {
+                _isLastRunSpecified = value;
+            }
+        }
+
+        #endregion
+
         public override string ToString()
         {
             var stringBuilder = new StringBuilder();
@@ -89,103 +158,15 @@ namespace Scheduler.Engine.Jobs
             };
         }
 
-        public JobInfo SetValues(JobInfo newValues)
-        {
-            if(newValues != null)
-            {
-                if(Id <= 0)
-                {
-                    Id = newValues.Id;
-                }
-
-                if (string.IsNullOrEmpty(Name))
-                {
-                    Name = newValues.Name;
-                }
-
-                if (string.IsNullOrEmpty(Group))
-                {
-                    Group = newValues.Group;
-                }
-
-                if (string.IsNullOrEmpty(Description))
-                {
-                    Description = newValues.Description;
-                }
-
-                if (string.IsNullOrEmpty(Schedule))
-                {
-                    Schedule = newValues.Schedule;
-                }
-
-                if (string.IsNullOrEmpty(ScheduleExpression))
-                {
-                    ScheduleExpression = newValues.ScheduleExpression;
-                }
-
-                if (string.IsNullOrEmpty(ActionState))
-                {
-                    ActionState = newValues.ActionState;
-                }
-
-                if(string.IsNullOrEmpty(State))
-                {
-                    State = newValues.State;
-                }
-
-                if (!NextFireTimeUtc.HasValue)
-                {
-                    NextFireTimeUtc = newValues.NextFireTimeUtc;
-                }
-
-                if (!PrevFireTimeUtc.HasValue)
-                {
-                    PrevFireTimeUtc = newValues.PrevFireTimeUtc;
-                }
-
-                if(string.IsNullOrEmpty(LoggerKey))
-                {
-                    LoggerKey = newValues.LoggerKey;
-                }
-            }
-
-            return this;
-        }
-
-        public static JobInfo Transform(JobMetadata metadata)
-        {
-            return new JobInfo
-            {
-                Name = metadata.Name,
-                Group = metadata.Group,
-                Description = metadata.Description,
-                ScheduleExpression = metadata.Schedule
-            };
-        }
-
-        public static JobDetail Transform(JobInfo jobInfo)
-        {
-            return new JobDetail
-            {
-                Id = jobInfo.Id,
-                JobName = jobInfo.Name,
-                JobGroup = jobInfo.Group,
-                JobDescription = jobInfo.Description,
-                JobSchedule = jobInfo.ScheduleExpression,
-                JobNextRunTime = jobInfo.NextFireTimeUtc.HasValue ? jobInfo.NextFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                JobLastRunTime = jobInfo.PrevFireTimeUtc.HasValue ? jobInfo.PrevFireTimeUtc.Value.UtcDateTime : (DateTime?)null
-            };
-        }
-
-        public static JobInfo Create(string group, string name, 
+        public static JobInfo Create(string group, string name,
             int? id = null,
-            string desc = null, 
-            string schedule = null, 
-            string scheduleExp = null, 
-            string actionState = null, 
-            string state = null,
-            DateTimeOffset? nextFire = null,
-            DateTimeOffset? prevFire = null,
+            string desc = null, bool isDescSpecified = false,
+            string schedule = null, bool isScheduleSpecified = false,
+            string scheduleExp = null,
+            string actionState = null,
+            string state = null, bool isStateSpecified = false,
+            DateTimeOffset? nextFire = null, bool isNextFireTimeSpecified = false,
+            DateTimeOffset? prevFire = null, bool isPrevFireTimeSpecified = false,
             string logger = null)
         {
             var jobInfo = new JobInfo
@@ -193,13 +174,13 @@ namespace Scheduler.Engine.Jobs
                 Id = id ?? 0,
                 Group = group,
                 Name = name,
-                Description = desc,
-                Schedule = schedule,
+                Description = desc, DescriptionSpecified = isDescSpecified,
+                Schedule = schedule, ScheduleSpecified = isScheduleSpecified,
                 ScheduleExpression = scheduleExp,
                 ActionState = actionState,
-                State = state,
-                NextFireTimeUtc = nextFire,
-                PrevFireTimeUtc = prevFire,
+                State = state, StateSpecified = isStateSpecified,
+                NextFireTimeUtc = nextFire, NextFireTimeSpecified = isNextFireTimeSpecified,
+                PrevFireTimeUtc = prevFire, PrevFireTimeSpecified = isPrevFireTimeSpecified,
                 LoggerKey = logger
             };
 

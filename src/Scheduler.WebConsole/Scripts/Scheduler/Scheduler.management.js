@@ -312,11 +312,11 @@ scheduler.management = scheduler.management || {};
 
                 var jobElement = $(jobElementIdentifier(job.Group, job.Name));
 
-                if (job.Schedule) {
+                if (job.ScheduleSpecified) {
                     jobElement.find(".jobSchedule").text(job.Schedule);
                 }
 
-                if (job.State) {
+                if (job.StateSpecified) {
                     toggleState(job.Group, job.Name, job.State);
                 }
 
@@ -324,15 +324,15 @@ scheduler.management = scheduler.management || {};
                     setJobActionState(job.Group, job.Name, job.ActionState);
                 }
 
-                if (job.State && !job.ActionState) {
+                if (job.StateSpecified && !job.ActionState) {
                     jobElement.find(".jobState").text(job.State);
                 }
 
-                if (job.PreviousFireTime) {
+                if (job.PrevFireTimeSpecified) {
                     jobElement.find(".jobPrevFireTime").text(job.PreviousFireTime);
                 }
 
-                if (job.NextFireTime) {
+                if (job.NextFireTimeSpecified) {
                     jobElement.find(".jobNextFireTime").text(job.NextFireTime);
                 }
             }

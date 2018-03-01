@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 
 using Scheduler.Domain.Data.Services;
 using Scheduler.Engine.Enums;
@@ -179,16 +180,13 @@ namespace Scheduler.Engine.Quartz
                     _quartzScheduler.PauseJob(details.Key);
 
                     OnJobPaused(JobInfo.Create(jobGroup, jobName,
-                        state: JobState.Paused.ToString()
+                        state: JobState.Paused.ToString(),
+                        isNextFireTimeSpecified: true
                     ));
 
                     return;
                 }
             }
-
-            OnJobResumed(JobInfo.Create(jobGroup, jobName,
-                state: JobState.Normal.ToString()
-            ));
         }
 
         public override void ResumeJob(string jobName, string jobGroup)
@@ -201,17 +199,16 @@ namespace Scheduler.Engine.Quartz
                 {
                     _quartzScheduler.ResumeJob(details.Key);
 
+                    var triggers = _quartzScheduler.GetTriggersOfJob(details.Key);
+
                     OnJobResumed(JobInfo.Create(jobGroup, jobName,
-                        state: JobState.Normal.ToString()
+                        state: JobState.Normal.ToString(),
+                        nextFire: triggers.SingleOrDefault().GetNextFireTimeUtc()
                     ));
 
                     return;
                 }
             }
-
-            OnJobPaused(JobInfo.Create(jobGroup, jobName,
-                state: JobState.Paused.ToString()
-            ));
         }
 
         public override IEnumerable<JobInfo> GetAllJobs()
