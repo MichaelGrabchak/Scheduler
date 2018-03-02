@@ -449,7 +449,7 @@ scheduler.management = scheduler.management || {};
         function init() {
             schedulerHub.connection.start({ waitForPageLoad: false }).done(function () {
                 schedulerHub.server.getJobsSummary().done(displayJobs);
-                schedulerHub.server.getEngineInfo().done(setEngineInfo);
+                schedulerHub.server.getEngineInfo().done(setEngineInfo).done(function (data) { resetEngineControlState(data.State); });
             }).done(scheduler.common.plugins.hideLoadingOverlay);
         };
 
@@ -507,6 +507,8 @@ scheduler.management = scheduler.management || {};
                     schedulerInfo.setInstanceName(engineData.InstanceName);
                 }
             }
+
+            return engineData;
         }
 
         function setEngineDetails(engineDetails) {
