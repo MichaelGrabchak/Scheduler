@@ -66,6 +66,9 @@
     <Folder Include="Post-Deployment" />
     <Folder Include="Post-Deployment\dbo" />
     <Folder Include="Post-Deployment\dbo\Tables" />
+    <Folder Include="utility\" />
+    <Folder Include="utility\Stored Procedures\" />
+    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\SCHEDULERSTATUS.sql" />
@@ -74,6 +77,8 @@
     <Build Include="dbo\Tables\JOBSTATUS.sql" />
     <Build Include="dbo\Tables\JOBDETAIL.sql" />
     <Build Include="dbo\Stored Procedures\usp_GETSCHEDULERINSTANCEDETAILS.sql" />
+    <Build Include="utility\Stored Procedures\sp_generate_merge.sql" />
+    <Build Include="Security\utility.sql" />
   </ItemGroup>
   <ItemGroup>
     <!-- workaround for TFS - see https://stackoverflow.com/a/46823232/5120854 -->
