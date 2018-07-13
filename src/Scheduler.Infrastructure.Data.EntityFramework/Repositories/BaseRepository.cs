@@ -85,7 +85,7 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         #endregion
 
-        #region Protected virtual methods)
+        #region Protected virtual methods
 
         protected virtual void AddEntity(TEntity entity)
         {

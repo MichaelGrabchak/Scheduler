@@ -1,0 +1,40 @@
+﻿SET NOCOUNT ON
+
+SET IDENTITY_INSERT [dbo].[SCHEDULERSTATUS] ON
+
+MERGE INTO [dbo].[SCHEDULERSTATUS] AS Target
+USING (VALUES
+  (1,N'StandBy')
+ ,(2,N'Normal')
+ ,(3,N'Paused')
+ ,(4,N'Terminated')
+) AS Source ([ID],[STATUSNAME])
+ON (Target.[ID] = Source.[ID])
+WHEN MATCHED AND (
+	NULLIF(Source.[STATUSNAME], Target.[STATUSNAME]) IS NOT NULL OR NULLIF(Target.[STATUSNAME], Source.[STATUSNAME]) IS NOT NULL) THEN
+ UPDATE SET
+  [STATUSNAME] = Source.[STATUSNAME]
+WHEN NOT MATCHED BY TARGET THEN
+ INSERT([ID],[STATUSNAME])
+ VALUES(Source.[ID],Source.[STATUSNAME])
+WHEN NOT MATCHED BY SOURCE THEN 
+ DELETE
+;
+GO
+DECLARE @mergeError int
+ , @mergeCount int
+SELECT @mergeError = @@ERROR, @mergeCount = @@ROWCOUNT
+IF @mergeError != 0
+ BEGIN
+ PRINT 'ERROR OCCURRED IN MERGE FOR [dbo].[SCHEDULERSTATUS]. Rows affected: ' + CAST(@mergeCount AS VARCHAR(100)); -- SQL should always return zero rows affected
+ END
+ELSE
+ BEGIN
+ PRINT '[dbo].[SCHEDULERSTATUS] rows affected by MERGE: ' + CAST(@mergeCount AS VARCHAR(100));
+ END
+GO
+
+SET IDENTITY_INSERT [dbo].[SCHEDULERSTATUS] OFF
+GO
+SET NOCOUNT OFF
+GO
