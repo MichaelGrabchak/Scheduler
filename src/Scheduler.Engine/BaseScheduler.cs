@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
-using Scheduler.Core.Helpers;
+using Scheduler.Core.Loader;
 using Scheduler.Domain.Data.Services;
 using Scheduler.Engine.Enums;
 using Scheduler.Engine.Jobs;

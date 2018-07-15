@@ -3,13 +3,13 @@
 using Scheduler.Core.Context;
 using Scheduler.Domain.Data.EntityFramework.ContextProviders;
 
-namespace Scheduler.Infrastructure.Data.EntityFramework.Configuration.Context.Providers
+namespace Scheduler.Infrastructure.Data.EntityFramework.Context.Providers
 {
     public class SchedulerDbContextProvider : IDbContextProvider
     {
-        public DbContext DbContext { get; private set; }
+        public DbContext DbContext { get; }
 
-        public SchedulerDbContextProvider(ISchedulerContext context)
+        public SchedulerDbContextProvider(IContext context)
         {
             DbContext = new SchedulerDbContext(context.ConnectionString);
         }

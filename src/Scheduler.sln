@@ -35,9 +35,11 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Scheduler.Database.Core", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Logging", "Scheduler.Logging\Scheduler.Logging.csproj", "{5132F164-07EA-47F4-9BB6-FD3265927EF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Dependencies", "Scheduler.Dependencies\Scheduler.Dependencies.csproj", "{A5DBA6BF-0D61-451F-8CE2-FE9D27D42D0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Core.Dependencies", "Scheduler.Core.Dependencies\Scheduler.Core.Dependencies.csproj", "{A5DBA6BF-0D61-451F-8CE2-FE9D27D42D0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Infrastructure.Dependencies", "Scheduler.Infrastructure.Dependencies\Scheduler.Infrastructure.Dependencies.csproj", "{AA3175F5-9130-4AC2-9AF0-65691533B837}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Core.Loader", "Scheduler.Core.Loader\Scheduler.Core.Loader.csproj", "{FAD0C01E-1F66-4251-BA03-797CD93BF25B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +117,10 @@ Global
 		{AA3175F5-9130-4AC2-9AF0-65691533B837}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA3175F5-9130-4AC2-9AF0-65691533B837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA3175F5-9130-4AC2-9AF0-65691533B837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAD0C01E-1F66-4251-BA03-797CD93BF25B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAD0C01E-1F66-4251-BA03-797CD93BF25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAD0C01E-1F66-4251-BA03-797CD93BF25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAD0C01E-1F66-4251-BA03-797CD93BF25B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

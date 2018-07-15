@@ -9,10 +9,5 @@ namespace Scheduler.Jobs.Attributes
         public string Group { get; set; }
         public string Logger { get; set; }
         public string Description { get; set; }
-
-        public JobMetadataAttribute()
-        {
-
-        }
     }
 }

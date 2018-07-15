@@ -6,22 +6,22 @@ namespace Scheduler.Jobs
 {
     public abstract class BaseJob
     {
-        protected readonly ILogger Logger;
+        private readonly ILogger _logger;
 
         protected BaseJob()
         {
-            Logger = LogManager.GetLogger(this.GetLogger());
+            _logger = LogManager.GetLogger(this.GetLogger());
         }
 
         public abstract string Schedule { get; }
 
         public void Execute()
         {
-            Logger.Info($"Starting {this.GetGroup()}.{this.GetName()} job...");
+            _logger.Info($"Starting {this.GetGroup()}.{this.GetName()} job...");
 
             ExecuteJob();
 
-            Logger.Info("Finishing execution of the job.");
+            _logger.Info("Finishing execution of the job.");
         }
 
         public abstract void ExecuteJob();

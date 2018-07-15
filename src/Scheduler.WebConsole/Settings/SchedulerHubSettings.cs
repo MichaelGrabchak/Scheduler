@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.SignalR;
 
 using Scheduler.Domain.Data.Services;
-using Scheduler.Domain.Entities;
 using Scheduler.Engine;
+using Scheduler.Engine.Extensions;
 using Scheduler.Infrastructure.Hubs;
 
 namespace Scheduler.WebConsole.Settings
@@ -25,15 +25,15 @@ namespace Scheduler.WebConsole.Settings
             EnginePaused = (sender, e) => { hubContext.Clients.All.changeState(e.State.ToString()); };
             EngineTerminated = (sender, e) => { hubContext.Clients.All.changeState(e.State.ToString()); };
 
-            JobScheduled = (sender, e) => { hubContext.Clients.All.jobScheduled(JobDetails.Transform(e.Job)); };
-            JobUnscheduled = (sender, e) => { hubContext.Clients.All.jobUnscheduled(JobDetails.Transform(e.Job)); };
-            JobPaused = (sender, e) => { hubContext.Clients.All.jobUpdate(JobDetails.Transform(e.Job)); };
-            JobResumed = (sender, e) => { hubContext.Clients.All.jobUpdate(JobDetails.Transform(e.Job)); };
+            JobScheduled = (sender, e) => { hubContext.Clients.All.jobScheduled(e.Job.ToJobDetails()); };
+            JobUnscheduled = (sender, e) => { hubContext.Clients.All.jobUnscheduled(e.Job.ToJobDetails()); };
+            JobPaused = (sender, e) => { hubContext.Clients.All.jobUpdate(e.Job.ToJobDetails()); };
+            JobResumed = (sender, e) => { hubContext.Clients.All.jobUpdate(e.Job.ToJobDetails()); };
 
-            BeforeJobExecution = (sender, e) => { hubContext.Clients.All.jobUpdate(JobDetails.Transform(e.Job)); };
-            JobExecutionSucceeded = (sender, e) => { hubContext.Clients.All.jobUpdate(JobDetails.Transform(e.Job)); };
-            JobExecutionFailed = (sender, e) => { hubContext.Clients.All.jobUpdate(JobDetails.Transform(e.Job)); };
-            JobExecutionSkipped = (sender, e) => { hubContext.Clients.All.jobUpdate(JobDetails.Transform(e.Job)); };
+            BeforeJobExecution = (sender, e) => { hubContext.Clients.All.jobUpdate(e.Job.ToJobDetails()); };
+            JobExecutionSucceeded = (sender, e) => { hubContext.Clients.All.jobUpdate(e.Job.ToJobDetails()); };
+            JobExecutionFailed = (sender, e) => { hubContext.Clients.All.jobUpdate(e.Job.ToJobDetails()); };
+            JobExecutionSkipped = (sender, e) => { hubContext.Clients.All.jobUpdate(e.Job.ToJobDetails()); };
         }
     }
 }

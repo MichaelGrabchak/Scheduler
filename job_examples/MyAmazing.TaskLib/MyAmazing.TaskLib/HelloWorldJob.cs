@@ -5,17 +5,25 @@ using Newtonsoft.Json.Linq;
 
 using Scheduler.Jobs;
 using Scheduler.Jobs.Attributes;
+using Scheduler.Logging;
 
 namespace MyAmazing.TaskLib
 {
     [JobMetadata(Name = "Hello World Job", Group = "Another group")]
     public class HelloWorldJob : BaseJob
     {
+        private readonly ILogger _logger;
+
+        public HelloWorldJob(ILoggerProvider loggerProvider)
+        {
+            _logger = loggerProvider.GetLogger();
+        }
+
         public override string Schedule => "0 0/1 * 1/1 * ? *";
 
         public override void ExecuteJob()
         {
-            Logger.Info("What a nice guy...");
+            _logger.Info("What a nice guy...");
 
             var test = new JTokenWriter();
             var test2 = test.GetType().GetProperty("CurrentToken");
@@ -28,7 +36,7 @@ namespace MyAmazing.TaskLib
                 IsCurrentPropertyExist = (test2 != null)
             };
 
-            Logger.Info($"Serialized object: {JsonConvert.SerializeObject(complexObject)}");
+            _logger.Info($"Serialized object: {JsonConvert.SerializeObject(complexObject)}");
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 
+using CronExpressionDescriptor;
+
 using Scheduler.Domain.Data.Services;
 using Scheduler.Engine.Enums;
 using Scheduler.Engine.Jobs;
@@ -114,7 +116,7 @@ namespace Scheduler.Engine.Quartz
             OnJobScheduled(JobInfo.Create(metadata.Group, metadata.Name, 
                 logger: scheduleJob.GetLogger(),
                 scheduleExp: metadata.Schedule,
-                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(metadata.Schedule),
+                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(metadata.Schedule, new Options() { Locale = "en" }),
                 nextFire: trigger.GetNextFireTimeUtc()
             ));
 
@@ -273,7 +275,7 @@ namespace Scheduler.Engine.Quartz
             return JobInfo.Create(
                 group, name,
                 desc: jobInfo?.JobDescription ?? originJobInfo.Description,
-                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobInfo?.JobSchedule ?? originJobInfo.Schedule),
+                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobInfo?.JobSchedule ?? originJobInfo.Schedule, new Options() { Locale = "en" }),
                 state: originJobInfo.State,
                 actionState: originJobInfo.ActionState,
                 nextFire: jobInfo?.JobNextRunTime ?? originJobInfo.NextFireTimeUtc,

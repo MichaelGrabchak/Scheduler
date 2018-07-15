@@ -3,6 +3,7 @@
 using Scheduler.Domain.Services;
 using Scheduler.Domain.Entities;
 using Scheduler.Engine;
+using Scheduler.Engine.Extensions;
 
 namespace Scheduler.Infrastructure.Services
 {
@@ -47,12 +48,12 @@ namespace Scheduler.Infrastructure.Services
 
         public JobsSummary GetJobsSummary()
         {
-            return new JobsSummary(_scheduler.GetAllJobs().Select(JobDetails.Transform));
+            return new JobsSummary(_scheduler.GetAllJobs().Select(x => x.ToJobDetails()));
         }
 
         public EngineInfo GetEngineInfo()
         {
-            return new EngineInfo(_scheduler.GetEngineInfo());
+            return _scheduler.GetEngineInfo().ToEngineInfo();
         }
     }
 }

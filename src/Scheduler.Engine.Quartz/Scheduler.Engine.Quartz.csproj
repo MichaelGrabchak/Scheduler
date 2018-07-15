@@ -37,10 +37,6 @@
     <Reference Include="Quartz, Version=3.0.6.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.0.6\lib\net452\Quartz.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extension\SchedulerExtension.cs" />
@@ -59,28 +55,28 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
-      <Project>{9a991b42-89da-4b3c-8675-0c4e1c7fbacf}</Project>
-      <Name>Scheduler.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Dependencies\Scheduler.Dependencies.csproj">
+    <ProjectReference Include="..\Scheduler.Core.Dependencies\Scheduler.Core.Dependencies.csproj">
       <Project>{a5dba6bf-0d61-451f-8ce2-fe9d27d42d0b}</Project>
-      <Name>Scheduler.Dependencies</Name>
+      <Name>Scheduler.Core.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Core.Loader\Scheduler.Core.Loader.csproj">
+      <Project>{fad0c01e-1f66-4251-ba03-797cd93bf25b}</Project>
+      <Name>Scheduler.Core.Loader</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
-      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Project>{5d366f7c-075d-49ff-a742-78853aa7a6dd}</Project>
       <Name>Scheduler.Domain.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
-      <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
+      <Project>{198e6f67-49dc-41a0-a03a-ddc81f3e25cf}</Project>
       <Name>Scheduler.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Jobs\Scheduler.Jobs.csproj">
-      <Project>{FC3B22A9-D34F-466F-8094-0444A9E67B4D}</Project>
+      <Project>{fc3b22a9-d34f-466f-8094-0444a9e67b4d}</Project>
       <Name>Scheduler.Jobs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Logging\Scheduler.Logging.csproj">
-      <Project>{5132F164-07EA-47F4-9BB6-FD3265927EF6}</Project>
+      <Project>{5132f164-07ea-47f4-9bb6-fd3265927ef6}</Project>
       <Name>Scheduler.Logging</Name>
     </ProjectReference>
   </ItemGroup>

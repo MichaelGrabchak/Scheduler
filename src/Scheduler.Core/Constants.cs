@@ -2,19 +2,13 @@
 {
     public class Constants
     {
-        public class Scheduler
+        public class System
         {
-            public class System
-            {
-                public const string DefaultLogger = "SchedulerLogger";
-            }
+            public const string InstanceIdKey = "SchedulerInstanceId";
 
-            public class Frequency
+            public class DataWarehouse
             {
-                public class Cron
-                {
-                    public const string EveryMinute = "0 0/1 * 1/1 * ? *";
-                }
+                public const string ConnectionStringKey = "SchedulerDWH";
             }
         }
     }

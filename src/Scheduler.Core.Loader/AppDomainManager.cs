@@ -3,13 +3,13 @@ using System.IO;
 using System.Reflection;
 using System.Security.Policy;
 
-namespace Scheduler.Core.Helpers
+namespace Scheduler.Core.Loader
 {
-    public static class AppDomainManager
+    internal static class AppDomainManager
     {
         private static string RootPath => Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
-        public static AppDomain CreateDomain(string name, string applicationBase = null)
+        internal static AppDomain CreateDomain(string name, string applicationBase = null)
         {
             var appDomainSetup = new AppDomainSetup()
             {
@@ -21,7 +21,7 @@ namespace Scheduler.Core.Helpers
             return AppDomain.CreateDomain(name, adevidence, appDomainSetup);
         }
 
-        public static void ReleaseDomain(AppDomain domain)
+        internal static void ReleaseDomain(AppDomain domain)
         {
             if(domain != null)
             {
@@ -29,7 +29,7 @@ namespace Scheduler.Core.Helpers
             }
         }
 
-        public static void SetResolverOptions(string assemblyFolder, string assemblyName = "*", string assemblyExtension = "dll")
+        internal static void SetResolverOptions(string assemblyFolder, string assemblyName = "*", string assemblyExtension = "dll")
         {
             AppDomain.CurrentDomain.AssemblyResolve += (s, e) => NewDomain_AssemblyResolve(s, e, assemblyFolder, assemblyName, assemblyExtension);
         }

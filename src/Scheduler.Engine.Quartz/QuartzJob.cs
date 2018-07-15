@@ -1,11 +1,12 @@
 ﻿using System;
 
-using Scheduler.Core.Helpers;
-using Scheduler.Dependencies;
 using Scheduler.Jobs;
 
 using Quartz;
 using System.Threading.Tasks;
+
+using Scheduler.Core.Dependencies;
+using Scheduler.Core.Loader;
 
 namespace Scheduler.Engine.Quartz
 {

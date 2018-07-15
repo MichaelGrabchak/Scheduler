@@ -9,7 +9,7 @@ using Scheduler.Console.Configurations;
 
 using Microsoft.Practices.Unity;
 
-using Scheduler.Dependencies;
+using Scheduler.Core.Dependencies;
 using Scheduler.Logging;
 using Scheduler.Logging.Loggers;
 using Scheduler.Logging.NLog.Loggers;

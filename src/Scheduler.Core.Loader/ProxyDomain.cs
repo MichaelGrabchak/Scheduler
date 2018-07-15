@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Scheduler.Core.Helpers
+namespace Scheduler.Core.Loader
 {
-    public class ProxyDomain : MarshalByRefObject
+    internal class ProxyDomain : MarshalByRefObject
     {
-        public Assembly GetAssembly(string path)
+        internal Assembly GetAssembly(string path)
         {
             try
             {

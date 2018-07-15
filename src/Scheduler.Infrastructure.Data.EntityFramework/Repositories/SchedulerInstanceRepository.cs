@@ -9,7 +9,7 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 {
     public class SchedulerInstanceRepository : BaseRepository<SchedulerInstance, Guid>, ISchedulerInstanceRepository
     {
-        public SchedulerInstanceRepository(IDbContextProvider dbContextProvider, ISchedulerContext schedulerContext)
+        public SchedulerInstanceRepository(IDbContextProvider dbContextProvider, IContext schedulerContext)
             : base(dbContextProvider, schedulerContext)
         {
 

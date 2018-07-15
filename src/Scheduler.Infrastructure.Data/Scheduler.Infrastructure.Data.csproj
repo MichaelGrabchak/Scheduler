@@ -31,37 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Services\JobDetailService.cs" />
     <Compile Include="Services\SchedulerInstanceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
-      <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
-      <Name>Scheduler.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
-      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Project>{5d366f7c-075d-49ff-a742-78853aa7a6dd}</Project>
       <Name>Scheduler.Domain.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj">
-      <Project>{BFAAB2FE-7208-4C3A-80D1-9B1DCCE41F3B}</Project>
-      <Name>Scheduler.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

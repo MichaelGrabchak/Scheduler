@@ -1,4 +1,4 @@
-﻿namespace Scheduler.Dependencies.Configurations
+﻿namespace Scheduler.Core.Dependencies.Configurations
 {
     public interface IDependencyConfiguration
     {

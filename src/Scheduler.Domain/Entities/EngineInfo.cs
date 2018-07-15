@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Globalization;
-
-using Scheduler.Engine;
+﻿using System.Text;
 
 namespace Scheduler.Domain.Entities
 {
@@ -14,19 +10,6 @@ namespace Scheduler.Domain.Entities
         public string State { get; set; }
         public string InstanceId { get; set; }
         public string InstanceName { get; set; }
-
-        public EngineInfo(EngineDetails details)
-        {
-            if (details != null)
-            {
-                RunningSince = (details.StartDate != DateTimeOffset.MinValue) ? details.StartDate.ToString(CultureInfo.InvariantCulture) : null;
-                Version = details.Version;
-                Engine = details.Name;
-                State = details.State;
-                InstanceId = details.InstanceId;
-                InstanceName = details.InstanceName;
-            }
-        }
 
         public override string ToString()
         {

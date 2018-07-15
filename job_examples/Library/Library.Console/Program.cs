@@ -1,5 +1,6 @@
-﻿using Scheduler.Dependencies;
+﻿using Scheduler.Core.Dependencies;
 using Scheduler.Logging;
+using Scheduler.Logging.Loggers;
 
 namespace Library.Console
 {

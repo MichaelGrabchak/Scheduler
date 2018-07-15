@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
-using Scheduler.Dependencies;
+using Scheduler.Core.Dependencies;
 using Scheduler.Engine;
+using Scheduler.Infrastructure.Dependencies.Activators;
 using Scheduler.Infrastructure.Hubs;
-using Scheduler.Infrastructure.Utils;
 using Scheduler.WebConsole.Settings;
 
 namespace Scheduler.WebConsole.Dependencies

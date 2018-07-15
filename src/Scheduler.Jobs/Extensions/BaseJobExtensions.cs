@@ -1,6 +1,5 @@
 ﻿using System;
 
-using Scheduler.Core;
 using Scheduler.Jobs.Attributes;
 
 namespace Scheduler.Jobs.Extensions

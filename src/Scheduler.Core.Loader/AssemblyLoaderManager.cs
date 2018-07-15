@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 
-using Scheduler.Dependencies;
+using Scheduler.Core.Dependencies;
 using Scheduler.Logging;
 using Scheduler.Logging.Loggers;
 
-namespace Scheduler.Core.Helpers
+namespace Scheduler.Core.Loader
 {
     public class AssemblyLoaderManager
     {

@@ -1,7 +1,5 @@
 ﻿using System;
 
-using Scheduler.Core;
-
 using INLogLogger = NLog.ILogger;
 using NLogLogManager = NLog.LogManager;
 
@@ -18,7 +16,7 @@ namespace Scheduler.Logging.NLog.Loggers
 
         public NLogLogger(string logName)
         {
-            if (logName == Constants.Scheduler.System.DefaultLogger || string.IsNullOrEmpty(logName))
+            if (logName == Constants.LoggerNames.DefaultLogger || string.IsNullOrEmpty(logName))
             {
                 _logger = NLogLogManager.GetCurrentClassLogger();
                 return;

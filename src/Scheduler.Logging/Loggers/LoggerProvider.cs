@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Scheduler.Dependencies;
+using Scheduler.Core.Dependencies;
 
 namespace Scheduler.Logging.Loggers
 {

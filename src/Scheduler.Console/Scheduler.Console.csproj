@@ -72,13 +72,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Core.Dependencies\Scheduler.Core.Dependencies.csproj">
+      <Project>{a5dba6bf-0d61-451f-8ce2-fe9d27d42d0b}</Project>
+      <Name>Scheduler.Core.Dependencies</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
       <Project>{9a991b42-89da-4b3c-8675-0c4e1c7fbacf}</Project>
       <Name>Scheduler.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Dependencies\Scheduler.Dependencies.csproj">
-      <Project>{a5dba6bf-0d61-451f-8ce2-fe9d27d42d0b}</Project>
-      <Name>Scheduler.Dependencies</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
       <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>

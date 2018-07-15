@@ -1,6 +1,8 @@
 ﻿using System.Data.Entity;
 
-namespace Scheduler.Infrastructure.Data.EntityFramework.Configuration.Context
+using Scheduler.Infrastructure.Data.EntityFramework.Configuration;
+
+namespace Scheduler.Infrastructure.Data.EntityFramework.Context
 {
     public class SchedulerDbContext : DbContext
     {

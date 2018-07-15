@@ -31,23 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Configuration\JobDetailConfiguration.cs" />
     <Compile Include="Configuration\JobStatusConfiguration.cs" />
     <Compile Include="Configuration\SchedulerInstanceConfiguration.cs" />
@@ -65,21 +48,28 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
-      <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
+      <Project>{9a991b42-89da-4b3c-8675-0c4e1c7fbacf}</Project>
       <Name>Scheduler.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data.EntityFramework\Scheduler.Domain.Data.EntityFramework.csproj">
-      <Project>{29F066C0-222E-4252-85E6-A166813FBAC9}</Project>
+      <Project>{29f066c0-222e-4252-85e6-a166813fbac9}</Project>
       <Name>Scheduler.Domain.Data.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
-      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Project>{5d366f7c-075d-49ff-a742-78853aa7a6dd}</Project>
       <Name>Scheduler.Domain.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Infrastructure.Data\Scheduler.Infrastructure.Data.csproj">
-      <Project>{acc43fc4-582c-471b-92f4-0f9af44ab7ac}</Project>
-      <Name>Scheduler.Infrastructure.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

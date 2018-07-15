@@ -2,25 +2,31 @@
 
 using MyAmazing.TaskLib;
 
-using Scheduler.Dependencies;
+using Scheduler.Core.Dependencies;
 using Scheduler.Logging;
+using Scheduler.Logging.Loggers;
+using Scheduler.Logging.NLog.Loggers;
 
 namespace MyAmazing.Console
 {
     public class ProgramStarter
     {
+        private readonly ILogger _logger;
+
         private readonly HelloWorldJob _helloWorldJob;
         private readonly GoodbyeWorldJob _goodbyeWorldJob;
 
-        public ProgramStarter(HelloWorldJob helloWorldJob, GoodbyeWorldJob goodbyeWorldJob)
+        public ProgramStarter(HelloWorldJob helloWorldJob, GoodbyeWorldJob goodbyeWorldJob, ILoggerProvider loggerProvider)
         {
             _helloWorldJob = helloWorldJob;
             _goodbyeWorldJob = goodbyeWorldJob;
+
+            _logger = loggerProvider.GetLogger();
         }
 
         public void Run()
         {
-            System.Console.WriteLine("Starting the Console...");
+            _logger.Info("Starting the Console...");
 
             Task.Run(() =>
             {
@@ -44,7 +50,7 @@ namespace MyAmazing.Console
             Container.RegisterType<ProgramStarter, ProgramStarter>();
 
             // Custom stuff
-            Container.RegisterType<ILogger, Logger>();
+            Container.RegisterType<ILogger, NLogLogger>(Constants.LoggerNames.DefaultLogger);
             Container.RegisterType<ILoggerProvider, LoggerProvider>();
         }
 

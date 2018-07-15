@@ -1,9 +1,10 @@
 ﻿using System;
 
-using Microsoft.Practices.Unity;
 using Microsoft.AspNet.SignalR.Hubs;
 
-namespace Scheduler.Infrastructure.Utils
+using Unity;
+
+namespace Scheduler.Infrastructure.Dependencies.Activators
 {
     public class UnityHubActivator : IHubActivator
     {

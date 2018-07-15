@@ -1,6 +1,6 @@
 using System.Web.Mvc;
 
-using Scheduler.Dependencies;
+using Scheduler.Core.Dependencies;
 using Scheduler.Engine;
 using Scheduler.Infrastructure.Dependencies;
 using Scheduler.WebConsole.Settings;

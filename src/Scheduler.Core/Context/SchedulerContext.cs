@@ -3,16 +3,17 @@ using System.Configuration;
 
 namespace Scheduler.Core.Context
 {
-    public class SchedulerContext : ISchedulerContext
+    public class SchedulerContext : IContext
     {
-        private string RawInstanceId = ConfigurationManager.AppSettings.Get("SchedulerInstanceId");
         public Guid InstanceId { get; }
 
-        public string ConnectionString => ConfigurationManager.ConnectionStrings["SchedulerDWH"].ConnectionString;
+        public string ConnectionString { get; }
 
         public SchedulerContext()
         {
-            InstanceId = new Guid(RawInstanceId);
+            InstanceId = new Guid(ConfigurationManager.AppSettings.Get(Constants.System.InstanceIdKey));
+
+            ConnectionString = ConfigurationManager.ConnectionStrings[Constants.System.DataWarehouse.ConnectionStringKey].ConnectionString;
         }
     }
 }

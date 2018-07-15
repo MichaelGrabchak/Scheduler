@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
+using Unity.Resolution;
 
-namespace Scheduler.Dependencies
+namespace Scheduler.Core.Dependencies
 {
     public class Container
     {

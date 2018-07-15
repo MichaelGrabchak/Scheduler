@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{13229119-7B77-4C80-A4B1-0D62ABF9718F}"
 	ProjectSection(SolutionItems) = preProject
-		Binaries\Scheduler.Dependencies.dll = Binaries\Scheduler.Dependencies.dll
+		Binaries\Scheduler.Core.Dependencies.dll = Binaries\Scheduler.Core.Dependencies.dll
 		Binaries\Scheduler.Jobs.dll = Binaries\Scheduler.Jobs.dll
 		Binaries\Scheduler.Logging.dll = Binaries\Scheduler.Logging.dll
 	EndProjectSection

@@ -31,23 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="BaseScheduler.cs" />
     <Compile Include="EngineDetails.cs" />
     <Compile Include="Enums\EngineState.cs" />
     <Compile Include="Enums\JobActionState.cs" />
     <Compile Include="Enums\JobState.cs" />
+    <Compile Include="Extensions\EngineDetailsExtensions.cs" />
+    <Compile Include="Extensions\JobInfoExtensions.cs" />
     <Compile Include="ISchedulerEngine.cs" />
-    <Compile Include="Jobs\JobsFactory.cs" />
     <Compile Include="SchedulerEventHandlers.cs" />
     <Compile Include="SchedulerSettings.cs" />
     <Compile Include="Jobs\JobInfo.cs" />
@@ -55,22 +46,29 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
-      <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
-      <Name>Scheduler.Core</Name>
+    <ProjectReference Include="..\Scheduler.Core.Loader\Scheduler.Core.Loader.csproj">
+      <Project>{fad0c01e-1f66-4251-ba03-797cd93bf25b}</Project>
+      <Name>Scheduler.Core.Loader</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
-      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Project>{5d366f7c-075d-49ff-a742-78853aa7a6dd}</Project>
       <Name>Scheduler.Domain.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj">
+      <Project>{bfaab2fe-7208-4c3a-80d1-9b1dcce41f3b}</Project>
+      <Name>Scheduler.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Jobs\Scheduler.Jobs.csproj">
-      <Project>{FC3B22A9-D34F-466F-8094-0444A9E67B4D}</Project>
+      <Project>{fc3b22a9-d34f-466f-8094-0444a9e67b4d}</Project>
       <Name>Scheduler.Jobs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Logging\Scheduler.Logging.csproj">
-      <Project>{5132F164-07EA-47F4-9BB6-FD3265927EF6}</Project>
+      <Project>{5132f164-07ea-47f4-9bb6-fd3265927ef6}</Project>
       <Name>Scheduler.Logging</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,5 @@
-﻿using Scheduler.Dependencies;
-using Scheduler.Dependencies.Configurations;
+﻿using Scheduler.Core.Dependencies;
+using Scheduler.Core.Dependencies.Configurations;
 using Scheduler.Domain.Data.Repositories;
 using Scheduler.Infrastructure.Data.EntityFramework.Repositories;
 
