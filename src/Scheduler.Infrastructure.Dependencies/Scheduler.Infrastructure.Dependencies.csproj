@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AA3175F5-9130-4AC2-9AF0-65691533B837}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scheduler.Infrastructure.Dependencies</RootNamespace>
+    <AssemblyName>Scheduler.Infrastructure.Dependencies</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configurations\BasicDependencyConfigurations.cs" />
+    <Compile Include="Configurations\DataServiceDependencyConfigurations.cs" />
+    <Compile Include="Configurations\RepositoryDependencyConfigurations.cs" />
+    <Compile Include="Configurations\ServiceDependencyConfigurations.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchedulerDependencies.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
+      <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
+      <Name>Scheduler.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Dependencies\Scheduler.Dependencies.csproj">
+      <Project>{a5dba6bf-0d61-451f-8ce2-fe9d27d42d0b}</Project>
+      <Name>Scheduler.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain.Data.EntityFramework\Scheduler.Domain.Data.EntityFramework.csproj">
+      <Project>{29F066C0-222E-4252-85E6-A166813FBAC9}</Project>
+      <Name>Scheduler.Domain.Data.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
+      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
+      <Name>Scheduler.Domain.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj">
+      <Project>{BFAAB2FE-7208-4C3A-80D1-9B1DCCE41F3B}</Project>
+      <Name>Scheduler.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Engine.Quartz\Scheduler.Engine.Quartz.csproj">
+      <Project>{CD895CE0-D65A-4E96-897B-2C45821112BB}</Project>
+      <Name>Scheduler.Engine.Quartz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
+      <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
+      <Name>Scheduler.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Infrastructure.Data.EntityFramework\Scheduler.Infrastructure.Data.EntityFramework.csproj">
+      <Project>{C34361C7-286C-4D8E-8DD6-1D995A2B0BC9}</Project>
+      <Name>Scheduler.Infrastructure.Data.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Infrastructure.Data\Scheduler.Infrastructure.Data.csproj">
+      <Project>{ACC43FC4-582C-471B-92F4-0F9AF44AB7AC}</Project>
+      <Name>Scheduler.Infrastructure.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Infrastructure\Scheduler.Infrastructure.csproj">
+      <Project>{BB4A8717-FE3F-4989-98F7-C7BBF884503F}</Project>
+      <Name>Scheduler.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Logging.NLog\Scheduler.Logging.NLog.csproj">
+      <Project>{E333F50A-DE6B-4C3D-A686-FEEF7C7D627F}</Project>
+      <Name>Scheduler.Logging.NLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Logging\Scheduler.Logging.csproj">
+      <Project>{5132f164-07ea-47f4-9bb6-fd3265927ef6}</Project>
+      <Name>Scheduler.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

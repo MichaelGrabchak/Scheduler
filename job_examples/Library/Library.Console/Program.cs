@@ -1,17 +1,13 @@
-﻿using Scheduler.Core.Logging;
-using Scheduler.Core.Configurations;
-using Scheduler.Logging.NLog;
-using Scheduler.Jobs;
-
-using Microsoft.Practices.Unity;
+﻿using Scheduler.Dependencies;
+using Scheduler.Logging;
 
 namespace Library.Console
 {
     public class ProgramStarter
     {
-        private readonly BaseJob _job;
+        private readonly CustomJob _job;
 
-        public ProgramStarter(BaseJob job)
+        public ProgramStarter(CustomJob job)
         {
             _job = job;
         }
@@ -22,32 +18,30 @@ namespace Library.Console
 
             _job.ExecuteJob();
 
+            System.Console.WriteLine("The execution has finished.");
+
             System.Console.ReadLine();
         }
     }
 
-    class Program
+    internal class Program
     {
-        private static IUnityContainer InitContainer()
+        private static void InitContainer()
         {
-            var container = new UnityContainer();
-
             // Register a class that continues the program
-            container.RegisterType<ProgramStarter, ProgramStarter>();
+            Container.RegisterType<ProgramStarter, ProgramStarter>();
 
             // Custom stuff
-            container.RegisterType<BaseJob, CustomJob>();
-            container.RegisterType<ISchedulerLogger, NLogLogger>();
-
-            GlobalUnity.Container = container;
-
-            return container;
+            Container.RegisterType<ILogger, Logger>();
+            Container.RegisterType<ILoggerProvider, LoggerProvider>();
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var container = InitContainer();
-            var program = container.Resolve<ProgramStarter>();
+            InitContainer();
+
+            var program = Container.Resolve<ProgramStarter>();
+
             program.Run();
         }
     }

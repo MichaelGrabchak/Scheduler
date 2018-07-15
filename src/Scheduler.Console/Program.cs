@@ -2,15 +2,17 @@
 using System.Timers;
 using System.Threading;
 
-using Scheduler.Core;
-using Scheduler.Core.Logging;
-using Scheduler.Core.Configurations;
 using Scheduler.Engine;
 using Scheduler.Engine.Quartz;
 using Scheduler.Logging.NLog;
 using Scheduler.Console.Configurations;
 
 using Microsoft.Practices.Unity;
+
+using Scheduler.Dependencies;
+using Scheduler.Logging;
+using Scheduler.Logging.Loggers;
+using Scheduler.Logging.NLog.Loggers;
 
 namespace Scheduler.Console
 {
@@ -47,29 +49,26 @@ namespace Scheduler.Console
         }
     }
 
-    class Program
+    internal class Program
     {
-        private static IUnityContainer InitContainer()
+        private static void InitContainer()
         {
-            var container = new UnityContainer();
-
             // Register a class that continues the program
-            container.RegisterType<ProgramStarter, ProgramStarter>();
+            Container.RegisterType<ProgramStarter, ProgramStarter>();
 
             // Custom stuff
-            container.RegisterType<BaseLogger, NLogLogger>(new InjectionConstructor(Constants.System.DefaultSchedulerLoggerName));
-            container.RegisterType<SchedulerSettings, SchedulerConsoleSettings>();
-            container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));
-
-            GlobalUnity.Container = container;
-
-            return container;
+            Container.RegisterType<ILogger, NLogLogger>();
+            Container.RegisterType<ILoggerProvider, LoggerProvider>();
+            Container.RegisterType<SchedulerSettings, SchedulerConsoleSettings>();
+            Container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var container = InitContainer();
-            var program = container.Resolve<ProgramStarter>();
+            InitContainer();
+
+            var program = Container.Resolve<ProgramStarter>();
+
             program.Run();
         }
     }

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
-using Scheduler.Core.Configurations;
 using Scheduler.Core.Helpers;
-using Scheduler.Core.Logging;
 using Scheduler.Domain.Data.Services;
 using Scheduler.Engine.Enums;
 using Scheduler.Engine.Jobs;
 using Scheduler.Jobs;
 using Scheduler.Jobs.Extensions;
+using Scheduler.Logging;
+using Scheduler.Logging.Loggers;
 
 namespace Scheduler.Engine
 {
@@ -22,17 +22,17 @@ namespace Scheduler.Engine
         public static string InstanceId { get; private set; }
         public static string InstanceName { get; private set; }
 
-        protected static ISchedulerLogger Logger = SchedulerLogManager.GetSchedulerLogger();
+        protected static ILogger Logger = LogManager.GetLogger();
         protected static DateTimeOffset StartTime { get; private set; }
         protected static EngineState State { get; set; }
 
-        protected readonly JobMetadata _metadata;
-        protected readonly IJobDetailService _jobDetailService;
+        protected readonly JobMetadata Metadata;
+        protected readonly IJobDetailService JobDetailService;
 
         protected BaseScheduler(SchedulerSettings settings, JobMetadata metadataManager, IJobDetailService jobDetailService)
         {
-            _jobDetailService = jobDetailService;
-            _metadata = metadataManager;
+            JobDetailService = jobDetailService;
+            Metadata = metadataManager;
 
             Init(settings);
         }
@@ -92,15 +92,13 @@ namespace Scheduler.Engine
         {
             Logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been scheduled. Schedule: {jobInfo.Schedule}");
 
-            GlobalLoggingSettings.SetLoggerName(jobInfo.Group, jobInfo.Name, jobInfo.LoggerKey);
-
             JobScheduled?.Invoke(this,
                 new JobOperationEventArgs { Job = jobInfo });
 
             var jobDetail = jobInfo.ToJobDetail();
             jobDetail.StatusId = (byte)JobState.Normal;
 
-            _jobDetailService.UpdateJobDetail(jobDetail);
+            JobDetailService.UpdateJobDetail(jobDetail);
         }
 
         protected event JobOperationEventHandler JobUnscheduled;
@@ -117,7 +115,7 @@ namespace Scheduler.Engine
             jobDetail.JobNextRunTime = null;
             jobDetail.JobNextRunTimeSpecified = true;
 
-            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
+            JobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler JobPaused;
@@ -134,7 +132,7 @@ namespace Scheduler.Engine
             jobDetail.JobNextRunTime = null;
             jobDetail.JobNextRunTimeSpecified = true;
 
-            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
+            JobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler JobResumed;
@@ -149,7 +147,7 @@ namespace Scheduler.Engine
             var jobDetail = jobInfo.ToJobDetail();
             jobDetail.StatusId = (byte)JobState.Normal;
 
-            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
+            JobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler JobTriggered;
@@ -162,7 +160,7 @@ namespace Scheduler.Engine
                 new JobOperationEventArgs { Job = jobInfo });
 
             var jobDetail = jobInfo.ToJobDetail();
-            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
+            JobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected event JobOperationEventHandler BeforeJobExecution;
@@ -211,7 +209,7 @@ namespace Scheduler.Engine
                 new JobOperationEventArgs { Job = jobInfo });
 
             var jobDetail = jobInfo.ToJobDetail();
-            _jobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
+            JobDetailService.UpdateJobDetail(jobDetail, updateChangedOnly: true);
         }
 
         protected string JobsDirectory { get; private set; }

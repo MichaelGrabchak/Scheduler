@@ -10,7 +10,7 @@ namespace Scheduler.WebConsole
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             UnityConfig.RegisterTypes();
-            HubsConfig.RegisterHubs(UnityConfig.GetConfiguredContainer());
+            HubsConfig.RegisterHubs();
         }
     }
 }

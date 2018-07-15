@@ -1,9 +1,14 @@
-﻿using Scheduler.Core.Logging;
+﻿using System.Threading;
+using System.Threading.Tasks;
+
 using Scheduler.Engine.Enums;
 using Scheduler.Engine.Jobs;
 using Scheduler.Engine.Quartz.Extension;
 
 using Quartz;
+
+using Scheduler.Logging;
+using Scheduler.Logging.Loggers;
 
 namespace Scheduler.Engine.Quartz.Listeners
 {
@@ -17,62 +22,71 @@ namespace Scheduler.Engine.Quartz.Listeners
 
         public string Name => "DependentJobListener";
 
-        public void JobExecutionVetoed(IJobExecutionContext context)
+        public Task JobExecutionVetoed(IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            var jobInfo = context.GetJobInfo(JobActionState.Skipped);
-
-            if (jobInfo != null)
+            return Task.Run(() =>
             {
-                SchedulerLogManager
-                    .GetJobLogger(jobInfo.Group, jobInfo.Name)
-                    .Debug($"The execution of job '{jobInfo.Group}.{jobInfo.Name}' has been skipped due to failed condition(s)");
+                var jobInfo = context.GetJobInfo(JobActionState.Skipped);
 
-                OnExecutionVetoed(jobInfo);
-            }
+                if (jobInfo != null)
+                {
+                    LogManager
+                        .GetLogger(jobInfo.Group, jobInfo.Name)
+                        .Debug($"The execution of job '{jobInfo.Group}.{jobInfo.Name}' has been skipped due to failed condition(s)");
+
+                    OnExecutionVetoed(jobInfo);
+                }
+            }, cancellationToken);
         }
 
-        public void JobToBeExecuted(IJobExecutionContext context)
+        public Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            var jobInfo = context.GetJobInfo(JobActionState.Executing);
-
-            if (jobInfo != null)
+            return Task.Run(() =>
             {
-                SchedulerLogManager
-                    .GetJobLogger(jobInfo.Group, jobInfo.Name)
-                    .Debug($"Preparing to execute job '{jobInfo.Group}.{jobInfo.Name}'...");
+                var jobInfo = context.GetJobInfo(JobActionState.Executing);
 
-                OnToBeExecuted(jobInfo);
-            }
+                if (jobInfo != null)
+                {
+                    LogManager
+                        .GetLogger(jobInfo.Group, jobInfo.Name)
+                        .Debug($"Preparing to execute job '{jobInfo.Group}.{jobInfo.Name}'...");
+
+                    OnToBeExecuted(jobInfo);
+                }
+            }, cancellationToken);
         }
 
-        public void JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException)
+        public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = new CancellationToken())
         {
-            var jobInfo = context.GetJobInfo();
-
-            if (jobInfo != null)
+            return Task.Run(() =>
             {
-                var logger = SchedulerLogManager.GetJobLogger(jobInfo.Group, jobInfo.Name);
+                var jobInfo = context.GetJobInfo();
 
-                if (jobException != null)
+                if (jobInfo != null)
                 {
-                    jobInfo.ActionState = JobActionState.Failed.ToString();
+                    var logger = LogManager.GetLogger(jobInfo.Group, jobInfo.Name);
+
+                    if (jobException != null)
+                    {
+                        jobInfo.ActionState = JobActionState.Failed.ToString();
 
 
-                    logger.Warn(jobException.GetBaseException());
+                        logger.Warn(jobException.GetBaseException());
 
-                    OnExecutionFailed(jobInfo);
+                        OnExecutionFailed(jobInfo);
+                    }
+                    else
+                    {
+                        jobInfo.ActionState = JobActionState.Succeeded.ToString();
+
+                        OnExecutionSucceeded(jobInfo);
+
+                        logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been executed successfully");
+                    }
+
+                    OnExecuted(jobInfo);
                 }
-                else
-                {
-                    jobInfo.ActionState = JobActionState.Succeeded.ToString();
-
-                    OnExecutionSucceeded(jobInfo);
-
-                    logger.Info($"The job '{jobInfo.Group}.{jobInfo.Name}' has been executed successfully");
-                }
-
-                OnExecuted(jobInfo);
-            }
+            }, cancellationToken);
         }
 
         #region Event handlers

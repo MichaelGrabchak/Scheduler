@@ -1,16 +1,15 @@
-﻿using Scheduler.Domain.Data.Services;
+﻿using Microsoft.AspNet.SignalR;
+
+using Scheduler.Domain.Data.Services;
 using Scheduler.Domain.Entities;
+using Scheduler.Engine;
 using Scheduler.Infrastructure.Hubs;
 
-using Microsoft.AspNet.SignalR;
-using Scheduler.Engine;
-
-namespace Scheduler.WebConsole.Configurations
+namespace Scheduler.WebConsole.Settings
 {
     public class SchedulerHubSettings : SchedulerSettings
     {
         public SchedulerHubSettings(ISchedulerInstanceService schedulerInstanceService)
-            : base()
         {
             var instanceSettings = schedulerInstanceService.GetSettings();
 

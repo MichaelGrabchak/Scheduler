@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scheduler.WebConsole</RootNamespace>
     <AssemblyName>Scheduler.WebConsole</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -26,6 +26,7 @@
     </NuGetPackageImportStamp>
     <Use64BitIISExpress />
     <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -99,22 +100,21 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Unity.Mvc5, Version=1.2.3.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Mvc5.1.2.3\lib\net45\Unity.Mvc5.dll</HintPath>
     </Reference>
@@ -176,7 +176,8 @@
     <Compile Include="App_Start\HubsConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="Configurations\SchedulerHubSettings.cs" />
+    <Compile Include="Dependencies\HubSchedulerDependencies.cs" />
+    <Compile Include="Settings\SchedulerHubSettings.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -205,49 +206,33 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
-      <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
-      <Name>Scheduler.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Domain.Data.EntityFramework\Scheduler.Domain.Data.EntityFramework.csproj">
-      <Project>{29F066C0-222E-4252-85E6-A166813FBAC9}</Project>
-      <Name>Scheduler.Domain.Data.EntityFramework</Name>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Dependencies\Scheduler.Dependencies.csproj">
+      <Project>{a5dba6bf-0d61-451f-8ce2-fe9d27d42d0b}</Project>
+      <Name>Scheduler.Dependencies</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
       <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
       <Name>Scheduler.Domain.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj">
-      <Project>{bfaab2fe-7208-4c3a-80d1-9b1dcce41f3b}</Project>
+      <Project>{BFAAB2FE-7208-4C3A-80D1-9B1DCCE41F3B}</Project>
       <Name>Scheduler.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Engine.Quartz\Scheduler.Engine.Quartz.csproj">
-      <Project>{cd895ce0-d65a-4e96-897b-2c45821112bb}</Project>
-      <Name>Scheduler.Engine.Quartz</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
       <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
       <Name>Scheduler.Engine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Infrastructure.Data.EntityFramework\Scheduler.Infrastructure.Data.EntityFramework.csproj">
-      <Project>{C34361C7-286C-4D8E-8DD6-1D995A2B0BC9}</Project>
-      <Name>Scheduler.Infrastructure.Data.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Infrastructure.Data\Scheduler.Infrastructure.Data.csproj">
-      <Project>{ACC43FC4-582C-471B-92F4-0F9AF44AB7AC}</Project>
-      <Name>Scheduler.Infrastructure.Data</Name>
+    <ProjectReference Include="..\Scheduler.Infrastructure.Dependencies\Scheduler.Infrastructure.Dependencies.csproj">
+      <Project>{aa3175f5-9130-4ac2-9af0-65691533b837}</Project>
+      <Name>Scheduler.Infrastructure.Dependencies</Name>
     </ProjectReference>
     <ProjectReference Include="..\Scheduler.Infrastructure\Scheduler.Infrastructure.csproj">
-      <Project>{bb4a8717-fe3f-4989-98f7-c7bbf884503f}</Project>
+      <Project>{BB4A8717-FE3F-4989-98F7-C7BBF884503F}</Project>
       <Name>Scheduler.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Logging.NLog\Scheduler.Logging.NLog.csproj">
-      <Project>{e333f50a-de6b-4c3d-a686-feef7c7d627f}</Project>
-      <Name>Scheduler.Logging.NLog</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

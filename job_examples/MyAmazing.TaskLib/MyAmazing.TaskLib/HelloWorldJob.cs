@@ -1,22 +1,17 @@
 ﻿using System;
 
-using Scheduler.Core;
-using Scheduler.Core.Logging;
-using Scheduler.Jobs.Attributes;
-using Scheduler.Jobs;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+using Scheduler.Jobs;
+using Scheduler.Jobs.Attributes;
 
 namespace MyAmazing.TaskLib
 {
     [JobMetadata(Name = "Hello World Job", Group = "Another group")]
     public class HelloWorldJob : BaseJob
     {
-        public readonly ISchedulerLogger Logger = SchedulerLogManager.GetSchedulerLogger();
-
-        public override string Schedule => Constants.Scheduler.Frequency.Cron.EveryMinute;
+        public override string Schedule => "0 0/1 * 1/1 * ? *";
 
         public override void ExecuteJob()
         {

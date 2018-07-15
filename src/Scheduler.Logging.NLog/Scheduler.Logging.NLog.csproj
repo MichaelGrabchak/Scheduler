@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scheduler.Logging.NLog</RootNamespace>
     <AssemblyName>Scheduler.Logging.NLog</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -44,13 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NLogLogger.cs" />
+    <Compile Include="Loggers\NLogLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
       <Project>{9a991b42-89da-4b3c-8675-0c4e1c7fbacf}</Project>
       <Name>Scheduler.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Logging\Scheduler.Logging.csproj">
+      <Project>{5132f164-07ea-47f4-9bb6-fd3265927ef6}</Project>
+      <Name>Scheduler.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

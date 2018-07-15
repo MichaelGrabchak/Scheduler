@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyAmazing.TaskLib</RootNamespace>
     <AssemblyName>MyAmazing.TaskLib</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,14 +34,12 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Scheduler.Core">
-      <HintPath>..\Binaries\Scheduler.Core.dll</HintPath>
+    <Reference Include="Scheduler.Jobs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Binaries\Scheduler.Jobs.dll</HintPath>
     </Reference>
-    <Reference Include="Scheduler.Jobs">
-      <HintPath>..\Binaries\Scheduler.Jobs.dll</HintPath>
-    </Reference>
-    <Reference Include="Scheduler.Logging.NLog">
-      <HintPath>..\Binaries\Scheduler.Logging.NLog.dll</HintPath>
+    <Reference Include="Scheduler.Logging">
+      <HintPath>..\Binaries\Scheduler.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

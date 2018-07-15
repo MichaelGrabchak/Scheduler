@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAmazing.TaskLib", "MyAmaz
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28760221-88B1-425B-867B-4289134B2A4B}"
 	ProjectSection(SolutionItems) = preProject
-		Binaries\Scheduler.Core.dll = Binaries\Scheduler.Core.dll
+		Binaries\Scheduler.Dependencies.dll = Binaries\Scheduler.Dependencies.dll
 		Binaries\Scheduler.Jobs.dll = Binaries\Scheduler.Jobs.dll
-		Binaries\Scheduler.Logging.NLog.dll = Binaries\Scheduler.Logging.NLog.dll
+		Binaries\Scheduler.Logging.dll = Binaries\Scheduler.Logging.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAmazing.Console", "MyAmazing.Console\MyAmazing.Console.csproj", "{D2493106-67D8-4A19-AB9D-0874F970513A}"

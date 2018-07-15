@@ -2,13 +2,13 @@
 {
     public class Constants
     {
-        public class System
-        {
-            public const string DefaultSchedulerLoggerName = "SchedulerLogger";
-        }
-
         public class Scheduler
         {
+            public class System
+            {
+                public const string DefaultLogger = "SchedulerLogger";
+            }
+
             public class Frequency
             {
                 public class Cron

@@ -17,19 +17,19 @@ namespace Scheduler.Engine.Quartz
 {
     public sealed class QuartzScheduler : BaseScheduler
     {
-        private static DependentTriggerListener _triggerListener = new DependentTriggerListener();
-        private static DependentJobListener _jobListener = new DependentJobListener();
+        private static readonly DependentTriggerListener TriggerListener = new DependentTriggerListener();
+        private static readonly DependentJobListener JobListener = new DependentJobListener();
 
-        private static IScheduler _quartzScheduler = GetScheduler(_triggerListener, _jobListener);
+        private static IScheduler _quartzScheduler = GetScheduler(TriggerListener, JobListener);
 
         public QuartzScheduler(SchedulerSettings settings, JobMetadata metadataManager, IJobDetailService jobDetailService)
             : base(settings, metadataManager, jobDetailService)
         {
-            _jobListener.ToBeExecuted += (s, e) => OnBeforeJobExecution(e.Job);
-            _jobListener.Executed += (s, e) => OnJobTriggered(e.Job);
-            _jobListener.ExecutionVetoed += (s, e) => OnJobSkipped(e.Job);
-            _jobListener.ExecutionSucceeded += (s, e) => OnJobSucceeded(e.Job);
-            _jobListener.ExecutionFailed += (s, e) => OnJobFailed(e.Job);
+            JobListener.ToBeExecuted += (s, e) => OnBeforeJobExecution(e.Job);
+            JobListener.Executed += (s, e) => OnJobTriggered(e.Job);
+            JobListener.ExecutionVetoed += (s, e) => OnJobSkipped(e.Job);
+            JobListener.ExecutionSucceeded += (s, e) => OnJobSucceeded(e.Job);
+            JobListener.ExecutionFailed += (s, e) => OnJobFailed(e.Job);
         }
 
         public override void Pause()
@@ -51,7 +51,7 @@ namespace Scheduler.Engine.Quartz
         {
             if (_quartzScheduler == null || _quartzScheduler?.IsShutdown == true)
             {
-                _quartzScheduler = GetScheduler(_triggerListener, _jobListener);
+                _quartzScheduler = GetScheduler(TriggerListener, JobListener);
             }
 
             if (_quartzScheduler?.IsStarted == false)
@@ -86,10 +86,10 @@ namespace Scheduler.Engine.Quartz
 
         public override void ScheduleJob(BaseJob scheduleJob)
         {
-            var metadata = _metadata.ExtractData(scheduleJob);
+            var metadata = Metadata.ExtractData(scheduleJob);
 
             var jobKey = new JobKey(metadata.Name, metadata.Group);
-            if (_quartzScheduler.CheckExists(jobKey))
+            if (_quartzScheduler.CheckExists(jobKey).Result)
             {
                 // if the job already scheduled, we don't want to re-schedule it
                 return;
@@ -127,7 +127,7 @@ namespace Scheduler.Engine.Quartz
 
         public override void UnscheduleJob(BaseJob scheduleJob)
         {
-            var metadata = _metadata.ExtractData(scheduleJob);
+            var metadata = Metadata.ExtractData(scheduleJob);
 
             if (metadata != null)
             {
@@ -204,7 +204,7 @@ namespace Scheduler.Engine.Quartz
 
                     OnJobResumed(JobInfo.Create(jobGroup, jobName,
                         state: JobState.Normal.ToString(),
-                        nextFire: triggers.SingleOrDefault().GetNextFireTimeUtc()
+                        nextFire: triggers.Result.SingleOrDefault()?.GetNextFireTimeUtc()
                     ));
 
                     return;
@@ -220,15 +220,15 @@ namespace Scheduler.Engine.Quartz
             {
                 var jobGroups = _quartzScheduler.GetJobGroupNames();
 
-                foreach (string group in jobGroups)
+                foreach (string group in jobGroups.Result)
                 {
                     var groupMatcher = GroupMatcher<JobKey>.GroupContains(group);
                     var jobKeys = _quartzScheduler.GetJobKeys(groupMatcher);
-                    foreach (var jobKey in jobKeys)
+                    foreach (var jobKey in jobKeys.Result)
                     {
-                        var detail = _quartzScheduler.GetJobDetail(jobKey);
+                        var detail = _quartzScheduler.GetJobDetail(jobKey).Result;
                         var triggers = _quartzScheduler.GetTriggersOfJob(jobKey);
-                        foreach (var trigger in triggers)
+                        foreach (var trigger in triggers.Result)
                         {
                             var jobName = jobKey.Name;
                             var jobGroup = trigger.Key.Group;
@@ -252,7 +252,7 @@ namespace Scheduler.Engine.Quartz
 
         private JobInfo ExtractJobInfo(string name, string group, IJobDetail jobDetail, ITrigger trigger)
         {
-            var jobInfo = _jobDetailService.GetJobDetail(name, group);
+            var jobInfo = JobDetailService.GetJobDetail(name, group);
 
             var scheduleExpr = string.Empty;
             if (trigger is ICronTrigger)
@@ -264,8 +264,8 @@ namespace Scheduler.Engine.Quartz
                 group, name,
                 desc: jobDetail.Description,
                 schedule: scheduleExpr,
-                state: _quartzScheduler.GetTriggerState(trigger.Key).GetJobState().ToString(),
-                actionState: (_quartzScheduler.GetCurrentlyExecutingJobs().ContainsJob(name, group)) ? JobActionState.Executing.ToString() : string.Empty,
+                state: _quartzScheduler.GetTriggerState(trigger.Key).Result.GetJobState().ToString(),
+                actionState: (_quartzScheduler.GetCurrentlyExecutingJobs().Result.ContainsJob(name, group)) ? JobActionState.Executing.ToString() : string.Empty,
                 nextFire: trigger.GetNextFireTimeUtc(),
                 prevFire: trigger.GetPreviousFireTimeUtc()
             );
@@ -283,7 +283,7 @@ namespace Scheduler.Engine.Quartz
 
         private static IScheduler GetScheduler(ITriggerListener triggerListener, IJobListener jobListener)
         {
-            var quartzScheduler = StdSchedulerFactory.GetDefaultScheduler();
+            var quartzScheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
 
             // registering listeners
             quartzScheduler.ListenerManager.AddTriggerListener(triggerListener, GroupMatcher<TriggerKey>.AnyGroup());

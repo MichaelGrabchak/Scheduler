@@ -4,18 +4,19 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 
-using Scheduler.Core.Logging;
-using Scheduler.Core.Configurations;
+using Scheduler.Dependencies;
+using Scheduler.Logging;
+using Scheduler.Logging.Loggers;
 
 namespace Scheduler.Core.Helpers
 {
     public class AssemblyLoaderManager
     {
-        private static ISchedulerLogger Logger = SchedulerLogManager.GetSchedulerLogger();
+        private static readonly ILogger Logger = LogManager.GetLogger();
 
         private static string RootPath => Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
-        private static List<Type> ExtractedTypes;
+        private static readonly List<Type> ExtractedTypes;
 
         static AssemblyLoaderManager()
         {
@@ -65,7 +66,7 @@ namespace Scheduler.Core.Helpers
                 ExtractedTypes
                     .Where(type => type.IsSubclassOf(typeof(T)))
                     .ToList()
-                    .ForEach(type => types.Add(GlobalUnity.Resolve<T>(type)));
+                    .ForEach(type => types.Add(Container.Resolve<T>(type)));
             }
             catch(Exception ex)
             {
@@ -105,7 +106,7 @@ namespace Scheduler.Core.Helpers
                 ExtractedTypes
                     .Where(type => type != typeof(T) && typeof(T).IsAssignableFrom(type) && !type.IsAbstract)
                     .ToList()
-                    .ForEach(type => implementors.Add(GlobalUnity.Resolve<T>(type)));
+                    .ForEach(type => implementors.Add(Container.Resolve<T>(type)));
             }
             catch (Exception ex)
             {
@@ -141,10 +142,6 @@ namespace Scheduler.Core.Helpers
             var types = new List<Type>();
 
             var directory = new DirectoryInfo(assemblyFolder);
-            if (directory == null)
-            {
-                return types;
-            }
 
             var files = directory.GetFiles($"{assemblyName}.{extension}", SearchOption.AllDirectories);
             foreach (var file in files)

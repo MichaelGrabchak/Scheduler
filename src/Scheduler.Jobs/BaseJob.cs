@@ -1,15 +1,16 @@
-﻿using Scheduler.Core.Logging;
-using Scheduler.Jobs.Extensions;
+﻿using Scheduler.Jobs.Extensions;
+using Scheduler.Logging;
+using Scheduler.Logging.Loggers;
 
 namespace Scheduler.Jobs
 {
     public abstract class BaseJob
     {
-        private readonly ISchedulerLogger Logger;
+        protected readonly ILogger Logger;
 
-        public BaseJob()
+        protected BaseJob()
         {
-            Logger = SchedulerLogManager.GetJobLogger(this.GetLogger());
+            Logger = LogManager.GetLogger(this.GetLogger());
         }
 
         public abstract string Schedule { get; }

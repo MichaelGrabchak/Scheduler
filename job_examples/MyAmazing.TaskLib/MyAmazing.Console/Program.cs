@@ -1,10 +1,9 @@
-﻿using MyAmazing.TaskLib;
+﻿using System.Threading.Tasks;
 
-using Scheduler.Core.Configurations;
-using Scheduler.Core.Logging;
-using Scheduler.Logging.NLog;
+using MyAmazing.TaskLib;
 
-using Microsoft.Practices.Unity;
+using Scheduler.Dependencies;
+using Scheduler.Logging;
 
 namespace MyAmazing.Console
 {
@@ -23,36 +22,38 @@ namespace MyAmazing.Console
         {
             System.Console.WriteLine("Starting the Console...");
 
-            _helloWorldJob.ExecuteJob();
-            _goodbyeWorldJob.ExecuteJob();
+            Task.Run(() =>
+            {
+                _helloWorldJob.ExecuteJob();
+            });
+
+            Task.Run(() =>
+            {
+                _goodbyeWorldJob.ExecuteJob();
+            });
 
             System.Console.ReadLine();
         }
     }
 
-    class Program
+    internal class Program
     {
-        private static IUnityContainer InitContainer()
+        private static void InitContainer()
         {
-            var container = new UnityContainer();
-
             // Register a class that continues the program
-            container.RegisterType<ProgramStarter, ProgramStarter>();
+            Container.RegisterType<ProgramStarter, ProgramStarter>();
 
             // Custom stuff
-            container.RegisterType<HelloWorldJob, HelloWorldJob>();
-            container.RegisterType<GoodbyeWorldJob, GoodbyeWorldJob>();
-            container.RegisterType<ISchedulerLogger, NLogLogger>();
-
-            GlobalUnity.Container = container;
-
-            return container;
+            Container.RegisterType<ILogger, Logger>();
+            Container.RegisterType<ILoggerProvider, LoggerProvider>();
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var container = InitContainer();
-            var program = container.Resolve<ProgramStarter>();
+            InitContainer();
+
+            var program = Container.Resolve<ProgramStarter>();
+
             program.Run();
         }
     }

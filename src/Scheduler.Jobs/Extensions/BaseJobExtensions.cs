@@ -24,7 +24,7 @@ namespace Scheduler.Jobs.Extensions
 
         public static string GetLogger(this BaseJob job)
         {
-            return GetMetadataAttribute(job.GetType())?.Logger ?? Constants.System.DefaultSchedulerLoggerName;
+            return GetMetadataAttribute(job.GetType())?.Logger ?? null;
         }
 
         private static JobMetadataAttribute GetMetadataAttribute(Type type)

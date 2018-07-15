@@ -1,6 +1,5 @@
 ﻿using Library.BusinessLayer.Services;
 
-using Scheduler.Core.Logging;
 using Scheduler.Jobs;
 using Scheduler.Jobs.Attributes;
 
@@ -9,8 +8,6 @@ namespace Library
     [JobMetadata(Description = "The custom job which serialize complex object (Expected result: Success, Execution Time: 10seconds)", Logger = "CustomJobLogger")]
     public class CustomJob : BaseJob
     {
-        private readonly ISchedulerLogger Logger = SchedulerLogManager.GetJobLogger("CustomJobLogger");
-
         private readonly SomeService _someService;
 
         public CustomJob(SomeService someService) 

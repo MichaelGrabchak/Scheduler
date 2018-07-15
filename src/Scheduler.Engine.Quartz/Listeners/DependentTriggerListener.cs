@@ -1,4 +1,7 @@
-﻿using Quartz;
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+using Quartz;
 
 namespace Scheduler.Engine.Quartz.Listeners
 {
@@ -6,31 +9,43 @@ namespace Scheduler.Engine.Quartz.Listeners
     {
         public string Name => "DependentTriggerListener";
 
-        public void TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode)
+        public Task TriggerFired(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            
-        }
-
-        public void TriggerFired(ITrigger trigger, IJobExecutionContext context)
-        {
-            
-        }
-
-        public void TriggerMisfired(ITrigger trigger)
-        {
-            
-        }
-
-        public bool VetoJobExecution(ITrigger trigger, IJobExecutionContext context)
-        {
-            var jobDetail = context.JobDetail?.Key;
-
-            if (jobDetail != null)
+            return Task.Run(() =>
             {
-                return (jobDetail.Name == "HelloWorldJob");
-            }
 
-            return false;
+            }, cancellationToken);
+        }
+
+        public Task TriggerMisfired(ITrigger trigger, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Task.Run(() =>
+            {
+
+            }, cancellationToken);
+        }
+
+        public Task TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Task.Run(() =>
+            {
+
+            }, cancellationToken);
+        }
+
+        public Task<bool> VetoJobExecution(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return Task.Run(() =>
+            {
+                var jobDetail = context.JobDetail?.Key;
+
+                if (jobDetail != null)
+                {
+                    return (jobDetail.Name == "HelloWorldJob");
+                }
+
+                return false;
+            }, cancellationToken);
         }
     }
 }

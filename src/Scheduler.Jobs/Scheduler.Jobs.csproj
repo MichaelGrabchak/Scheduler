@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scheduler.Jobs</RootNamespace>
     <AssemblyName>Scheduler.Jobs</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +50,10 @@
     <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
       <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
       <Name>Scheduler.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.Logging\Scheduler.Logging.csproj">
+      <Project>{5132F164-07EA-47F4-9BB6-FD3265927EF6}</Project>
+      <Name>Scheduler.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

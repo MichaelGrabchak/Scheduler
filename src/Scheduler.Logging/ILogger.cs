@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Scheduler.Core.Logging
+namespace Scheduler.Logging
 {
-    public interface ISchedulerLogger
+    public interface ILogger
     {
         void Debug(string message);
         void Info(string message);

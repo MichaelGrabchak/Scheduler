@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Library</RootNamespace>
     <AssemblyName>Library</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,15 +37,12 @@
     <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Scheduler.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Scheduler.Jobs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Scheduler.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Scheduler.Jobs">
       <HintPath>..\Binaries\Scheduler.Jobs.dll</HintPath>
     </Reference>
-    <Reference Include="Scheduler.Logging.NLog">
-      <HintPath>..\Binaries\Scheduler.Logging.NLog.dll</HintPath>
+    <Reference Include="Scheduler.Logging">
+      <HintPath>..\Binaries\Scheduler.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

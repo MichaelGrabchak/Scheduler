@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Threading;
 
-using Scheduler.Core.Logging;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
+using Scheduler.Logging;
 
 namespace Library.BusinessLayer.Services
 {
     public class SomeService
     {
-        private readonly ISchedulerLogger Logger = SchedulerLogManager.GetJobLogger("CustomJobLogger");
+        private readonly ILogger _logger;
+
+        public SomeService(ILoggerProvider loggerProvider)
+        {
+            _logger = loggerProvider.GetLogger("CustomJobLogger");
+        }
 
         public string DoSomething()
         {
-            Logger.Debug("Start DoSomething method");
+            _logger.Debug("Start DoSomething method");
             var test = new JTokenWriter();
             var test2= test.GetType().GetProperty("CurrentToken");
 
@@ -29,7 +34,7 @@ namespace Library.BusinessLayer.Services
             // emulate execution
             Thread.Sleep(10000);
 
-            Logger.Debug("Finish DoSomething method");
+            _logger.Debug("Finish DoSomething method");
 
             return JsonConvert.SerializeObject(complexObject);
         }

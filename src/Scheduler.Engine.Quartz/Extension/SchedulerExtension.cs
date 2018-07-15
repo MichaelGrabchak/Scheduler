@@ -35,7 +35,7 @@ namespace Scheduler.Engine.Quartz.Extension
                 throw new NullReferenceException($"Could not find the job by specified name({jobName}) and group({jobGroup})");
             }
 
-            return scheduler.GetJobDetail(jobKey);
+            return scheduler.GetJobDetail(jobKey).Result;
         }
 
         public static JobInfo GetJobInfo(this IJobExecutionContext context, JobActionState state = JobActionState.None)
@@ -69,7 +69,7 @@ namespace Scheduler.Engine.Quartz.Extension
             }
         }
 
-        public static bool ContainsJob(this IList<IJobExecutionContext> contextCollection, string jobName, string jobGroup = "DEFAULT")
+        public static bool ContainsJob(this IReadOnlyCollection<IJobExecutionContext> contextCollection, string jobName, string jobGroup = "DEFAULT")
         {
             if(contextCollection.Count == 0)
             {
