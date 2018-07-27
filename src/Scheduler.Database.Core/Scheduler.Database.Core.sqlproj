@@ -62,7 +62,6 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
-    <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="Post-Deployment" />
     <Folder Include="Post-Deployment\dbo" />
     <Folder Include="Post-Deployment\dbo\Tables" />
@@ -76,7 +75,6 @@
     <Build Include="dbo\Tables\SCHEDULERINSTANCESETTING.sql" />
     <Build Include="dbo\Tables\JOBSTATUS.sql" />
     <Build Include="dbo\Tables\JOBDETAIL.sql" />
-    <Build Include="dbo\Stored Procedures\usp_GETSCHEDULERINSTANCEDETAILS.sql" />
     <Build Include="utility\Stored Procedures\sp_generate_merge.sql" />
     <Build Include="Security\utility.sql" />
   </ItemGroup>

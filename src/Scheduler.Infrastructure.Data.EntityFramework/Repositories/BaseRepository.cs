@@ -13,10 +13,10 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
         where TEntity : class
     {
         protected readonly DbContext _dbContext;
-        protected readonly IContext _schedulerContext;
+        protected readonly IApplicationContext _schedulerContext;
         protected readonly DbSet<TEntity> _dbSet;
 
-        protected BaseRepository(IDbContextProvider dbContextProvider, IContext schedulerContext)
+        protected BaseRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
         {
             if(dbContextProvider == null || dbContextProvider.DbContext == null)
             {

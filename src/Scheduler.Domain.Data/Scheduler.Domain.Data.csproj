@@ -46,7 +46,7 @@
     <Compile Include="Repositories\ISchedulerInstanceRepository.cs" />
     <Compile Include="Repositories\ISchedulerInstanceSettingRepository.cs" />
     <Compile Include="Services\IJobDetailService.cs" />
-    <Compile Include="Services\ISchedulerInstanceSettingsService.cs" />
+    <Compile Include="Services\ISchedulerSettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

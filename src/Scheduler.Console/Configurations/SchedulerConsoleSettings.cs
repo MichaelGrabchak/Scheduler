@@ -1,22 +1,20 @@
-﻿using ConsoleApi = System.Console;
-
-using Scheduler.Domain.Data.Services;
+﻿using Scheduler.Core.Configurations;
+using Scheduler.Core.Context;
 using Scheduler.Engine;
+
+using ConsoleApi = System.Console;
 
 namespace Scheduler.Console.Configurations
 {
     public class SchedulerConsoleSettings : SchedulerSettings
     {
-        public SchedulerConsoleSettings(ISchedulerInstanceService schedulerInstanceService)
-            : base()
+        public SchedulerConsoleSettings(IApplicationContext context, ApplicationConfiguration configuration)
         {
-            var instanceSettings = schedulerInstanceService.GetSettings();
-
-            InstanceId = instanceSettings.InstanceId;
-            InstanceName = instanceSettings.InstanceName;
-            StartEngineImmediately = instanceSettings.IsImmediateEngineStartEnabled;
-            EnableJobsDirectoryTracking = instanceSettings.IsJobsDirectoryTrackingEnabled;
-            JobsDirectory = instanceSettings.JobsDirectory;
+            InstanceId = context.InstanceId.ToString();
+            InstanceName = "test";
+            StartEngineImmediately = configuration.IsImmediateEngineStartEnabled;
+            EnableJobsDirectoryTracking = configuration.IsJobsDirectoryTrackingEnabled;
+            JobsDirectory = configuration.JobsDirectory;
 
             EngineStarted = (sender, e) => { ConsoleApi.WriteLine("The engine has been started..."); };
             EnginePaused = (sender, e) => { ConsoleApi.WriteLine("The engine has been paused..."); };

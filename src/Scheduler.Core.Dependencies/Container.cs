@@ -42,6 +42,11 @@ namespace Scheduler.Core.Dependencies
             Unity.RegisterType<TFrom, TTo>(new InjectionConstructor(constructorParams));
         }
 
+        public static void RegisterFactory<T>(Func<T> factory)
+        {
+            Unity.RegisterType<T>(new InjectionFactory(c => factory()));
+        }
+
         public static T Resolve<T>()
         {
             return Unity.Resolve<T>();

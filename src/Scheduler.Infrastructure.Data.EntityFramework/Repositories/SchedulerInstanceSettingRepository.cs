@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 using Scheduler.Core.Context;
@@ -10,17 +11,18 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 {
     public class SchedulerInstanceSettingRepository : BaseRepository<SchedulerInstanceSetting, int>, ISchedulerInstanceSettingRepository
     {
-        public SchedulerInstanceSettingRepository(IDbContextProvider dbContextProvider, IContext schedulerContext)
+        public SchedulerInstanceSettingRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
             : base(dbContextProvider, schedulerContext)
         {
 
         }
 
-        public SchedulerInstanceSetting GetInstanceSettings()
+        public IList<SchedulerInstanceSetting> GetInstanceSettings()
         {
             return _dbSet
-                    .Include(x => x.Instance)
-                    .FirstOrDefault(x => x.InstanceId == _schedulerContext.InstanceId);
+                   .Include(x => x.Instance)
+                   .Where(x => x.InstanceId == _schedulerContext.InstanceId)
+                   .ToList();
         }
     }
 }

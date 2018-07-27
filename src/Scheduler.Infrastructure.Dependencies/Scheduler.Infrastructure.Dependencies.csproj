@@ -73,6 +73,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Caching\Scheduler.Caching.csproj">
+      <Project>{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}</Project>
+      <Name>Scheduler.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Core.Dependencies\Scheduler.Core.Dependencies.csproj">
       <Project>{A5DBA6BF-0D61-451F-8CE2-FE9D27D42D0B}</Project>
       <Name>Scheduler.Core.Dependencies</Name>

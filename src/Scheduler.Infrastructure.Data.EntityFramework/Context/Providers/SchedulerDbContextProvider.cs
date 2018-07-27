@@ -9,7 +9,7 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Context.Providers
     {
         public DbContext DbContext { get; }
 
-        public SchedulerDbContextProvider(IContext context)
+        public SchedulerDbContextProvider(IApplicationContext context)
         {
             DbContext = new SchedulerDbContext(context.ConnectionString);
         }

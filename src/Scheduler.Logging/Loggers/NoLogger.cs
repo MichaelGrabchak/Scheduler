@@ -2,7 +2,7 @@
 
 namespace Scheduler.Logging.Loggers
 {
-    public class Logger : BaseLogger, ILogger
+    public class NoLogger : BaseLogger, ILogger
     {
         public void Debug(string message)
         {

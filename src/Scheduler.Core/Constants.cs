@@ -10,6 +10,11 @@
             {
                 public const string ConnectionStringKey = "SchedulerDWH";
             }
+
+            public class Caching
+            {
+                public const string ApplicationSettingsKey = "ApplicationSettings";
+            }
         }
     }
 }

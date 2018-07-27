@@ -1,9 +1,11 @@
-﻿using Scheduler.Domain.Data.BusinessEntities;
+﻿using System.Collections.Generic;
+
+using Scheduler.Domain.Data.BusinessEntities;
 
 namespace Scheduler.Domain.Data.Repositories
 {
     public interface ISchedulerInstanceSettingRepository : IRepository<SchedulerInstanceSetting, int>
     {
-        SchedulerInstanceSetting GetInstanceSettings();
+        IList<SchedulerInstanceSetting> GetInstanceSettings();
     }
 }

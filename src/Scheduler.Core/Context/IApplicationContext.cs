@@ -2,7 +2,7 @@
 
 namespace Scheduler.Core.Context
 {
-    public interface IContext
+    public interface IApplicationContext
     {
         Guid InstanceId { get; }
 

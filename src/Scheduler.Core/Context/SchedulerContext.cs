@@ -3,7 +3,7 @@ using System.Configuration;
 
 namespace Scheduler.Core.Context
 {
-    public class SchedulerContext : IContext
+    public class SchedulerContext : IApplicationContext
     {
         public Guid InstanceId { get; }
 

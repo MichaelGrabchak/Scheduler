@@ -7,6 +7,8 @@ namespace Scheduler.Logging.Loggers
 {
     public class LoggerProvider : ILoggerProvider
     {
+        private const string LogNameParamKey = "logName";
+
         public virtual ILogger GetLogger()
         {
             return ResolveLogger();
@@ -22,15 +24,15 @@ namespace Scheduler.Logging.Loggers
             return ResolveLogger(job, group);
         }
 
+        #region Helpers
+
         protected string BuildName(string job, string group)
         {
-            if(string.IsNullOrEmpty(job) || string.IsNullOrEmpty(group))
+            if (string.IsNullOrEmpty(job) || string.IsNullOrEmpty(group))
                 throw new ArgumentException("The job or group name is missing");
 
             return $"{job}.{group}";
         }
-
-        #region Helpers
 
         private ILogger ResolveLogger()
         {
@@ -44,7 +46,7 @@ namespace Scheduler.Logging.Loggers
                 return ResolveLogger();
             }
 
-            return Container.Resolve<ILogger>(new KeyValuePair<string, object>("logName", logName));
+            return Container.Resolve<ILogger>(new KeyValuePair<string, object>(LogNameParamKey, logName));
         }
 
         private ILogger ResolveLogger(string job, string group)

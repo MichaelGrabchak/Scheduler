@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Infrastructure.De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Core.Loader", "Scheduler.Core.Loader\Scheduler.Core.Loader.csproj", "{FAD0C01E-1F66-4251-BA03-797CD93BF25B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Caching", "Scheduler.Caching\Scheduler.Caching.csproj", "{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{FAD0C01E-1F66-4251-BA03-797CD93BF25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAD0C01E-1F66-4251-BA03-797CD93BF25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAD0C01E-1F66-4251-BA03-797CD93BF25B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

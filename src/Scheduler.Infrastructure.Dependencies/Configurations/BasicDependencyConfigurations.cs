@@ -1,4 +1,5 @@
-﻿using Scheduler.Core.Context;
+﻿using Scheduler.Caching;
+using Scheduler.Core.Context;
 using Scheduler.Core.Dependencies;
 using Scheduler.Core.Dependencies.Configurations;
 using Scheduler.Domain.Data.EntityFramework.ContextProviders;
@@ -19,12 +20,13 @@ namespace Scheduler.Infrastructure.Dependencies.Configurations
     {
         public void Configure()
         {
+            Container.RegisterType<ICache, WebCache>();
             Container.RegisterType<ILogger, NLogLogger>(LoggingConstants.LoggerNames.DefaultLogger);
             Container.RegisterType<ILoggerProvider, LoggerProvider>();
 
             Container.RegisterType<JobMetadata, QuartzJobMetadata>();
             Container.RegisterType<IDbContextProvider, SchedulerDbContextProvider>();
-            Container.RegisterType<IContext, SchedulerContext>();
+            Container.RegisterType<IApplicationContext, SchedulerContext>();
 
             Container.RegisterSingleton<ISchedulerEngine, QuartzScheduler>(typeof(SchedulerSettings), typeof(JobMetadata), typeof(IJobDetailService));
         }

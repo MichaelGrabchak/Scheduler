@@ -9,7 +9,7 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 {
     public class JobDetailRepository : BaseRepository<JobDetail, int>, IJobDetailRepository
     {
-        public JobDetailRepository(IDbContextProvider dbContextProvider, IContext schedulerContext)
+        public JobDetailRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
             :base(dbContextProvider, schedulerContext)
         {
 

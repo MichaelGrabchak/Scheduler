@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.SignalR;
 
-using Scheduler.Domain.Data.Services;
+using Scheduler.Core.Configurations;
+using Scheduler.Core.Context;
 using Scheduler.Engine;
 using Scheduler.Engine.Extensions;
 using Scheduler.Infrastructure.Hubs;
@@ -9,15 +10,13 @@ namespace Scheduler.WebConsole.Settings
 {
     public class SchedulerHubSettings : SchedulerSettings
     {
-        public SchedulerHubSettings(ISchedulerInstanceService schedulerInstanceService)
+        public SchedulerHubSettings(IApplicationContext context, ApplicationConfiguration configuration)
         {
-            var instanceSettings = schedulerInstanceService.GetSettings();
-
-            InstanceId = instanceSettings.InstanceId;
-            InstanceName = instanceSettings.InstanceName;
-            StartEngineImmediately = instanceSettings.IsImmediateEngineStartEnabled;
-            EnableJobsDirectoryTracking = instanceSettings.IsJobsDirectoryTrackingEnabled;
-            JobsDirectory = instanceSettings.JobsDirectory;
+            InstanceId = context.InstanceId.ToString();
+            InstanceName = "<unregistered>";
+            StartEngineImmediately = configuration.IsImmediateEngineStartEnabled;
+            EnableJobsDirectoryTracking = configuration.IsJobsDirectoryTrackingEnabled;
+            JobsDirectory = configuration.JobsDirectory;
 
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<SchedulerHub>();
 
