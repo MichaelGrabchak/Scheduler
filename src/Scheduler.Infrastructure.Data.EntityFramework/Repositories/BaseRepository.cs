@@ -12,20 +12,20 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
     public abstract class BaseRepository<TEntity, TIdentity> : IRepository<TEntity, TIdentity>
         where TEntity : class
     {
-        protected readonly DbContext _dbContext;
-        protected readonly IApplicationContext _schedulerContext;
-        protected readonly DbSet<TEntity> _dbSet;
+        protected readonly DbContext DbContext;
+        protected readonly IApplicationContext SchedulerContext;
+        protected readonly DbSet<TEntity> DbSet;
 
         protected BaseRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
         {
-            if(dbContextProvider == null || dbContextProvider.DbContext == null)
+            if(dbContextProvider?.DbContext == null)
             {
                 throw new ArgumentNullException(nameof(dbContextProvider));
             }
 
-            _dbContext = dbContextProvider.DbContext;
-            _schedulerContext = schedulerContext;
-            _dbSet = _dbContext.Set<TEntity>();
+            DbContext = dbContextProvider.DbContext;
+            SchedulerContext = schedulerContext;
+            DbSet = DbContext.Set<TEntity>();
         }
 
         #region Create
@@ -42,12 +42,12 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         public IEnumerable<TEntity> GetAll()
         {
-            return _dbSet.ToList();
+            return DbSet.ToList();
         }
 
         public TEntity GetById(TIdentity id)
         {
-            return _dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
         #endregion
@@ -89,7 +89,7 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         protected virtual void AddEntity(TEntity entity)
         {
-            _dbSet.Add(entity);
+            DbSet.Add(entity);
         }
 
         protected virtual bool UpdateEntity(dynamic entity)
@@ -100,13 +100,13 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
                 return false;
             }
 
-            _dbContext.Entry(original).CurrentValues.SetValues(entity);
+            DbContext.Entry(original).CurrentValues.SetValues(entity);
             return true;
         }
 
         protected virtual void DeleteEntity(TEntity entity)
         {
-            _dbSet.Remove(entity);
+            DbSet.Remove(entity);
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         protected void SaveChanges()
         {
-            _dbContext.SaveChanges();
+            DbContext.SaveChanges();
         }
 
         #endregion

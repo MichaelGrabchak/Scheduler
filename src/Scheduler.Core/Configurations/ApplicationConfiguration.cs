@@ -2,11 +2,8 @@
 
 namespace Scheduler.Core.Configurations
 {
-    public class ApplicationConfiguration : ICacheConfiguration, IEngineConfiguration
+    public class ApplicationConfiguration : IEngineConfiguration
     {
-        [Key("Caching:Expiration")]
-        public int? CacheExpiration { get; set; }
-
         [Key("Engine:JobsDirectory")]
         public string JobsDirectory { get; set; }
 

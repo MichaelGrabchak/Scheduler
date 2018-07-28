@@ -19,9 +19,9 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         public IList<SchedulerInstanceSetting> GetInstanceSettings()
         {
-            return _dbSet
+            return DbSet
                    .Include(x => x.Instance)
-                   .Where(x => x.InstanceId == _schedulerContext.InstanceId)
+                   .Where(x => x.InstanceId == SchedulerContext.InstanceId)
                    .ToList();
         }
     }

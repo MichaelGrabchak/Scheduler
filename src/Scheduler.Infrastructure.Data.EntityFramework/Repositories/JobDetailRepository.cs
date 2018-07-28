@@ -17,17 +17,17 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         public JobDetail GetJobDetail(string name, string group)
         {
-            return _dbSet
+            return DbSet
                 .FirstOrDefault(
                     entity => 
-                        entity.InstanceId == _schedulerContext.InstanceId && 
+                        entity.InstanceId == SchedulerContext.InstanceId && 
                         entity.JobName == name && 
                         entity.JobGroup == group);
         }
 
         protected override void AddEntity(JobDetail entity)
         {
-            entity.InstanceId = _schedulerContext.InstanceId;
+            entity.InstanceId = SchedulerContext.InstanceId;
             base.AddEntity(entity);
         }
     }

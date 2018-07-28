@@ -7,10 +7,10 @@ namespace Scheduler.WebConsole
     {
         protected void Application_Start()
         {
+            UnityConfig.Configure();
+
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            UnityConfig.RegisterTypes();
-            HubsConfig.RegisterHubs();
         }
     }
 }

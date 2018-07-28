@@ -2,19 +2,12 @@
 
 using Microsoft.AspNet.SignalR.Hubs;
 
-using Unity;
+using Scheduler.Core.Dependencies;
 
-namespace Scheduler.Infrastructure.Dependencies.Activators
+namespace Scheduler.WebConsole.Utilities.Activators
 {
-    public class UnityHubActivator : IHubActivator
+    public class HubActivator : IHubActivator
     {
-        private readonly IUnityContainer _container;
-
-        public UnityHubActivator(IUnityContainer container)
-        {
-            _container = container;
-        }
-
         public IHub Create(HubDescriptor descriptor)
         {
             if (descriptor == null)
@@ -27,7 +20,8 @@ namespace Scheduler.Infrastructure.Dependencies.Activators
                 return null;
             }
 
-            object hub = _container.Resolve(descriptor.HubType) ?? Activator.CreateInstance(descriptor.HubType);
+            object hub = Container.Resolve<IHub>(descriptor.HubType) ?? Activator.CreateInstance(descriptor.HubType);
+
             return hub as IHub;
         }
     }

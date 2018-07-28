@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.Caching;
 
-using Scheduler.Core.Configurations;
+using Scheduler.Caching.Configurations;
 using Scheduler.Core.Extensions;
 
 namespace Scheduler.Caching

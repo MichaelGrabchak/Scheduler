@@ -5,9 +5,9 @@ using Scheduler.Infrastructure.Data.EntityFramework.Repositories;
 
 namespace Scheduler.Infrastructure.Dependencies.Configurations
 {
-    public class RepositoryDependencyConfigurations : IDependencyConfiguration
+    public class RepositoryDependencyConfigurations : DependencyConfiguration
     {
-        public void Configure()
+        public override void Configure()
         {
             Container.RegisterType<IJobDetailRepository, JobDetailRepository>();
             Container.RegisterType<ISchedulerInstanceRepository, SchedulerInstanceRepository>();

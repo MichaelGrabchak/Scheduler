@@ -1,9 +1,9 @@
-﻿using Scheduler.Domain.Services;
+﻿using Microsoft.AspNet.SignalR;
+
 using Scheduler.Domain.Entities;
+using Scheduler.Domain.Services;
 
-using Microsoft.AspNet.SignalR;
-
-namespace Scheduler.Infrastructure.Hubs
+namespace Scheduler.WebConsole.Hubs
 {
     public class SchedulerHub : Hub
     {

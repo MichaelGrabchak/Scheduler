@@ -1,23 +1,18 @@
-using System.Web.Mvc;
-
-using Scheduler.Core.Dependencies;
-using Scheduler.Engine;
-using Scheduler.Infrastructure.Dependencies;
-using Scheduler.WebConsole.Settings;
-
-using MvcDependencyResolver = Unity.Mvc5.UnityDependencyResolver;
+﻿using Scheduler.Infrastructure.Dependencies.Configurations;
+using Scheduler.WebConsole.Utilities.Dependencies;
 
 namespace Scheduler.WebConsole
 {
-    public static class UnityConfig
+    public class UnityConfig
     {
-        public static void RegisterTypes()
+        public static void Configure()
         {
-            SchedulerDependencies.Configure();
-
-            Container.RegisterType<SchedulerSettings, SchedulerHubSettings>();
-
-            DependencyResolver.SetResolver(new MvcDependencyResolver(Container.GetInstance()));
+            new BasicDependencyConfigurations();
+            new DataServiceDependencyConfigurations();
+            new RepositoryDependencyConfigurations();
+            new ServiceDependencyConfigurations();
+            new HubDependencyConfigurations();
+            new MvcDependencyConfigurations();
         }
     }
 }

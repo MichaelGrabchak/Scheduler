@@ -1,7 +1,12 @@
 ﻿namespace Scheduler.Caching
 {
-    public class Constants
+    internal class Constants
     {
-        public const int DefaultExpirationInMinutes = 15;
+        internal const int DefaultExpirationInMinutes = 15;
+
+        internal class ConfigurationKeys
+        {
+            internal const string CacheExpirationKey = "Cache:Expiration";
+        }
     }
 }

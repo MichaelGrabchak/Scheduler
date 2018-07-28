@@ -88,10 +88,6 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Scheduler.Dependencies, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\Scheduler.Dependencies.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -186,11 +182,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\HubsConfig.cs" />
+    <Compile Include="Utilities\Activators\HubActivator.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="Dependencies\HubSchedulerDependencies.cs" />
-    <Compile Include="Settings\SchedulerHubSettings.cs" />
+    <Compile Include="Utilities\Dependencies\HubDependencyConfigurations.cs" />
+    <Compile Include="Utilities\Dependencies\MvcDependencyConfigurations.cs" />
+    <Compile Include="Hubs\SchedulerHub.cs" />
+    <Compile Include="Utilities\Settings\SchedulerHubSettings.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -214,14 +212,15 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Caching\Scheduler.Caching.csproj">
+      <Project>{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}</Project>
+      <Name>Scheduler.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Core.Dependencies\Scheduler.Core.Dependencies.csproj">
       <Project>{a5dba6bf-0d61-451f-8ce2-fe9d27d42d0b}</Project>
       <Name>Scheduler.Core.Dependencies</Name>

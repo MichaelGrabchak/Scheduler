@@ -4,17 +4,17 @@
     {
         public class System
         {
-            public const string InstanceIdKey = "SchedulerInstanceId";
+            public const string InstanceIdKey = "Scheduler:ApplicationId";
 
             public class DataWarehouse
             {
-                public const string ConnectionStringKey = "SchedulerDWH";
+                public const string ConnectionStringKey = "DWH";
             }
+        }
 
-            public class Caching
-            {
-                public const string ApplicationSettingsKey = "ApplicationSettings";
-            }
+        public class Cache
+        {
+            public const string ApplicationSettingsKey = "ApplicationSettings";
         }
     }
 }

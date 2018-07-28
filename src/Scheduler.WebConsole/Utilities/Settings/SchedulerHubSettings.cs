@@ -4,13 +4,13 @@ using Scheduler.Core.Configurations;
 using Scheduler.Core.Context;
 using Scheduler.Engine;
 using Scheduler.Engine.Extensions;
-using Scheduler.Infrastructure.Hubs;
+using Scheduler.WebConsole.Hubs;
 
-namespace Scheduler.WebConsole.Settings
+namespace Scheduler.WebConsole.Utilities.Settings
 {
     public class SchedulerHubSettings : SchedulerSettings
     {
-        public SchedulerHubSettings(IApplicationContext context, ApplicationConfiguration configuration)
+        public SchedulerHubSettings(IApplicationContext context, IEngineConfiguration configuration)
         {
             InstanceId = context.InstanceId.ToString();
             InstanceName = "<unregistered>";

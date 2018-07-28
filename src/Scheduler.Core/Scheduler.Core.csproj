@@ -37,11 +37,12 @@
   <ItemGroup>
     <Compile Include="Attributes\KeyAttribute.cs" />
     <Compile Include="Configurations\ApplicationConfiguration.cs" />
-    <Compile Include="Configurations\ICacheConfiguration.cs" />
     <Compile Include="Configurations\IEngineConfiguration.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Context\DataWarehouseContext.cs" />
     <Compile Include="Context\IApplicationContext.cs" />
-    <Compile Include="Context\SchedulerContext.cs" />
+    <Compile Include="Context\IDataWarehouseContext.cs" />
+    <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
