@@ -4,7 +4,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 using Scheduler.Core.Dependencies;
 
-namespace Scheduler.WebConsole.Utilities.Activators
+namespace Scheduler.WebConsole.Hubs.Activators
 {
     public class HubActivator : IHubActivator
     {

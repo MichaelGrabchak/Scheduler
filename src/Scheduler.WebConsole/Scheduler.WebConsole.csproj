@@ -47,26 +47,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\CommonServiceLocator.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -77,13 +62,6 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -103,30 +81,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\Unity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Configuration, Version=5.2.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Container, Version=5.8.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\Unity.Container.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Interception, Version=5.5.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\Unity.Interception.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Interception.Configuration, Version=5.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\Unity.Interception.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mvc5, Version=1.3.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Mvc5.1.3.0\lib\net45\Unity.Mvc5.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\Unity.RegistrationByConvention.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ServiceLocation, Version=2.1.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net47\Unity.ServiceLocation.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Razor">
@@ -182,13 +136,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utilities\Activators\HubActivator.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="Utilities\Dependencies\HubDependencyConfigurations.cs" />
-    <Compile Include="Utilities\Dependencies\MvcDependencyConfigurations.cs" />
-    <Compile Include="Hubs\SchedulerHub.cs" />
-    <Compile Include="Utilities\Settings\SchedulerHubSettings.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -217,37 +165,17 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Scheduler.Caching\Scheduler.Caching.csproj">
-      <Project>{3E617056-3B9B-4187-A9E2-9ABE501C7CBE}</Project>
-      <Name>Scheduler.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Core.Dependencies\Scheduler.Core.Dependencies.csproj">
-      <Project>{a5dba6bf-0d61-451f-8ce2-fe9d27d42d0b}</Project>
-      <Name>Scheduler.Core.Dependencies</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Core\Scheduler.Core.csproj">
-      <Project>{9A991B42-89DA-4B3C-8675-0C4E1C7FBACF}</Project>
-      <Name>Scheduler.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Domain.Data\Scheduler.Domain.Data.csproj">
-      <Project>{5D366F7C-075D-49FF-A742-78853AA7A6DD}</Project>
-      <Name>Scheduler.Domain.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Domain\Scheduler.Domain.csproj">
-      <Project>{BFAAB2FE-7208-4C3A-80D1-9B1DCCE41F3B}</Project>
-      <Name>Scheduler.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Engine\Scheduler.Engine.csproj">
-      <Project>{198E6F67-49DC-41A0-A03A-DDC81F3E25CF}</Project>
-      <Name>Scheduler.Engine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Scheduler.Infrastructure.Dependencies\Scheduler.Infrastructure.Dependencies.csproj">
-      <Project>{aa3175f5-9130-4ac2-9af0-65691533b837}</Project>
+      <Project>{AA3175F5-9130-4AC2-9AF0-65691533B837}</Project>
       <Name>Scheduler.Infrastructure.Dependencies</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Scheduler.Infrastructure\Scheduler.Infrastructure.csproj">
-      <Project>{BB4A8717-FE3F-4989-98F7-C7BBF884503F}</Project>
-      <Name>Scheduler.Infrastructure</Name>
+    <ProjectReference Include="..\Scheduler.WebConsole.Dependencies\Scheduler.WebConsole.Dependencies.csproj">
+      <Project>{82D0478D-5FEA-4AD1-B830-6938ACCD2D6E}</Project>
+      <Name>Scheduler.WebConsole.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scheduler.WebConsole.Hubs\Scheduler.WebConsole.Hubs.csproj">
+      <Project>{276DFD4E-C613-4F77-AC02-425093DA97E8}</Project>
+      <Name>Scheduler.WebConsole.Hubs</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -20,9 +20,9 @@ using LoggingConstants = Scheduler.Logging.Constants;
 
 namespace Scheduler.Infrastructure.Dependencies.Configurations
 {
-    public class BasicDependencyConfigurations : DependencyConfiguration
+    public class BasicDependencyConfigurations : IDependencyConfiguration
     {
-        public override void Configure()
+        public void Configure()
         {
             Container.RegisterType<ICache, WebCache>();
             Container.RegisterType<ICacheConfiguration, CacheConfiguration>();

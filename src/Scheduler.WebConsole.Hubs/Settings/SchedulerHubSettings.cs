@@ -4,9 +4,8 @@ using Scheduler.Core.Configurations;
 using Scheduler.Core.Context;
 using Scheduler.Engine;
 using Scheduler.Engine.Extensions;
-using Scheduler.WebConsole.Hubs;
 
-namespace Scheduler.WebConsole.Utilities.Settings
+namespace Scheduler.WebConsole.Hubs.Settings
 {
     public class SchedulerHubSettings : SchedulerSettings
     {

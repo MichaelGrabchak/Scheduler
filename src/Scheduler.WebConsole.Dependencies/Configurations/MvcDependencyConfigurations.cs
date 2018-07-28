@@ -5,11 +5,11 @@ using Scheduler.Core.Dependencies.Configurations;
 
 using Unity.Mvc5;
 
-namespace Scheduler.WebConsole.Utilities.Dependencies
+namespace Scheduler.WebConsole.Dependencies.Configurations
 {
-    public class MvcDependencyConfigurations : DependencyConfiguration
+    public class MvcDependencyConfigurations : IDependencyConfiguration
     {
-        public override void Configure()
+        public void Configure()
         {
             DependencyResolver.SetResolver(new UnityDependencyResolver(Container.GetInstance()));
         }

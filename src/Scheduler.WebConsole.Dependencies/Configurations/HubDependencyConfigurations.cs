@@ -5,14 +5,14 @@ using Scheduler.Core.Dependencies;
 using Scheduler.Core.Dependencies.Configurations;
 using Scheduler.Engine;
 using Scheduler.WebConsole.Hubs;
-using Scheduler.WebConsole.Utilities.Activators;
-using Scheduler.WebConsole.Utilities.Settings;
+using Scheduler.WebConsole.Hubs.Activators;
+using Scheduler.WebConsole.Hubs.Settings;
 
-namespace Scheduler.WebConsole.Utilities.Dependencies
+namespace Scheduler.WebConsole.Dependencies.Configurations
 {
-    public class HubDependencyConfigurations : DependencyConfiguration
+    public class HubDependencyConfigurations : IDependencyConfiguration
     {
-        public override void Configure()
+        public void Configure()
         {
             Container.RegisterType<SchedulerHub, SchedulerHub>();
             Container.RegisterType<IHubActivator, HubActivator>();

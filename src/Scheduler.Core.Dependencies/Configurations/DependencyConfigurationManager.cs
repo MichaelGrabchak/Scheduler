@@ -2,9 +2,11 @@
 {
     public static class DependencyConfigurationManager
     {
-        public static void RegisterConfiguration(IDependencyConfiguration configuration)
+        public static void AddConfiguration<T>() where T : IDependencyConfiguration, new()
         {
-            configuration?.Configure();
+            var dependencies = new T();
+
+            dependencies.Configure();
         }
     }
 }

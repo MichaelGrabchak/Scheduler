@@ -1,6 +1,8 @@
 ﻿using Owin;
 using Microsoft.Owin;
 
+using Scheduler.WebConsole.Hubs;
+
 [assembly: OwinStartup(typeof(Scheduler.WebConsole.Startup))]
 namespace Scheduler.WebConsole
 {
@@ -8,7 +10,7 @@ namespace Scheduler.WebConsole
     {
         public void Configuration(IAppBuilder app)
         {
-            app.MapSignalR();
+            SignalRConfig.SetupSinglaR(app);
         }
     }
 }

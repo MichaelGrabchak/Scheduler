@@ -5,9 +5,9 @@ using Scheduler.Infrastructure.Services;
 
 namespace Scheduler.Infrastructure.Dependencies.Configurations
 {
-    public class ServiceDependencyConfigurations : DependencyConfiguration
+    public class ServiceDependencyConfigurations : IDependencyConfiguration
     {
-        public override void Configure()
+        public void Configure()
         {
             Container.RegisterType<ISchedulerManagerService, SchedulerManagerService>();
         }
