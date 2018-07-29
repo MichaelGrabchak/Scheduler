@@ -15,6 +15,6 @@ namespace Scheduler.Domain.Data.BusinessEntities
         public Guid InstanceId { get; set; }
 
         public virtual JobStatus Status { get; set; }
-        public virtual SchedulerInstance Instance { get; set; }
+        public virtual Instance Instance { get; set; }
     }
 }

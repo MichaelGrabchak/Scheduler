@@ -29,8 +29,9 @@ namespace Scheduler.Infrastructure.Dependencies.Configurations
             Container.RegisterType<ILogger, NLogLogger>(LoggingConstants.LoggerNames.DefaultLogger);
             Container.RegisterType<ILoggerProvider, LoggerProvider>();
 
-            Func<ApplicationConfiguration> configurationFactory = () => Container.Resolve<ISchedulerSettingsService>().GetSettings<ApplicationConfiguration>();
+            Func<ApplicationConfiguration> configurationFactory = () => Container.Resolve<ISettingsService>().GetSettings<ApplicationConfiguration>();
             Container.RegisterFactory<IEngineConfiguration>(configurationFactory);
+            Container.RegisterFactory<IApplicationConfiguration>(configurationFactory);
 
             Container.RegisterType<IApplicationContext, ApplicationContext>();
             Container.RegisterType<IDataWarehouseContext, DataWarehouseContext>();

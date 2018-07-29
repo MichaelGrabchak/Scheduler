@@ -9,13 +9,13 @@ namespace Scheduler.WebConsole.Hubs.Settings
 {
     public class SchedulerHubSettings : SchedulerSettings
     {
-        public SchedulerHubSettings(IApplicationContext context, IEngineConfiguration configuration)
+        public SchedulerHubSettings(IApplicationContext context, IEngineConfiguration engineConfig, IApplicationConfiguration appConfig)
         {
             InstanceId = context.InstanceId.ToString();
-            InstanceName = "<unregistered>";
-            StartEngineImmediately = configuration.IsImmediateEngineStartEnabled;
-            EnableJobsDirectoryTracking = configuration.IsJobsDirectoryTrackingEnabled;
-            JobsDirectory = configuration.JobsDirectory;
+            InstanceName = appConfig.ApplicationName;
+            StartEngineImmediately = engineConfig.IsImmediateEngineStartEnabled;
+            EnableJobsDirectoryTracking = engineConfig.IsJobsDirectoryTrackingEnabled;
+            JobsDirectory = engineConfig.JobsDirectory;
 
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<SchedulerHub>();
 

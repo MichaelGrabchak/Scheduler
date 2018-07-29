@@ -12,7 +12,7 @@ namespace Scheduler.WebConsole
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            // register dependencies
+            // Setup IoC container and all dependencies
             var dependenciesManager = new WebAppDependencyManager();
             dependenciesManager.RegisterDependencies();
         }

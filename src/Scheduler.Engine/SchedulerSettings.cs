@@ -32,7 +32,7 @@ namespace Scheduler.Engine
         public JobOperationEventHandler JobExecutionFailed;
         public JobOperationEventHandler JobExecutionSkipped;
 
-        public SchedulerSettings()
+        protected SchedulerSettings()
         {
             JobsDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 

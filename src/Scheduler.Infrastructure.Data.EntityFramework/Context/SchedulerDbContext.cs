@@ -17,8 +17,8 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Context
         {
             modelBuilder.Configurations.Add(new JobStatusConfiguration());
             modelBuilder.Configurations.Add(new JobDetailConfiguration());
-            modelBuilder.Configurations.Add(new SchedulerInstanceConfiguration());
-            modelBuilder.Configurations.Add(new SchedulerInstanceSettingConfiguration());
+            modelBuilder.Configurations.Add(new InstanceConfiguration());
+            modelBuilder.Configurations.Add(new SettingConfiguration());
         }
     }
 }

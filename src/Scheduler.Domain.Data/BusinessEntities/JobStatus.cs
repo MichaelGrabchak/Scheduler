@@ -3,6 +3,6 @@
     public class JobStatus
     {
         public byte Id { get; set; }
-        public string StatusName { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -10,8 +10,8 @@ namespace Scheduler.Infrastructure.Dependencies.Configurations
         public void Configure()
         {
             Container.RegisterType<IJobDetailRepository, JobDetailRepository>();
-            Container.RegisterType<ISchedulerInstanceRepository, SchedulerInstanceRepository>();
-            Container.RegisterType<ISchedulerInstanceSettingRepository, SchedulerInstanceSettingRepository>();
+            Container.RegisterType<IInstanceRepository, InstanceRepository>();
+            Container.RegisterType<ISettingRepository, SettingRepository>();
         }
     }
 }

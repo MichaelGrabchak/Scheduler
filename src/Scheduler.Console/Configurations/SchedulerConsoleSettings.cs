@@ -11,7 +11,7 @@ namespace Scheduler.Console.Configurations
         public SchedulerConsoleSettings(IApplicationContext context, ApplicationConfiguration configuration)
         {
             InstanceId = context.InstanceId.ToString();
-            InstanceName = "test";
+            InstanceName = "Console App";
             StartEngineImmediately = configuration.IsImmediateEngineStartEnabled;
             EnableJobsDirectoryTracking = configuration.IsJobsDirectoryTrackingEnabled;
             JobsDirectory = configuration.JobsDirectory;

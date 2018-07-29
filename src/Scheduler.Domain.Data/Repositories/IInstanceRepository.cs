@@ -4,7 +4,7 @@ using Scheduler.Domain.Data.BusinessEntities;
 
 namespace Scheduler.Domain.Data.Repositories
 {
-    public interface ISchedulerInstanceRepository : IRepository<SchedulerInstance, Guid>
+    public interface IInstanceRepository : IRepository<Instance, Guid>
     {
 
     }

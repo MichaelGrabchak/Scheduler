@@ -5,16 +5,15 @@ using Scheduler.Domain.Data.BusinessEntities;
 
 namespace Scheduler.Infrastructure.Data.EntityFramework.Configuration
 {
-    public class JobStatusConfiguration : EntityTypeConfiguration<JobStatus>
+    public class InstanceConfiguration : EntityTypeConfiguration<Instance>
     {
-        public JobStatusConfiguration()
+        public InstanceConfiguration()
         {
             HasKey(x => x.Id);
 
             Property(x => x.Id).HasColumnName("Id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).IsRequired();
-            Property(x => x.Name).HasColumnName("Name").IsRequired();
 
-            ToTable("JobStatus");
+            ToTable("Instance");
         }
     }
 }

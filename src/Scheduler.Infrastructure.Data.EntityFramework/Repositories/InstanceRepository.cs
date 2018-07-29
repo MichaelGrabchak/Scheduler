@@ -7,9 +7,9 @@ using Scheduler.Domain.Data.Repositories;
 
 namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 {
-    public class SchedulerInstanceRepository : BaseRepository<SchedulerInstance, Guid>, ISchedulerInstanceRepository
+    public class InstanceRepository : BaseRepository<Instance, Guid>, IInstanceRepository
     {
-        public SchedulerInstanceRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
+        public InstanceRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
             : base(dbContextProvider, schedulerContext)
         {
 

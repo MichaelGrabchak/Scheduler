@@ -10,12 +10,12 @@ using CacheKeys = Scheduler.Core.Constants.Cache;
 
 namespace Scheduler.Infrastructure.Data.Services
 {
-    public class SchedulerSettingsService : ISchedulerSettingsService
+    public class SettingsService : ISettingsService
     {
         private readonly ICache _cache;
-        private readonly ISchedulerInstanceSettingRepository _schedulerInstanceSettingRepository;
+        private readonly ISettingRepository _schedulerInstanceSettingRepository;
 
-        public SchedulerSettingsService(ICache cache, ISchedulerInstanceSettingRepository schedulerInstanceSettingRepository)
+        public SettingsService(ICache cache, ISettingRepository schedulerInstanceSettingRepository)
         {
             _cache = cache;
             _schedulerInstanceSettingRepository = schedulerInstanceSettingRepository;

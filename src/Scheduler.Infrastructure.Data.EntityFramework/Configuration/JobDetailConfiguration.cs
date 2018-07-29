@@ -11,20 +11,20 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Configuration
         {
             HasKey(x => x.Id);
 
-            Property(x => x.Id).HasColumnName("ID").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).IsRequired();
-            Property(x => x.JobName).HasColumnName("JOBNAME").IsRequired();
-            Property(x => x.JobGroup).HasColumnName("JOBGROUP").IsRequired();
-            Property(x => x.JobDescription).HasColumnName("JOBDESCRIPTION").IsOptional();
-            Property(x => x.JobSchedule).HasColumnName("JOBSCHEDULE").IsOptional();
-            Property(x => x.JobLastRunTime).HasColumnName("JOBLASTRUNTIME").IsOptional();
-            Property(x => x.JobNextRunTime).HasColumnName("JOBNEXTRUNTIME").IsOptional();
-            Property(x => x.StatusId).HasColumnName("STATUSID").IsRequired();
-            Property(x => x.InstanceId).HasColumnName("INSTANCEID").IsRequired();
+            Property(x => x.Id).HasColumnName("Id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity).IsRequired();
+            Property(x => x.JobName).HasColumnName("JobName").IsRequired();
+            Property(x => x.JobGroup).HasColumnName("JobGroup").IsRequired();
+            Property(x => x.JobDescription).HasColumnName("JobDescription").IsOptional();
+            Property(x => x.JobSchedule).HasColumnName("JobSchedule").IsOptional();
+            Property(x => x.JobLastRunTime).HasColumnName("JobLastRunTime").IsOptional();
+            Property(x => x.JobNextRunTime).HasColumnName("JobNextRunTime").IsOptional();
+            Property(x => x.StatusId).HasColumnName("StatusId").IsRequired();
+            Property(x => x.InstanceId).HasColumnName("InstanceId").IsRequired();
 
             HasRequired(x => x.Status).WithMany().HasForeignKey(x => x.StatusId).WillCascadeOnDelete(false);
             HasRequired(x => x.Instance).WithMany().HasForeignKey(x => x.InstanceId).WillCascadeOnDelete(false);
 
-            ToTable("JOBDETAIL");
+            ToTable("JobDetail");
         }
     }
 }

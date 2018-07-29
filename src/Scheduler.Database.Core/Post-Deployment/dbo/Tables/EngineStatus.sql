@@ -1,11 +1,13 @@
 ﻿SET NOCOUNT ON
 
-SET IDENTITY_INSERT [dbo].[JobStatus] ON
+SET IDENTITY_INSERT [dbo].[EngineStatus] ON
 
-MERGE INTO [dbo].[JobStatus] AS Target
+MERGE INTO [dbo].[EngineStatus] AS Target
 USING (VALUES
-  (1,N'Active')
- ,(2,N'Inactive')
+  (1,N'StandBy')
+ ,(2,N'Normal')
+ ,(3,N'Paused')
+ ,(4,N'Terminated')
 ) AS Source ([Id],[Name])
 ON (Target.[Id] = Source.[Id])
 WHEN MATCHED AND (
@@ -24,15 +26,15 @@ DECLARE @mergeError int
 SELECT @mergeError = @@ERROR, @mergeCount = @@ROWCOUNT
 IF @mergeError != 0
  BEGIN
- PRINT 'ERROR OCCURRED IN MERGE FOR [dbo].[JobStatus]. Rows affected: ' + CAST(@mergeCount AS VARCHAR(100)); -- SQL should always return zero rows affected
+ PRINT 'ERROR OCCURRED IN MERGE FOR [dbo].[EngineStatus]. Rows affected: ' + CAST(@mergeCount AS VARCHAR(100)); -- SQL should always return zero rows affected
  END
 ELSE
  BEGIN
- PRINT '[dbo].[JobStatus] rows affected by MERGE: ' + CAST(@mergeCount AS VARCHAR(100));
+ PRINT '[dbo].[EngineStatus] rows affected by MERGE: ' + CAST(@mergeCount AS VARCHAR(100));
  END
 GO
 
-SET IDENTITY_INSERT [dbo].[JobStatus] OFF
+SET IDENTITY_INSERT [dbo].[EngineStatus] OFF
 GO
 SET NOCOUNT OFF
 GO

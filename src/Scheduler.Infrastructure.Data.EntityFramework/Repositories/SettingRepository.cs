@@ -9,15 +9,15 @@ using Scheduler.Domain.Data.Repositories;
 
 namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 {
-    public class SchedulerInstanceSettingRepository : BaseRepository<SchedulerInstanceSetting, int>, ISchedulerInstanceSettingRepository
+    public class SettingRepository : BaseRepository<Setting, int>, ISettingRepository
     {
-        public SchedulerInstanceSettingRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
+        public SettingRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
             : base(dbContextProvider, schedulerContext)
         {
 
         }
 
-        public IList<SchedulerInstanceSetting> GetInstanceSettings()
+        public IList<Setting> GetInstanceSettings()
         {
             return DbSet
                    .Include(x => x.Instance)

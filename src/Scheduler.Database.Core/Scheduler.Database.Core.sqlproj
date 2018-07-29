@@ -70,11 +70,11 @@
     <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\SCHEDULERSTATUS.sql" />
-    <Build Include="dbo\Tables\SCHEDULERINSTANCE.sql" />
-    <Build Include="dbo\Tables\SCHEDULERINSTANCESETTING.sql" />
-    <Build Include="dbo\Tables\JOBSTATUS.sql" />
-    <Build Include="dbo\Tables\JOBDETAIL.sql" />
+    <Build Include="dbo\Tables\EngineStatus.sql" />
+    <Build Include="dbo\Tables\Instance.sql" />
+    <Build Include="dbo\Tables\Setting.sql" />
+    <Build Include="dbo\Tables\JobStatus.sql" />
+    <Build Include="dbo\Tables\JobDetail.sql" />
     <Build Include="utility\Stored Procedures\sp_generate_merge.sql" />
     <Build Include="Security\utility.sql" />
   </ItemGroup>
@@ -90,13 +90,16 @@
     <PostDeploy Include="Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Post-Deployment\dbo\Tables\JOBSTATUS.Data.sql" />
-    <None Include="Post-Deployment\dbo\Tables\SCHEDULERINSTANCE.Data.sql" />
-    <None Include="Post-Deployment\dbo\Tables\SCHEDULERINSTANCESETTING.Data.sql" />
-    <None Include="Post-Deployment\dbo\Tables\SCHEDULERSTATUS.Data.sql" />
+    <DataScripts Include="$([System.IO.Directory]::GetFiles('$(ProjectDir)Post-Deployment\', '*.sql', SearchOption.AllDirectories))" />
   </ItemGroup>
   <ItemGroup>
-    <DataScripts Include="$([System.IO.Directory]::GetFiles('$(ProjectDir)Post-Deployment\', '*.sql', SearchOption.AllDirectories))" />
+    <RefactorLog Include="Scheduler.Database.Core.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Post-Deployment\dbo\Tables\JobStatus.Data.sql" />
+    <None Include="Post-Deployment\dbo\Tables\EngineStatus.sql" />
+    <None Include="Post-Deployment\dbo\Tables\Instance.Data.sql" />
+    <None Include="Post-Deployment\dbo\Tables\Setting.Data.sql" />
   </ItemGroup>
   <Target AfterTargets="BeforeBuild" Name="CreateDataScript">
     <Delete Files="Post-Deployment.DataScript.sql" />

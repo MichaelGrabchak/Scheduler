@@ -33,15 +33,15 @@
   <ItemGroup>
     <Compile Include="Configuration\JobDetailConfiguration.cs" />
     <Compile Include="Configuration\JobStatusConfiguration.cs" />
-    <Compile Include="Configuration\SchedulerInstanceConfiguration.cs" />
-    <Compile Include="Configuration\SchedulerInstanceSettingConfiguration.cs" />
+    <Compile Include="Configuration\InstanceConfiguration.cs" />
+    <Compile Include="Configuration\SettingConfiguration.cs" />
     <Compile Include="Context\Providers\SchedulerDbContextProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Context\SchedulerDbContext.cs" />
     <Compile Include="Repositories\JobDetailRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
-    <Compile Include="Repositories\SchedulerInstanceRepository.cs" />
-    <Compile Include="Repositories\SchedulerInstanceSettingRepository.cs" />
+    <Compile Include="Repositories\InstanceRepository.cs" />
+    <Compile Include="Repositories\SettingRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
