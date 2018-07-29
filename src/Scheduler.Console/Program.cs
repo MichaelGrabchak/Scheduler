@@ -2,17 +2,9 @@
 using System.Timers;
 using System.Threading;
 
+using Scheduler.Console.Dependencies;
 using Scheduler.Engine;
-using Scheduler.Engine.Quartz;
-using Scheduler.Logging.NLog;
-using Scheduler.Console.Configurations;
-
-using Microsoft.Practices.Unity;
-
 using Scheduler.Core.Dependencies;
-using Scheduler.Logging;
-using Scheduler.Logging.Loggers;
-using Scheduler.Logging.NLog.Loggers;
 
 namespace Scheduler.Console
 {
@@ -32,7 +24,7 @@ namespace Scheduler.Console
             ShowScheduledJobs(null, null);
 
             System.Timers.Timer aTimer = new System.Timers.Timer() { Interval = TimeSpan.FromMinutes(1).TotalMilliseconds, AutoReset = true };
-            aTimer.Elapsed += new ElapsedEventHandler(ShowScheduledJobs);
+            aTimer.Elapsed += ShowScheduledJobs;
             aTimer.Start();
             
             Thread.Sleep(Timeout.Infinite);
@@ -40,6 +32,9 @@ namespace Scheduler.Console
 
         private void ShowScheduledJobs(object source, ElapsedEventArgs e)
         {
+            System.Console.WriteLine("-Rediscovering the jobs...");
+            _engine.Discover();
+
             System.Console.WriteLine("Scheduled jobs are:");
 
             foreach (var type in _engine.GetAllJobs())
@@ -51,25 +46,12 @@ namespace Scheduler.Console
 
     internal class Program
     {
-        private static void InitContainer()
-        {
-            // Register a class that continues the program
-            Container.RegisterType<ProgramStarter, ProgramStarter>();
-
-            // Custom stuff
-            Container.RegisterType<ILogger, NLogLogger>();
-            Container.RegisterType<ILoggerProvider, LoggerProvider>();
-            Container.RegisterType<SchedulerSettings, SchedulerConsoleSettings>();
-            Container.RegisterType<ISchedulerEngine, QuartzScheduler>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(SchedulerSettings)));
-        }
-
         private static void Main(string[] args)
         {
-            InitContainer();
+            var dependenciesManager = new ConsoleDependencyManager();
+            dependenciesManager.RegisterDependencies();
 
-            var program = Container.Resolve<ProgramStarter>();
-
-            program.Run();
+            Container.Resolve<ProgramStarter>().Run();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Scheduler.Core.Dependencies.Configurations;
 using Scheduler.Infrastructure.Dependencies;
+using Scheduler.Infrastructure.Dependencies.Configurations;
 using Scheduler.WebConsole.Dependencies.Configurations;
 
 namespace Scheduler.WebConsole.Dependencies
@@ -12,6 +13,16 @@ namespace Scheduler.WebConsole.Dependencies
 
             DependencyConfigurationManager.AddConfiguration<HubDependencyConfigurations>();
             DependencyConfigurationManager.AddConfiguration<MvcDependencyConfigurations>();
+        }
+
+        protected override void RegisterCacheDependencyConfig()
+        {
+            DependencyConfigurationManager.AddConfiguration<WebCacheDependencyConfigurations>();
+        }
+
+        protected override void RegisterLoggerDependencyConfig()
+        {
+            DependencyConfigurationManager.AddConfiguration<NLogLoggerDependencyConfigurations>();
         }
     }
 }

@@ -4,6 +4,12 @@ namespace Scheduler.Logging.Loggers
 {
     public class NoLogger : BaseLogger, ILogger
     {
+        public NoLogger(string logName)
+            : base(logName)
+        {
+
+        }
+
         public void Debug(string message)
         {
             

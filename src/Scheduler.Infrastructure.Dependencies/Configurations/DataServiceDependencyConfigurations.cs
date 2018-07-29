@@ -9,7 +9,17 @@ namespace Scheduler.Infrastructure.Dependencies.Configurations
     {
         public void Configure()
         {
+            RegisterSettingsService();
+            RegisterJobDetailService();
+        }
+
+        protected virtual void RegisterSettingsService()
+        {
             Container.RegisterType<ISettingsService, SettingsService>();
+        }
+
+        protected virtual void RegisterJobDetailService()
+        {
             Container.RegisterType<IJobDetailService, JobDetailService>();
         }
     }

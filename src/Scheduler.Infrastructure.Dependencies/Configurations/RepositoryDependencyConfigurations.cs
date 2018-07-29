@@ -5,7 +5,7 @@ using Scheduler.Infrastructure.Data.EntityFramework.Repositories;
 
 namespace Scheduler.Infrastructure.Dependencies.Configurations
 {
-    public class RepositoryDependencyConfigurations : IDependencyConfiguration
+    public sealed class RepositoryDependencyConfigurations : IDependencyConfiguration
     {
         public void Configure()
         {

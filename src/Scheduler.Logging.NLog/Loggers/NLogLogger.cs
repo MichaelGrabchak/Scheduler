@@ -9,12 +9,8 @@ namespace Scheduler.Logging.NLog.Loggers
     {
         private readonly INLogLogger _logger;
 
-        public NLogLogger()
-        {
-            _logger = NLogLogManager.GetCurrentClassLogger();
-        }
-
         public NLogLogger(string logName)
+            : base(logName)
         {
             if (logName == Constants.LoggerNames.DefaultLogger || string.IsNullOrEmpty(logName))
             {

@@ -9,6 +9,11 @@ namespace Scheduler.Infrastructure.Dependencies.Configurations
     {
         public void Configure()
         {
+            RegisterSchedulerManagerService();
+        }
+
+        protected virtual void RegisterSchedulerManagerService()
+        {
             Container.RegisterType<ISchedulerManagerService, SchedulerManagerService>();
         }
     }

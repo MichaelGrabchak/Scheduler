@@ -8,13 +8,13 @@ namespace Scheduler.Console.Configurations
 {
     public class SchedulerConsoleSettings : SchedulerSettings
     {
-        public SchedulerConsoleSettings(IApplicationContext context, ApplicationConfiguration configuration)
+        public SchedulerConsoleSettings(IApplicationContext context, IEngineConfiguration engineConfig, IApplicationConfiguration appConfig)
         {
             InstanceId = context.InstanceId.ToString();
-            InstanceName = "Console App";
-            StartEngineImmediately = configuration.IsImmediateEngineStartEnabled;
-            EnableJobsDirectoryTracking = configuration.IsJobsDirectoryTrackingEnabled;
-            JobsDirectory = configuration.JobsDirectory;
+            InstanceName = appConfig.ApplicationName;
+            StartEngineImmediately = engineConfig.IsImmediateEngineStartEnabled;
+            EnableJobsDirectoryTracking = engineConfig.IsJobsDirectoryTrackingEnabled;
+            JobsDirectory = engineConfig.JobsDirectory;
 
             EngineStarted = (sender, e) => { ConsoleApi.WriteLine("The engine has been started..."); };
             EnginePaused = (sender, e) => { ConsoleApi.WriteLine("The engine has been paused..."); };
@@ -24,7 +24,7 @@ namespace Scheduler.Console.Configurations
             JobUnscheduled = (sender, e) => { ConsoleApi.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been unscheduled"); };
             JobPaused = (sender, e) => { ConsoleApi.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been put on hold"); };
             JobResumed = (sender, e) => { ConsoleApi.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been resumed"); };
-            JobTriggered = (sender, e) => { ConsoleApi.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been triggered manually"); };
+            JobTriggered = (sender, e) => { ConsoleApi.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has been triggered"); };
 
             JobExecutionSucceeded = (sender, e) => { ConsoleApi.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has finished with status: SUCCESS"); };
             JobExecutionFailed = (sender, e) => { ConsoleApi.WriteLine($"The job (Name:{e.Job.Name}, Group:{e.Job.Group}) has finished with status: FAILED"); };

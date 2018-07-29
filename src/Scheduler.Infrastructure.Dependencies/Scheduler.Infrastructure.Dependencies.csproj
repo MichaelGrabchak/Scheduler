@@ -31,7 +31,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Configurations\BasicDependencyConfigurations.cs" />
+    <Compile Include="Configurations\WebCacheDependencyConfigurations.cs" />
+    <Compile Include="Configurations\CacheDependencyConfigurations.cs" />
     <Compile Include="Configurations\DataServiceDependencyConfigurations.cs" />
+    <Compile Include="Configurations\EngineDependencyConfigurations.cs" />
+    <Compile Include="Configurations\NLogLoggerDependencyConfigurations.cs" />
+    <Compile Include="Configurations\LoggerDependencyConfigurations.cs" />
     <Compile Include="Configurations\RepositoryDependencyConfigurations.cs" />
     <Compile Include="Configurations\ServiceDependencyConfigurations.cs" />
     <Compile Include="DependencyManager.cs" />
