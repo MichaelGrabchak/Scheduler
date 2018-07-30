@@ -49,9 +49,9 @@ namespace Scheduler.WebConsole.Hubs
             return _scheduler.GetJobsSummary();
         }
 
-        public EngineInfo GetEngineInfo()
+        public EngineDetails GetEngineInfo()
         {
-            return _scheduler.GetEngineInfo();
+            return _scheduler.GetEngineDetails();
         }
     }
 }

@@ -38,7 +38,6 @@
     <Compile Include="BusinessEntities\JobStatus.cs" />
     <Compile Include="BusinessEntities\Instance.cs" />
     <Compile Include="BusinessEntities\Setting.cs" />
-    <Compile Include="Dto\InstanceSettings.cs" />
     <Compile Include="Dto\JobDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IJobDetailRepository.cs" />

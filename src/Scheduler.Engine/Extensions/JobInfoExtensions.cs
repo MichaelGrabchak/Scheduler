@@ -23,7 +23,9 @@ namespace Scheduler.Engine.Extensions
                 ActionState = jobInfo.ActionState,
                 PreviousFireTime = jobInfo.PrevFireTimeUtc?.LocalDateTime.ToString(CultureInfo.InvariantCulture),
                 PrevFireTimeSpecified = jobInfo.PrevFireTimeSpecified,
-                NextFireTime = (jobInfo.State != JobState.Paused.ToString()) ? jobInfo.NextFireTimeUtc?.LocalDateTime.ToString(CultureInfo.InvariantCulture) : string.Empty, // if the job is on hold - we don't want to show next execution time
+                NextFireTime = (jobInfo.State != JobState.Paused.ToString()) 
+                    ? jobInfo.NextFireTimeUtc?.LocalDateTime.ToString(CultureInfo.InvariantCulture) 
+                    : string.Empty, // if the job is on hold - we don't want to show next execution time
                 NextFireTimeSpecified = jobInfo.NextFireTimeSpecified
             };
         }

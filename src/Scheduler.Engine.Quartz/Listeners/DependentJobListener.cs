@@ -7,7 +7,6 @@ using Scheduler.Engine.Quartz.Extension;
 
 using Quartz;
 
-using Scheduler.Logging;
 using Scheduler.Logging.Loggers;
 
 namespace Scheduler.Engine.Quartz.Listeners

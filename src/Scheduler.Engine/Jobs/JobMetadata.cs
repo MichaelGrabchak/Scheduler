@@ -10,7 +10,7 @@ namespace Scheduler.Engine.Jobs
 {
     public abstract class JobMetadata
     {
-        protected readonly IJobDetailService _jobDetailService;
+        protected readonly IJobDetailService JobDetailService;
 
         public Type Type { get; set; }
         public string Name { get; set; }
@@ -20,9 +20,9 @@ namespace Scheduler.Engine.Jobs
         public string Description { get; set; }
         public byte State { get; set; }
 
-        public JobMetadata(IJobDetailService jobDetailService)
+        protected JobMetadata(IJobDetailService jobDetailService)
         {
-            _jobDetailService = jobDetailService;
+            JobDetailService = jobDetailService;
         }
 
         public JobMetadata ExtractData(BaseJob job)
@@ -36,7 +36,7 @@ namespace Scheduler.Engine.Jobs
             Name = job.GetName();
             Group = job.GetGroup();
 
-            var jobDetail = _jobDetailService.GetJobDetail(Name, Group);
+            var jobDetail = JobDetailService.GetJobDetail(Name, Group);
             
             Schedule = jobDetail?.JobSchedule ?? job.Schedule;
             Description = jobDetail?.JobDescription ?? job.GetDescription();

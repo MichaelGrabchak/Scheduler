@@ -186,8 +186,6 @@ namespace Scheduler.Engine.Quartz
                         state: JobState.Paused.ToString(),
                         isNextFireTimeSpecified: true
                     ));
-
-                    return;
                 }
             }
         }
@@ -208,8 +206,6 @@ namespace Scheduler.Engine.Quartz
                         state: JobState.Normal.ToString(),
                         nextFire: triggers.Result.SingleOrDefault()?.GetNextFireTimeUtc()
                     ));
-
-                    return;
                 }
             }
         }
@@ -257,9 +253,9 @@ namespace Scheduler.Engine.Quartz
             var jobInfo = JobDetailService.GetJobDetail(name, group);
 
             var scheduleExpr = string.Empty;
-            if (trigger is ICronTrigger)
+            if (trigger is ICronTrigger cronTrigger)
             {
-                scheduleExpr = (trigger as ICronTrigger).CronExpressionString;
+                scheduleExpr = cronTrigger.CronExpressionString;
             }
 
             var originJobInfo = JobInfo.Create(
@@ -267,7 +263,9 @@ namespace Scheduler.Engine.Quartz
                 desc: jobDetail.Description,
                 schedule: scheduleExpr,
                 state: _quartzScheduler.GetTriggerState(trigger.Key).Result.GetJobState().ToString(),
-                actionState: (_quartzScheduler.GetCurrentlyExecutingJobs().Result.ContainsJob(name, group)) ? JobActionState.Executing.ToString() : string.Empty,
+                actionState: (_quartzScheduler.GetCurrentlyExecutingJobs().Result.ContainsJob(name, group)) 
+                    ? JobActionState.Executing.ToString() 
+                    : string.Empty,
                 nextFire: trigger.GetNextFireTimeUtc(),
                 prevFire: trigger.GetPreviousFireTimeUtc()
             );
@@ -275,7 +273,8 @@ namespace Scheduler.Engine.Quartz
             return JobInfo.Create(
                 group, name,
                 desc: jobInfo?.JobDescription ?? originJobInfo.Description,
-                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(jobInfo?.JobSchedule ?? originJobInfo.Schedule, new Options() { Locale = "en" }),
+                schedule: CronExpressionDescriptor.ExpressionDescriptor.GetDescription(
+                    jobInfo?.JobSchedule ?? originJobInfo.Schedule, new Options { Locale = "en" }),
                 state: originJobInfo.State,
                 actionState: originJobInfo.ActionState,
                 nextFire: jobInfo?.JobNextRunTime ?? originJobInfo.NextFireTimeUtc,

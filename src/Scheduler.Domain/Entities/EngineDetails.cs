@@ -1,14 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
-namespace Scheduler.Engine
+namespace Scheduler.Domain.Entities
 {
     public class EngineDetails
     {
-        public string Name { get; set; }
-        public string State { get; set; }
-        public DateTimeOffset StartDate { get; set; }
+        public string RunningSince { get; set; }
         public string Version { get; set; }
+        public string Engine { get; set; }
+        public string State { get; set; }
         public string InstanceId { get; set; }
         public string InstanceName { get; set; }
 
@@ -16,22 +15,22 @@ namespace Scheduler.Engine
         {
             var sb = new StringBuilder();
 
-            if(!string.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(Engine))
             {
-                sb.Append($"Name: {Name}");
+                sb.Append($"Engine: {Engine}");
             }
 
-            if(!string.IsNullOrEmpty(State))
+            if (!string.IsNullOrEmpty(State))
             {
                 sb.Append($" State: {State}");
             }
 
-            if(StartDate != null && StartDate != DateTimeOffset.MaxValue)
+            if (!string.IsNullOrEmpty(RunningSince))
             {
-                sb.Append($" Start Date: {StartDate}");
+                sb.Append($" Start Date: {RunningSince}");
             }
 
-            if(!string.IsNullOrEmpty(Version))
+            if (!string.IsNullOrEmpty(Version))
             {
                 sb.Append($" Version: {Version}");
             }

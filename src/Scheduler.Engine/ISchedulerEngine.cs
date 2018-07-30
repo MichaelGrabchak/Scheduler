@@ -32,6 +32,6 @@ namespace Scheduler.Engine
 
         IEnumerable<JobInfo> GetAllJobs();
 
-        EngineDetails GetEngineInfo();
+        EngineInfo GetEngineInfo();
     }
 }

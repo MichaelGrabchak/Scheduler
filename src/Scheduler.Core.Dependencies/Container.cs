@@ -8,6 +8,9 @@ using Unity.Resolution;
 
 namespace Scheduler.Core.Dependencies
 {
+    /// <summary>
+    /// Service Locator
+    /// </summary>
     public class Container
     {
         internal static IUnityContainer Unity;

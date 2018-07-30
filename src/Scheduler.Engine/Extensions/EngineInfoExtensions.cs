@@ -5,11 +5,11 @@ using Scheduler.Domain.Entities;
 
 namespace Scheduler.Engine.Extensions
 {
-    public static class EngineDetailsExtensions
+    public static class EngineInfoExtensions
     {
-        public static EngineInfo ToEngineInfo(this EngineDetails engineDetails)
+        public static EngineDetails ToEngineDetails(this EngineInfo engineDetails)
         {
-            return new EngineInfo
+            return new Domain.Entities.EngineDetails
             {
                 RunningSince = (engineDetails.StartDate != DateTimeOffset.MinValue) ? engineDetails.StartDate.ToString(CultureInfo.InvariantCulture) : null,
                 Version = engineDetails.Version,

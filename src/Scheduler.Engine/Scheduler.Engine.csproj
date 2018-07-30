@@ -32,11 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseScheduler.cs" />
-    <Compile Include="EngineDetails.cs" />
+    <Compile Include="EngineInfo.cs" />
     <Compile Include="Enums\EngineState.cs" />
     <Compile Include="Enums\JobActionState.cs" />
     <Compile Include="Enums\JobState.cs" />
-    <Compile Include="Extensions\EngineDetailsExtensions.cs" />
+    <Compile Include="Extensions\EngineInfoExtensions.cs" />
     <Compile Include="Extensions\JobInfoExtensions.cs" />
     <Compile Include="ISchedulerEngine.cs" />
     <Compile Include="SchedulerEventHandlers.cs" />

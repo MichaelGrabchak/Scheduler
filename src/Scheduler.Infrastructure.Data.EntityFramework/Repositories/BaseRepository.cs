@@ -18,12 +18,7 @@ namespace Scheduler.Infrastructure.Data.EntityFramework.Repositories
 
         protected BaseRepository(IDbContextProvider dbContextProvider, IApplicationContext schedulerContext)
         {
-            if(dbContextProvider?.DbContext == null)
-            {
-                throw new ArgumentNullException(nameof(dbContextProvider));
-            }
-
-            DbContext = dbContextProvider.DbContext;
+            DbContext = dbContextProvider?.DbContext ?? throw new ArgumentNullException(nameof(dbContextProvider));
             SchedulerContext = schedulerContext;
             DbSet = DbContext.Set<TEntity>();
         }

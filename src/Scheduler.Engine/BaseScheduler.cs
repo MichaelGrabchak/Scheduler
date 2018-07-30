@@ -236,9 +236,9 @@ namespace Scheduler.Engine
             }
 
             // Currently scheduled jobs
-            var scheduledJobs = GetAllJobs().Where(job => job.Group != "DEFAULT"); // exclude triggers which are running right now
+            var scheduledJobs = GetAllJobs().Where(job => job.Group != "DEFAULT").ToList(); // exclude triggers which are running right now
 
-            if(scheduledJobs.Count() > 0)
+            if(scheduledJobs.Any())
             {
                 Logger.Info("Revisiting scheduled jobs...");
                 Logger.Debug($"Currently scheduled jobs:{Environment.NewLine}{string.Join(Environment.NewLine, scheduledJobs)}");
@@ -255,7 +255,7 @@ namespace Scheduler.Engine
             }
 
             // schedule new jobs
-            if (discoveredJobs != null && discoveredJobs.Count > 0)
+            if (discoveredJobs.Count > 0)
             {
                 ScheduleJobs(discoveredJobs);
                 OnJobsDiscovered();
@@ -299,9 +299,9 @@ namespace Scheduler.Engine
             Stop();
         }
 
-        public EngineDetails GetEngineInfo()
+        public EngineInfo GetEngineInfo()
         {
-            return new EngineDetails
+            return new EngineInfo
             {
                 Name = FullyQualifiedName,
                 State = State.ToString(),

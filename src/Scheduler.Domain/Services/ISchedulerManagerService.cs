@@ -11,6 +11,6 @@ namespace Scheduler.Domain.Services
         void ResumeJob(string jobName, string jobGroup);
         void TriggerJob(string jobName, string jobGroup);
         JobsSummary GetJobsSummary();
-        EngineInfo GetEngineInfo();
+        EngineDetails GetEngineDetails();
     }
 }

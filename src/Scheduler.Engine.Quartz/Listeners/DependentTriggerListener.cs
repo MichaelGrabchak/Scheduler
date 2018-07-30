@@ -37,12 +37,12 @@ namespace Scheduler.Engine.Quartz.Listeners
         {
             return Task.Run(() =>
             {
-                var jobDetail = context.JobDetail?.Key;
+                //var jobDetail = context.JobDetail?.Key;
 
-                if (jobDetail != null)
-                {
-                    return (jobDetail.Name == "HelloWorldJob");
-                }
+                //if (jobDetail != null)
+                //{
+                //    return (jobDetail.Name == "HelloWorldJob");
+                //}
 
                 return false;
             }, cancellationToken);

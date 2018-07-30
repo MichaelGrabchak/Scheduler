@@ -51,9 +51,9 @@ namespace Scheduler.Infrastructure.Services
             return new JobsSummary(_scheduler.GetAllJobs().Select(x => x.ToJobDetails()));
         }
 
-        public EngineInfo GetEngineInfo()
+        public EngineDetails GetEngineDetails()
         {
-            return _scheduler.GetEngineInfo().ToEngineInfo();
+            return _scheduler.GetEngineInfo().ToEngineDetails();
         }
     }
 }

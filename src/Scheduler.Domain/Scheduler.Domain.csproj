@@ -34,7 +34,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\EngineInfo.cs" />
+    <Compile Include="Entities\EngineDetails.cs" />
     <Compile Include="Entities\JobDetails.cs" />
     <Compile Include="Entities\JobsSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

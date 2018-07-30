@@ -29,66 +29,36 @@ namespace Scheduler.Engine.Jobs
         private bool _isDescSpecified;
         public bool DescriptionSpecified
         {
-            get
-            {
-                return (_isDescSpecified || !string.IsNullOrEmpty(Description));
-            }
-            set
-            {
-                _isDescSpecified = value;
-            }
+            get => (_isDescSpecified || !string.IsNullOrEmpty(Description));
+            set => _isDescSpecified = value;
         }
 
         private bool _isScheduleSpecified;
         public bool ScheduleSpecified
         {
-            get
-            {
-                return (_isScheduleSpecified || !string.IsNullOrEmpty(Schedule));
-            }
-            set
-            {
-                _isScheduleSpecified = value;
-            }
+            get => (_isScheduleSpecified || !string.IsNullOrEmpty(Schedule));
+            set => _isScheduleSpecified = value;
         }
 
         private bool _isStateSpecified;
         public bool StateSpecified
         {
-            get
-            {
-                return (_isStateSpecified || !string.IsNullOrEmpty(State));
-            }
-            set
-            {
-                _isStateSpecified = value;
-            }
+            get => (_isStateSpecified || !string.IsNullOrEmpty(State));
+            set => _isStateSpecified = value;
         }
 
         private bool _isNextRunSpecified;
         public bool NextFireTimeSpecified
         {
-            get
-            {
-                return (_isNextRunSpecified || NextFireTimeUtc.HasValue);
-            }
-            set
-            {
-                _isNextRunSpecified = value;
-            }
+            get => (_isNextRunSpecified || NextFireTimeUtc.HasValue);
+            set => _isNextRunSpecified = value;
         }
 
         private bool _isLastRunSpecified;
         public bool PrevFireTimeSpecified
         {
-            get
-            {
-                return (_isLastRunSpecified || PrevFireTimeUtc.HasValue);
-            }
-            set
-            {
-                _isLastRunSpecified = value;
-            }
+            get => (_isLastRunSpecified || PrevFireTimeUtc.HasValue);
+            set => _isLastRunSpecified = value;
         }
 
         #endregion
@@ -153,8 +123,8 @@ namespace Scheduler.Engine.Jobs
                 JobGroup = Group,
                 JobDescription = Description,
                 JobSchedule = ScheduleExpression,
-                JobNextRunTime = NextFireTimeUtc.HasValue ? NextFireTimeUtc.Value.UtcDateTime : (DateTime?)null,
-                JobLastRunTime = PrevFireTimeUtc.HasValue ? PrevFireTimeUtc.Value.UtcDateTime : (DateTime?)null
+                JobNextRunTime = NextFireTimeUtc?.UtcDateTime,
+                JobLastRunTime = PrevFireTimeUtc?.UtcDateTime
             };
         }
 
